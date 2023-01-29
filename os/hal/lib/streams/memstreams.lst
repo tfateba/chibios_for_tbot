@@ -1,0 +1,437 @@
+   1               		.file	"memstreams.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               		.section	.text._put,"ax",@progbits
+  13               	_put:
+  14               	.LFB145:
+  15               		.file 1 "../../../os/hal/lib/streams/memstreams.c"
+   1:../../../os/hal/lib/streams/memstreams.c **** /*
+   2:../../../os/hal/lib/streams/memstreams.c ****     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
+   3:../../../os/hal/lib/streams/memstreams.c **** 
+   4:../../../os/hal/lib/streams/memstreams.c ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:../../../os/hal/lib/streams/memstreams.c ****     you may not use this file except in compliance with the License.
+   6:../../../os/hal/lib/streams/memstreams.c ****     You may obtain a copy of the License at
+   7:../../../os/hal/lib/streams/memstreams.c **** 
+   8:../../../os/hal/lib/streams/memstreams.c ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:../../../os/hal/lib/streams/memstreams.c **** 
+  10:../../../os/hal/lib/streams/memstreams.c ****     Unless required by applicable law or agreed to in writing, software
+  11:../../../os/hal/lib/streams/memstreams.c ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:../../../os/hal/lib/streams/memstreams.c ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:../../../os/hal/lib/streams/memstreams.c ****     See the License for the specific language governing permissions and
+  14:../../../os/hal/lib/streams/memstreams.c ****     limitations under the License.
+  15:../../../os/hal/lib/streams/memstreams.c **** */
+  16:../../../os/hal/lib/streams/memstreams.c **** 
+  17:../../../os/hal/lib/streams/memstreams.c **** /**
+  18:../../../os/hal/lib/streams/memstreams.c ****  * @file    memstreams.c
+  19:../../../os/hal/lib/streams/memstreams.c ****  * @brief   Memory streams code.
+  20:../../../os/hal/lib/streams/memstreams.c ****  *
+  21:../../../os/hal/lib/streams/memstreams.c ****  * @addtogroup memory_streams
+  22:../../../os/hal/lib/streams/memstreams.c ****  * @{
+  23:../../../os/hal/lib/streams/memstreams.c ****  */
+  24:../../../os/hal/lib/streams/memstreams.c **** 
+  25:../../../os/hal/lib/streams/memstreams.c **** #include <string.h>
+  26:../../../os/hal/lib/streams/memstreams.c **** 
+  27:../../../os/hal/lib/streams/memstreams.c **** #include "hal.h"
+  28:../../../os/hal/lib/streams/memstreams.c **** #include "memstreams.h"
+  29:../../../os/hal/lib/streams/memstreams.c **** 
+  30:../../../os/hal/lib/streams/memstreams.c **** /*===========================================================================*/
+  31:../../../os/hal/lib/streams/memstreams.c **** /* Driver local definitions.                                                 */
+  32:../../../os/hal/lib/streams/memstreams.c **** /*===========================================================================*/
+  33:../../../os/hal/lib/streams/memstreams.c **** 
+  34:../../../os/hal/lib/streams/memstreams.c **** /*===========================================================================*/
+  35:../../../os/hal/lib/streams/memstreams.c **** /* Driver exported variables.                                                */
+  36:../../../os/hal/lib/streams/memstreams.c **** /*===========================================================================*/
+  37:../../../os/hal/lib/streams/memstreams.c **** 
+  38:../../../os/hal/lib/streams/memstreams.c **** /*===========================================================================*/
+  39:../../../os/hal/lib/streams/memstreams.c **** /* Driver local variables.                                                   */
+  40:../../../os/hal/lib/streams/memstreams.c **** /*===========================================================================*/
+  41:../../../os/hal/lib/streams/memstreams.c **** 
+  42:../../../os/hal/lib/streams/memstreams.c **** /*===========================================================================*/
+  43:../../../os/hal/lib/streams/memstreams.c **** /* Driver local functions.                                                   */
+  44:../../../os/hal/lib/streams/memstreams.c **** /*===========================================================================*/
+  45:../../../os/hal/lib/streams/memstreams.c **** 
+  46:../../../os/hal/lib/streams/memstreams.c **** static size_t _writes(void *ip, const uint8_t *bp, size_t n) {
+  47:../../../os/hal/lib/streams/memstreams.c ****   MemoryStream *msp = ip;
+  48:../../../os/hal/lib/streams/memstreams.c **** 
+  49:../../../os/hal/lib/streams/memstreams.c ****   if (msp->size - msp->eos < n)
+  50:../../../os/hal/lib/streams/memstreams.c ****     n = msp->size - msp->eos;
+  51:../../../os/hal/lib/streams/memstreams.c ****   memcpy(msp->buffer + msp->eos, bp, n);
+  52:../../../os/hal/lib/streams/memstreams.c ****   msp->eos += n;
+  53:../../../os/hal/lib/streams/memstreams.c ****   return n;
+  54:../../../os/hal/lib/streams/memstreams.c **** }
+  55:../../../os/hal/lib/streams/memstreams.c **** 
+  56:../../../os/hal/lib/streams/memstreams.c **** static size_t _reads(void *ip, uint8_t *bp, size_t n) {
+  57:../../../os/hal/lib/streams/memstreams.c ****   MemoryStream *msp = ip;
+  58:../../../os/hal/lib/streams/memstreams.c **** 
+  59:../../../os/hal/lib/streams/memstreams.c ****   if (msp->eos - msp->offset < n)
+  60:../../../os/hal/lib/streams/memstreams.c ****     n = msp->eos - msp->offset;
+  61:../../../os/hal/lib/streams/memstreams.c ****   memcpy(bp, msp->buffer + msp->offset, n);
+  62:../../../os/hal/lib/streams/memstreams.c ****   msp->offset += n;
+  63:../../../os/hal/lib/streams/memstreams.c ****   return n;
+  64:../../../os/hal/lib/streams/memstreams.c **** }
+  65:../../../os/hal/lib/streams/memstreams.c **** 
+  66:../../../os/hal/lib/streams/memstreams.c **** static msg_t _put(void *ip, uint8_t b) {
+  16               		.loc 1 66 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+  23 0000 FC01      		movw r30,r24
+  24               	.LVL1:
+  67:../../../os/hal/lib/streams/memstreams.c ****   MemoryStream *msp = ip;
+  68:../../../os/hal/lib/streams/memstreams.c **** 
+  69:../../../os/hal/lib/streams/memstreams.c ****   if (msp->size - msp->eos <= 0)
+  25               		.loc 1 69 0
+  26 0002 8681      		ldd r24,Z+6
+  27 0004 9781      		ldd r25,Z+7
+  28               	.LVL2:
+  29 0006 2481      		ldd r18,Z+4
+  30 0008 3581      		ldd r19,Z+5
+  31 000a 2817      		cp r18,r24
+  32 000c 3907      		cpc r19,r25
+  33 000e 01F0      		breq .L3
+  70:../../../os/hal/lib/streams/memstreams.c ****     return MSG_RESET;
+  71:../../../os/hal/lib/streams/memstreams.c ****   *(msp->buffer + msp->eos) = b;
+  34               		.loc 1 71 0
+  35 0010 2281      		ldd r18,Z+2
+  36 0012 3381      		ldd r19,Z+3
+  37 0014 D901      		movw r26,r18
+  38 0016 A80F      		add r26,r24
+  39 0018 B91F      		adc r27,r25
+  40 001a 6C93      		st X,r22
+  72:../../../os/hal/lib/streams/memstreams.c ****   msp->eos += 1;
+  41               		.loc 1 72 0
+  42 001c 8681      		ldd r24,Z+6
+  43 001e 9781      		ldd r25,Z+7
+  44 0020 0196      		adiw r24,1
+  45 0022 9783      		std Z+7,r25
+  46 0024 8683      		std Z+6,r24
+  73:../../../os/hal/lib/streams/memstreams.c ****   return MSG_OK;
+  47               		.loc 1 73 0
+  48 0026 80E0      		ldi r24,0
+  49 0028 90E0      		ldi r25,0
+  50 002a 0895      		ret
+  51               	.L3:
+  70:../../../os/hal/lib/streams/memstreams.c ****     return MSG_RESET;
+  52               		.loc 1 70 0
+  53 002c 8EEF      		ldi r24,lo8(-2)
+  54 002e 9FEF      		ldi r25,lo8(-1)
+  74:../../../os/hal/lib/streams/memstreams.c **** }
+  55               		.loc 1 74 0
+  56 0030 0895      		ret
+  57               		.cfi_endproc
+  58               	.LFE145:
+  60               		.section	.text._get,"ax",@progbits
+  62               	_get:
+  63               	.LFB146:
+  75:../../../os/hal/lib/streams/memstreams.c **** 
+  76:../../../os/hal/lib/streams/memstreams.c **** static msg_t _get(void *ip) {
+  64               		.loc 1 76 0
+  65               		.cfi_startproc
+  66               	.LVL3:
+  67               	/* prologue: function */
+  68               	/* frame size = 0 */
+  69               	/* stack size = 0 */
+  70               	.L__stack_usage = 0
+  71 0000 FC01      		movw r30,r24
+  72               	.LVL4:
+  77:../../../os/hal/lib/streams/memstreams.c ****   uint8_t b;
+  78:../../../os/hal/lib/streams/memstreams.c ****   MemoryStream *msp = ip;
+  79:../../../os/hal/lib/streams/memstreams.c **** 
+  80:../../../os/hal/lib/streams/memstreams.c ****   if (msp->eos - msp->offset <= 0)
+  73               		.loc 1 80 0
+  74 0002 2085      		ldd r18,Z+8
+  75 0004 3185      		ldd r19,Z+9
+  76 0006 8681      		ldd r24,Z+6
+  77 0008 9781      		ldd r25,Z+7
+  78               	.LVL5:
+  79 000a 8217      		cp r24,r18
+  80 000c 9307      		cpc r25,r19
+  81 000e 01F0      		breq .L7
+  81:../../../os/hal/lib/streams/memstreams.c ****     return MSG_RESET;
+  82:../../../os/hal/lib/streams/memstreams.c ****   b = *(msp->buffer + msp->offset);
+  82               		.loc 1 82 0
+  83 0010 A281      		ldd r26,Z+2
+  84 0012 B381      		ldd r27,Z+3
+  85 0014 A20F      		add r26,r18
+  86 0016 B31F      		adc r27,r19
+  87 0018 8C91      		ld r24,X
+  88               	.LVL6:
+  83:../../../os/hal/lib/streams/memstreams.c ****   msp->offset += 1;
+  89               		.loc 1 83 0
+  90 001a 2F5F      		subi r18,-1
+  91 001c 3F4F      		sbci r19,-1
+  92 001e 3187      		std Z+9,r19
+  93 0020 2087      		std Z+8,r18
+  84:../../../os/hal/lib/streams/memstreams.c ****   return b;
+  94               		.loc 1 84 0
+  95 0022 90E0      		ldi r25,0
+  96 0024 0895      		ret
+  97               	.LVL7:
+  98               	.L7:
+  81:../../../os/hal/lib/streams/memstreams.c ****     return MSG_RESET;
+  99               		.loc 1 81 0
+ 100 0026 8EEF      		ldi r24,lo8(-2)
+ 101 0028 9FEF      		ldi r25,lo8(-1)
+  85:../../../os/hal/lib/streams/memstreams.c **** }
+ 102               		.loc 1 85 0
+ 103 002a 0895      		ret
+ 104               		.cfi_endproc
+ 105               	.LFE146:
+ 107               		.section	.text._reads,"ax",@progbits
+ 109               	_reads:
+ 110               	.LFB144:
+  56:../../../os/hal/lib/streams/memstreams.c ****   MemoryStream *msp = ip;
+ 111               		.loc 1 56 0
+ 112               		.cfi_startproc
+ 113               	.LVL8:
+ 114 0000 0F93      		push r16
+ 115               	.LCFI0:
+ 116               		.cfi_def_cfa_offset 4
+ 117               		.cfi_offset 16, -3
+ 118 0002 1F93      		push r17
+ 119               	.LCFI1:
+ 120               		.cfi_def_cfa_offset 5
+ 121               		.cfi_offset 17, -4
+ 122 0004 CF93      		push r28
+ 123               	.LCFI2:
+ 124               		.cfi_def_cfa_offset 6
+ 125               		.cfi_offset 28, -5
+ 126 0006 DF93      		push r29
+ 127               	.LCFI3:
+ 128               		.cfi_def_cfa_offset 7
+ 129               		.cfi_offset 29, -6
+ 130               	/* prologue: function */
+ 131               	/* frame size = 0 */
+ 132               	/* stack size = 4 */
+ 133               	.L__stack_usage = 4
+ 134 0008 8C01      		movw r16,r24
+ 135 000a CB01      		movw r24,r22
+ 136               	.LVL9:
+  59:../../../os/hal/lib/streams/memstreams.c ****     n = msp->eos - msp->offset;
+ 137               		.loc 1 59 0
+ 138 000c F801      		movw r30,r16
+ 139 000e 6085      		ldd r22,Z+8
+ 140 0010 7185      		ldd r23,Z+9
+ 141               	.LVL10:
+ 142 0012 C681      		ldd r28,Z+6
+ 143 0014 D781      		ldd r29,Z+7
+ 144 0016 C61B      		sub r28,r22
+ 145 0018 D70B      		sbc r29,r23
+ 146 001a 4C17      		cp r20,r28
+ 147 001c 5D07      		cpc r21,r29
+ 148 001e 00F4      		brsh .L9
+ 149 0020 EA01      		movw r28,r20
+ 150               	.L9:
+ 151               	.LVL11:
+  61:../../../os/hal/lib/streams/memstreams.c ****   msp->offset += n;
+ 152               		.loc 1 61 0
+ 153 0022 F801      		movw r30,r16
+ 154 0024 2281      		ldd r18,Z+2
+ 155 0026 3381      		ldd r19,Z+3
+ 156 0028 620F      		add r22,r18
+ 157 002a 731F      		adc r23,r19
+ 158 002c AE01      		movw r20,r28
+ 159 002e 0E94 0000 		call memcpy
+ 160               	.LVL12:
+  62:../../../os/hal/lib/streams/memstreams.c ****   return n;
+ 161               		.loc 1 62 0
+ 162 0032 F801      		movw r30,r16
+ 163 0034 8085      		ldd r24,Z+8
+ 164 0036 9185      		ldd r25,Z+9
+ 165 0038 8C0F      		add r24,r28
+ 166 003a 9D1F      		adc r25,r29
+ 167 003c 9187      		std Z+9,r25
+ 168 003e 8087      		std Z+8,r24
+  64:../../../os/hal/lib/streams/memstreams.c **** 
+ 169               		.loc 1 64 0
+ 170 0040 CE01      		movw r24,r28
+ 171               	/* epilogue start */
+ 172 0042 DF91      		pop r29
+ 173 0044 CF91      		pop r28
+ 174               	.LVL13:
+ 175 0046 1F91      		pop r17
+ 176 0048 0F91      		pop r16
+ 177               	.LVL14:
+ 178 004a 0895      		ret
+ 179               		.cfi_endproc
+ 180               	.LFE144:
+ 182               		.section	.text._writes,"ax",@progbits
+ 184               	_writes:
+ 185               	.LFB143:
+  46:../../../os/hal/lib/streams/memstreams.c ****   MemoryStream *msp = ip;
+ 186               		.loc 1 46 0
+ 187               		.cfi_startproc
+ 188               	.LVL15:
+ 189 0000 0F93      		push r16
+ 190               	.LCFI4:
+ 191               		.cfi_def_cfa_offset 4
+ 192               		.cfi_offset 16, -3
+ 193 0002 1F93      		push r17
+ 194               	.LCFI5:
+ 195               		.cfi_def_cfa_offset 5
+ 196               		.cfi_offset 17, -4
+ 197 0004 CF93      		push r28
+ 198               	.LCFI6:
+ 199               		.cfi_def_cfa_offset 6
+ 200               		.cfi_offset 28, -5
+ 201 0006 DF93      		push r29
+ 202               	.LCFI7:
+ 203               		.cfi_def_cfa_offset 7
+ 204               		.cfi_offset 29, -6
+ 205               	/* prologue: function */
+ 206               	/* frame size = 0 */
+ 207               	/* stack size = 4 */
+ 208               	.L__stack_usage = 4
+ 209 0008 8C01      		movw r16,r24
+ 210               	.LVL16:
+  49:../../../os/hal/lib/streams/memstreams.c ****     n = msp->size - msp->eos;
+ 211               		.loc 1 49 0
+ 212 000a FC01      		movw r30,r24
+ 213 000c 8681      		ldd r24,Z+6
+ 214 000e 9781      		ldd r25,Z+7
+ 215               	.LVL17:
+ 216 0010 C481      		ldd r28,Z+4
+ 217 0012 D581      		ldd r29,Z+5
+ 218 0014 C81B      		sub r28,r24
+ 219 0016 D90B      		sbc r29,r25
+ 220 0018 4C17      		cp r20,r28
+ 221 001a 5D07      		cpc r21,r29
+ 222 001c 00F4      		brsh .L11
+ 223 001e EA01      		movw r28,r20
+ 224               	.L11:
+ 225               	.LVL18:
+  51:../../../os/hal/lib/streams/memstreams.c ****   msp->eos += n;
+ 226               		.loc 1 51 0
+ 227 0020 F801      		movw r30,r16
+ 228 0022 2281      		ldd r18,Z+2
+ 229 0024 3381      		ldd r19,Z+3
+ 230 0026 AE01      		movw r20,r28
+ 231 0028 820F      		add r24,r18
+ 232 002a 931F      		adc r25,r19
+ 233 002c 0E94 0000 		call memcpy
+ 234               	.LVL19:
+  52:../../../os/hal/lib/streams/memstreams.c ****   return n;
+ 235               		.loc 1 52 0
+ 236 0030 F801      		movw r30,r16
+ 237 0032 8681      		ldd r24,Z+6
+ 238 0034 9781      		ldd r25,Z+7
+ 239 0036 8C0F      		add r24,r28
+ 240 0038 9D1F      		adc r25,r29
+ 241 003a 9783      		std Z+7,r25
+ 242 003c 8683      		std Z+6,r24
+  54:../../../os/hal/lib/streams/memstreams.c **** 
+ 243               		.loc 1 54 0
+ 244 003e CE01      		movw r24,r28
+ 245               	/* epilogue start */
+ 246 0040 DF91      		pop r29
+ 247 0042 CF91      		pop r28
+ 248               	.LVL20:
+ 249 0044 1F91      		pop r17
+ 250 0046 0F91      		pop r16
+ 251               	.LVL21:
+ 252 0048 0895      		ret
+ 253               		.cfi_endproc
+ 254               	.LFE143:
+ 256               		.section	.text.msObjectInit,"ax",@progbits
+ 257               	.global	msObjectInit
+ 259               	msObjectInit:
+ 260               	.LFB147:
+  86:../../../os/hal/lib/streams/memstreams.c **** 
+  87:../../../os/hal/lib/streams/memstreams.c **** static const struct MemStreamVMT vmt = {_writes, _reads, _put, _get};
+  88:../../../os/hal/lib/streams/memstreams.c **** 
+  89:../../../os/hal/lib/streams/memstreams.c **** /*===========================================================================*/
+  90:../../../os/hal/lib/streams/memstreams.c **** /* Driver exported functions.                                                */
+  91:../../../os/hal/lib/streams/memstreams.c **** /*===========================================================================*/
+  92:../../../os/hal/lib/streams/memstreams.c **** 
+  93:../../../os/hal/lib/streams/memstreams.c **** /**
+  94:../../../os/hal/lib/streams/memstreams.c ****  * @brief   Memory stream object initialization.
+  95:../../../os/hal/lib/streams/memstreams.c ****  *
+  96:../../../os/hal/lib/streams/memstreams.c ****  * @param[out] msp      pointer to the @p MemoryStream object to be initialized
+  97:../../../os/hal/lib/streams/memstreams.c ****  * @param[in] buffer    pointer to the memory buffer for the memory stream
+  98:../../../os/hal/lib/streams/memstreams.c ****  * @param[in] size      total size of the memory stream buffer
+  99:../../../os/hal/lib/streams/memstreams.c ****  * @param[in] eos       initial End Of Stream offset. Normally you need to
+ 100:../../../os/hal/lib/streams/memstreams.c ****  *                      put this to zero for RAM buffers or equal to @p size
+ 101:../../../os/hal/lib/streams/memstreams.c ****  *                      for ROM streams.
+ 102:../../../os/hal/lib/streams/memstreams.c ****  */
+ 103:../../../os/hal/lib/streams/memstreams.c **** void msObjectInit(MemoryStream *msp, uint8_t *buffer,
+ 104:../../../os/hal/lib/streams/memstreams.c ****                   size_t size, size_t eos) {
+ 261               		.loc 1 104 0
+ 262               		.cfi_startproc
+ 263               	.LVL22:
+ 264               	/* prologue: function */
+ 265               	/* frame size = 0 */
+ 266               	/* stack size = 0 */
+ 267               	.L__stack_usage = 0
+ 268 0000 FC01      		movw r30,r24
+ 105:../../../os/hal/lib/streams/memstreams.c **** 
+ 106:../../../os/hal/lib/streams/memstreams.c ****   msp->vmt    = &vmt;
+ 269               		.loc 1 106 0
+ 270 0002 80E0      		ldi r24,lo8(vmt)
+ 271 0004 90E0      		ldi r25,hi8(vmt)
+ 272               	.LVL23:
+ 273 0006 9183      		std Z+1,r25
+ 274 0008 8083      		st Z,r24
+ 107:../../../os/hal/lib/streams/memstreams.c ****   msp->buffer = buffer;
+ 275               		.loc 1 107 0
+ 276 000a 7383      		std Z+3,r23
+ 277 000c 6283      		std Z+2,r22
+ 108:../../../os/hal/lib/streams/memstreams.c ****   msp->size   = size;
+ 278               		.loc 1 108 0
+ 279 000e 5583      		std Z+5,r21
+ 280 0010 4483      		std Z+4,r20
+ 109:../../../os/hal/lib/streams/memstreams.c ****   msp->eos    = eos;
+ 281               		.loc 1 109 0
+ 282 0012 3783      		std Z+7,r19
+ 283 0014 2683      		std Z+6,r18
+ 110:../../../os/hal/lib/streams/memstreams.c ****   msp->offset = 0;
+ 284               		.loc 1 110 0
+ 285 0016 1186      		std Z+9,__zero_reg__
+ 286 0018 1086      		std Z+8,__zero_reg__
+ 287 001a 0895      		ret
+ 288               		.cfi_endproc
+ 289               	.LFE147:
+ 291               		.section	.rodata.vmt,"a",@progbits
+ 294               	vmt:
+ 295 0000 0000      		.word	gs(_writes)
+ 296 0002 0000      		.word	gs(_reads)
+ 297 0004 0000      		.word	gs(_put)
+ 298 0006 0000      		.word	gs(_get)
+ 299               		.text
+ 300               	.Letext0:
+ 301               		.file 2 "/usr/lib/gcc/avr/5.4.0/include/stddef.h"
+ 302               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 303               		.file 4 "../../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 304               		.file 5 "../../../os/rt/include/chsystypes.h"
+ 305               		.file 6 "../../../os/rt/include/chschd.h"
+ 306               		.file 7 "../../../os/common/ports/AVR/chcore.h"
+ 307               		.file 8 "../../../os/rt/include/chsem.h"
+ 308               		.file 9 "../../../os/rt/include/chmtx.h"
+ 309               		.file 10 "../../../os/hal/lib/streams/memstreams.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 memstreams.c
+     /tmp/cc4CXxYQ.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc4CXxYQ.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc4CXxYQ.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc4CXxYQ.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/cc4CXxYQ.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc4CXxYQ.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc4CXxYQ.s:13     .text._put:0000000000000000 _put
+     /tmp/cc4CXxYQ.s:62     .text._get:0000000000000000 _get
+     /tmp/cc4CXxYQ.s:109    .text._reads:0000000000000000 _reads
+     /tmp/cc4CXxYQ.s:184    .text._writes:0000000000000000 _writes
+     /tmp/cc4CXxYQ.s:259    .text.msObjectInit:0000000000000000 msObjectInit
+     /tmp/cc4CXxYQ.s:294    .rodata.vmt:0000000000000000 vmt
+
+UNDEFINED SYMBOLS
+memcpy
+__do_copy_data

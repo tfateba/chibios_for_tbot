@@ -1,0 +1,1860 @@
+   1               		.file	"hal_pwm_lld.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               		.section	.text.__vector_35,"ax",@progbits
+  12               	.global	__vector_35
+  14               	__vector_35:
+  15               	.LFB145:
+  16               		.file 1 "../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c"
+   1:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*
+   2:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
+   3:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+   4:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     you may not use this file except in compliance with the License.
+   6:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     You may obtain a copy of the License at
+   7:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+   8:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+  10:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     Unless required by applicable law or agreed to in writing, software
+  11:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     See the License for the specific language governing permissions and
+  14:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     limitations under the License.
+  15:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** */
+  16:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+  17:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*
+  18:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****    This driver is based on the work done by Matteo Serva available at
+  19:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****    http://github.com/matteoserva/ChibiOS-AVR
+  20:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** */
+  21:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+  22:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /**
+  23:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @file    hal_pwm_lld.c
+  24:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @brief   AVR PWM driver subsystem low level driver.
+  25:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+  26:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @addtogroup PWM
+  27:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @{
+  28:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  */
+  29:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+  30:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #include "hal.h"
+  31:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+  32:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if HAL_USE_PWM || defined(__DOXYGEN__)
+  33:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+  34:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*===========================================================================*/
+  35:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /* Driver local definitions.                                                 */
+  36:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*===========================================================================*/
+  37:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+  38:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** typedef struct {
+  39:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   volatile uint8_t *tccra;
+  40:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   volatile uint8_t *tccrb;
+  41:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   volatile uint8_t *ocrah;
+  42:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   volatile uint8_t *ocral;
+  43:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   volatile uint8_t *ocrbh;
+  44:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   volatile uint8_t *ocrbl;
+  45:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   volatile uint8_t *ocrch;
+  46:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   volatile uint8_t *ocrcl;
+  47:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   volatile uint8_t *tifr;
+  48:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   volatile uint8_t *timsk;
+  49:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** } timer_registers_t;
+  50:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+  51:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** static timer_registers_t regs_table[]=
+  52:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+  53:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM1 || defined(__DOXYGEN__)
+  54:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if defined(OCR1C)
+  55:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   {&TCCR1A, &TCCR1B, &OCR1AH, &OCR1AL, &OCR1BH, &OCR1BL, &OCR1CH, &OCR1CL, &TIFR1, &TIMSK1},
+  56:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #else
+  57:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   {&TCCR1A, &TCCR1B, &OCR1AH, &OCR1AL, &OCR1BH, &OCR1BL, NULL, NULL, &TIFR1, &TIMSK1},
+  58:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+  59:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+  60:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM2 || defined(__DOXYGEN__)
+  61:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   {&TCCR2A, &TCCR2B, &OCR2A, &OCR2A, &OCR2B, &OCR2B, NULL, NULL, &TIFR2, &TIMSK2},
+  62:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+  63:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM3 || defined(__DOXYGEN__)
+  64:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   {&TCCR3A, &TCCR3B, &OCR3AH, &OCR3AL, &OCR3BH, &OCR3BL, &OCR3CH, &OCR3CL, &TIFR3, &TIMSK3},
+  65:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+  66:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM4 || defined(__DOXYGEN__)
+  67:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   {&TCCR4A, &TCCR4B, &OCR4AH, &OCR4AL, &OCR4CH, &OCR4CL, &OCR4CH, &OCR4CL, &TIFR4, &TIMSK4},
+  68:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+  69:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM5 || defined(__DOXYGEN__)
+  70:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   {&TCCR5A, &TCCR5B, &OCR5AH, &OCR5AL, &OCR5BH, &OCR5BL, &OCR5CH, &OCR5CL, &TIFR5, &TIMSK5},
+  71:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+  72:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** };
+  73:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+  74:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*===========================================================================*/
+  75:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /* Driver exported variables.                                                */
+  76:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*===========================================================================*/
+  77:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+  78:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /** @brief PWM driver identifiers.*/
+  79:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM1 || defined(__DOXYGEN__)
+  80:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** PWMDriver PWMD1;
+  81:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+  82:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM2 || defined(__DOXYGEN__)
+  83:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** PWMDriver PWMD2;
+  84:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+  85:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM3 || defined(__DOXYGEN__)
+  86:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** PWMDriver PWMD3;
+  87:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+  88:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM4 || defined(__DOXYGEN__)
+  89:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** PWMDriver PWMD4;
+  90:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+  91:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM5 || defined(__DOXYGEN__)
+  92:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** PWMDriver PWMD5;
+  93:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+  94:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+  95:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*===========================================================================*/
+  96:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /* Driver local variables.                                                   */
+  97:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*===========================================================================*/
+  98:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+  99:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*===========================================================================*/
+ 100:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /* Driver local functions.                                                   */
+ 101:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*===========================================================================*/
+ 102:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 103:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** static void config_channel(volatile uint8_t *tccra,
+ 104:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                            uint8_t com1,
+ 105:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                            uint8_t com0,
+ 106:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                            pwmmode_t mode)
+ 107:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 108:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   *tccra &= ~((1 << com1) | (1 << com0));
+ 109:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   if (mode == PWM_OUTPUT_ACTIVE_HIGH)
+ 110:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *tccra |= ((1 << com1) | (0 << com0)); /* non inverting mode */
+ 111:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   else if (mode == PWM_OUTPUT_ACTIVE_LOW)
+ 112:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *tccra |= (1 << com1) | (1 << com0);   /* inverting mode */
+ 113:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 114:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 115:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** static uint8_t timer_index(PWMDriver *pwmp)
+ 116:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 117:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   uint8_t index = 0;
+ 118:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 119:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM1 || defined(__DOXYGEN__)
+ 120:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   if (pwmp == &PWMD1) return index;
+ 121:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   else index++;
+ 122:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 123:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM2 || defined(__DOXYGEN__)
+ 124:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   if (pwmp == &PWMD2) return index;
+ 125:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   else index++;
+ 126:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 127:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM3 || defined(__DOXYGEN__)
+ 128:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   if (pwmp == &PWMD3) return index;
+ 129:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   else index++;
+ 130:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 131:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM4 || defined(__DOXYGEN__)
+ 132:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   if (pwmp == &PWMD4) return index;
+ 133:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   else index++;
+ 134:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 135:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM5 || defined(__DOXYGEN__)
+ 136:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   if (pwmp == &PWMD5) return index;
+ 137:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   else index++;
+ 138:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 139:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 140:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   /* This is an error! */
+ 141:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   return index;
+ 142:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 143:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 144:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*===========================================================================*/
+ 145:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /* Driver interrupt handlers.                                                */
+ 146:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*===========================================================================*/
+ 147:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 148:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*
+ 149:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * interrupt for compare1&2 and clock overflow. pwmd1 & pwmd2
+ 150:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  */
+ 151:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM1 || defined(__DOXYGEN__)
+ 152:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER1_OVF_vect)
+ 153:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 154:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 155:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD1.config->callback(&PWMD1);
+ 156:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 157:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 158:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 159:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER1_COMPA_vect)
+ 160:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 161:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 162:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD1.config->channels[0].callback(&PWMD1);
+ 163:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 164:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 165:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 166:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER1_COMPB_vect)
+ 167:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 168:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 169:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD1.config->channels[1].callback(&PWMD1);
+ 170:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 171:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 172:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if PWM_CHANNELS > 2
+ 173:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER1_COMPC_vect)
+ 174:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 175:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 176:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD1.config->channels[2].callback(&PWMD1);
+ 177:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 178:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 179:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 180:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 181:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 182:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM2 || defined(__DOXYGEN__)
+ 183:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER2_OVF_vect)
+ 184:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 185:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 186:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD2.config->callback(&PWMD2);
+ 187:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 188:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 189:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 190:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER2_COMPA_vect)
+ 191:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 192:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 193:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD2.config->channels[0].callback(&PWMD2);
+ 194:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 195:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 196:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 197:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER2_COMPB_vect)
+ 198:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 199:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 200:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD2.config->channels[1].callback(&PWMD2);
+ 201:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 202:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 203:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 204:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 205:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM3 || defined(__DOXYGEN__)
+ 206:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER3_OVF_vect)
+ 207:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+  17               		.loc 1 207 0
+  18               		.cfi_startproc
+  19 0000 1F92      		push r1
+  20               	.LCFI0:
+  21               		.cfi_def_cfa_offset 4
+  22               		.cfi_offset 1, -3
+  23 0002 0F92      		push r0
+  24               	.LCFI1:
+  25               		.cfi_def_cfa_offset 5
+  26               		.cfi_offset 0, -4
+  27 0004 0FB6      		in r0,__SREG__
+  28 0006 0F92      		push r0
+  29 0008 1124      		clr __zero_reg__
+  30 000a 0BB6      		in r0,__RAMPZ__
+  31 000c 0F92      		push r0
+  32 000e 2F93      		push r18
+  33               	.LCFI2:
+  34               		.cfi_def_cfa_offset 6
+  35               		.cfi_offset 18, -5
+  36 0010 3F93      		push r19
+  37               	.LCFI3:
+  38               		.cfi_def_cfa_offset 7
+  39               		.cfi_offset 19, -6
+  40 0012 4F93      		push r20
+  41               	.LCFI4:
+  42               		.cfi_def_cfa_offset 8
+  43               		.cfi_offset 20, -7
+  44 0014 5F93      		push r21
+  45               	.LCFI5:
+  46               		.cfi_def_cfa_offset 9
+  47               		.cfi_offset 21, -8
+  48 0016 6F93      		push r22
+  49               	.LCFI6:
+  50               		.cfi_def_cfa_offset 10
+  51               		.cfi_offset 22, -9
+  52 0018 7F93      		push r23
+  53               	.LCFI7:
+  54               		.cfi_def_cfa_offset 11
+  55               		.cfi_offset 23, -10
+  56 001a 8F93      		push r24
+  57               	.LCFI8:
+  58               		.cfi_def_cfa_offset 12
+  59               		.cfi_offset 24, -11
+  60 001c 9F93      		push r25
+  61               	.LCFI9:
+  62               		.cfi_def_cfa_offset 13
+  63               		.cfi_offset 25, -12
+  64 001e AF93      		push r26
+  65               	.LCFI10:
+  66               		.cfi_def_cfa_offset 14
+  67               		.cfi_offset 26, -13
+  68 0020 BF93      		push r27
+  69               	.LCFI11:
+  70               		.cfi_def_cfa_offset 15
+  71               		.cfi_offset 27, -14
+  72 0022 EF93      		push r30
+  73               	.LCFI12:
+  74               		.cfi_def_cfa_offset 16
+  75               		.cfi_offset 30, -15
+  76 0024 FF93      		push r31
+  77               	.LCFI13:
+  78               		.cfi_def_cfa_offset 17
+  79               		.cfi_offset 31, -16
+  80               	/* prologue: Signal */
+  81               	/* frame size = 0 */
+  82               	/* stack size = 16 */
+  83               	.L__stack_usage = 16
+ 208:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+  84               		.loc 1 208 0
+  85 0026 81E0      		ldi r24,lo8(1)
+  86 0028 8093 0000 		sts __avr_in_isr,r24
+ 209:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD3.config->callback(&PWMD3);
+  87               		.loc 1 209 0
+  88 002c E091 0000 		lds r30,PWMD3+1
+  89 0030 F091 0000 		lds r31,PWMD3+1+1
+  90 0034 0480      		ldd __tmp_reg__,Z+4
+  91 0036 F581      		ldd r31,Z+5
+  92 0038 E02D      		mov r30,__tmp_reg__
+  93 003a 80E0      		ldi r24,lo8(PWMD3)
+  94 003c 90E0      		ldi r25,hi8(PWMD3)
+  95 003e 1995      		eicall
+  96               	.LVL0:
+ 210:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+  97               		.loc 1 210 0
+  98 0040 1092 0000 		sts __avr_in_isr,__zero_reg__
+  99 0044 0E94 0000 		call chSchIsPreemptionRequired
+ 100               	.LVL1:
+ 101 0048 8111      		cpse r24,__zero_reg__
+ 102               		.loc 1 210 0 is_stmt 0 discriminator 1
+ 103 004a 0E94 0000 		call chSchDoReschedule
+ 104               	.LVL2:
+ 105               	.L1:
+ 106               	/* epilogue start */
+ 211:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 107               		.loc 1 211 0 is_stmt 1
+ 108 004e FF91      		pop r31
+ 109 0050 EF91      		pop r30
+ 110 0052 BF91      		pop r27
+ 111 0054 AF91      		pop r26
+ 112 0056 9F91      		pop r25
+ 113 0058 8F91      		pop r24
+ 114 005a 7F91      		pop r23
+ 115 005c 6F91      		pop r22
+ 116 005e 5F91      		pop r21
+ 117 0060 4F91      		pop r20
+ 118 0062 3F91      		pop r19
+ 119 0064 2F91      		pop r18
+ 120 0066 0F90      		pop r0
+ 121 0068 0BBE      		out __RAMPZ__,r0
+ 122 006a 0F90      		pop r0
+ 123 006c 0FBE      		out __SREG__,r0
+ 124 006e 0F90      		pop r0
+ 125 0070 1F90      		pop r1
+ 126 0072 1895      		reti
+ 127               		.cfi_endproc
+ 128               	.LFE145:
+ 130               		.section	.text.__vector_32,"ax",@progbits
+ 131               	.global	__vector_32
+ 133               	__vector_32:
+ 134               	.LFB146:
+ 212:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 213:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER3_COMPA_vect)
+ 214:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 135               		.loc 1 214 0
+ 136               		.cfi_startproc
+ 137 0000 1F92      		push r1
+ 138               	.LCFI14:
+ 139               		.cfi_def_cfa_offset 4
+ 140               		.cfi_offset 1, -3
+ 141 0002 0F92      		push r0
+ 142               	.LCFI15:
+ 143               		.cfi_def_cfa_offset 5
+ 144               		.cfi_offset 0, -4
+ 145 0004 0FB6      		in r0,__SREG__
+ 146 0006 0F92      		push r0
+ 147 0008 1124      		clr __zero_reg__
+ 148 000a 0BB6      		in r0,__RAMPZ__
+ 149 000c 0F92      		push r0
+ 150 000e 2F93      		push r18
+ 151               	.LCFI16:
+ 152               		.cfi_def_cfa_offset 6
+ 153               		.cfi_offset 18, -5
+ 154 0010 3F93      		push r19
+ 155               	.LCFI17:
+ 156               		.cfi_def_cfa_offset 7
+ 157               		.cfi_offset 19, -6
+ 158 0012 4F93      		push r20
+ 159               	.LCFI18:
+ 160               		.cfi_def_cfa_offset 8
+ 161               		.cfi_offset 20, -7
+ 162 0014 5F93      		push r21
+ 163               	.LCFI19:
+ 164               		.cfi_def_cfa_offset 9
+ 165               		.cfi_offset 21, -8
+ 166 0016 6F93      		push r22
+ 167               	.LCFI20:
+ 168               		.cfi_def_cfa_offset 10
+ 169               		.cfi_offset 22, -9
+ 170 0018 7F93      		push r23
+ 171               	.LCFI21:
+ 172               		.cfi_def_cfa_offset 11
+ 173               		.cfi_offset 23, -10
+ 174 001a 8F93      		push r24
+ 175               	.LCFI22:
+ 176               		.cfi_def_cfa_offset 12
+ 177               		.cfi_offset 24, -11
+ 178 001c 9F93      		push r25
+ 179               	.LCFI23:
+ 180               		.cfi_def_cfa_offset 13
+ 181               		.cfi_offset 25, -12
+ 182 001e AF93      		push r26
+ 183               	.LCFI24:
+ 184               		.cfi_def_cfa_offset 14
+ 185               		.cfi_offset 26, -13
+ 186 0020 BF93      		push r27
+ 187               	.LCFI25:
+ 188               		.cfi_def_cfa_offset 15
+ 189               		.cfi_offset 27, -14
+ 190 0022 EF93      		push r30
+ 191               	.LCFI26:
+ 192               		.cfi_def_cfa_offset 16
+ 193               		.cfi_offset 30, -15
+ 194 0024 FF93      		push r31
+ 195               	.LCFI27:
+ 196               		.cfi_def_cfa_offset 17
+ 197               		.cfi_offset 31, -16
+ 198               	/* prologue: Signal */
+ 199               	/* frame size = 0 */
+ 200               	/* stack size = 16 */
+ 201               	.L__stack_usage = 16
+ 215:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 202               		.loc 1 215 0
+ 203 0026 81E0      		ldi r24,lo8(1)
+ 204 0028 8093 0000 		sts __avr_in_isr,r24
+ 216:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD3.config->channels[0].callback(&PWMD3);
+ 205               		.loc 1 216 0
+ 206 002c E091 0000 		lds r30,PWMD3+1
+ 207 0030 F091 0000 		lds r31,PWMD3+1+1
+ 208 0034 0780      		ldd __tmp_reg__,Z+7
+ 209 0036 F085      		ldd r31,Z+8
+ 210 0038 E02D      		mov r30,__tmp_reg__
+ 211 003a 80E0      		ldi r24,lo8(PWMD3)
+ 212 003c 90E0      		ldi r25,hi8(PWMD3)
+ 213 003e 1995      		eicall
+ 214               	.LVL3:
+ 217:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 215               		.loc 1 217 0
+ 216 0040 1092 0000 		sts __avr_in_isr,__zero_reg__
+ 217 0044 0E94 0000 		call chSchIsPreemptionRequired
+ 218               	.LVL4:
+ 219 0048 8111      		cpse r24,__zero_reg__
+ 220               		.loc 1 217 0 is_stmt 0 discriminator 1
+ 221 004a 0E94 0000 		call chSchDoReschedule
+ 222               	.LVL5:
+ 223               	.L7:
+ 224               	/* epilogue start */
+ 218:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 225               		.loc 1 218 0 is_stmt 1
+ 226 004e FF91      		pop r31
+ 227 0050 EF91      		pop r30
+ 228 0052 BF91      		pop r27
+ 229 0054 AF91      		pop r26
+ 230 0056 9F91      		pop r25
+ 231 0058 8F91      		pop r24
+ 232 005a 7F91      		pop r23
+ 233 005c 6F91      		pop r22
+ 234 005e 5F91      		pop r21
+ 235 0060 4F91      		pop r20
+ 236 0062 3F91      		pop r19
+ 237 0064 2F91      		pop r18
+ 238 0066 0F90      		pop r0
+ 239 0068 0BBE      		out __RAMPZ__,r0
+ 240 006a 0F90      		pop r0
+ 241 006c 0FBE      		out __SREG__,r0
+ 242 006e 0F90      		pop r0
+ 243 0070 1F90      		pop r1
+ 244 0072 1895      		reti
+ 245               		.cfi_endproc
+ 246               	.LFE146:
+ 248               		.section	.text.__vector_33,"ax",@progbits
+ 249               	.global	__vector_33
+ 251               	__vector_33:
+ 252               	.LFB147:
+ 219:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 220:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER3_COMPB_vect)
+ 221:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 253               		.loc 1 221 0
+ 254               		.cfi_startproc
+ 255 0000 1F92      		push r1
+ 256               	.LCFI28:
+ 257               		.cfi_def_cfa_offset 4
+ 258               		.cfi_offset 1, -3
+ 259 0002 0F92      		push r0
+ 260               	.LCFI29:
+ 261               		.cfi_def_cfa_offset 5
+ 262               		.cfi_offset 0, -4
+ 263 0004 0FB6      		in r0,__SREG__
+ 264 0006 0F92      		push r0
+ 265 0008 1124      		clr __zero_reg__
+ 266 000a 0BB6      		in r0,__RAMPZ__
+ 267 000c 0F92      		push r0
+ 268 000e 2F93      		push r18
+ 269               	.LCFI30:
+ 270               		.cfi_def_cfa_offset 6
+ 271               		.cfi_offset 18, -5
+ 272 0010 3F93      		push r19
+ 273               	.LCFI31:
+ 274               		.cfi_def_cfa_offset 7
+ 275               		.cfi_offset 19, -6
+ 276 0012 4F93      		push r20
+ 277               	.LCFI32:
+ 278               		.cfi_def_cfa_offset 8
+ 279               		.cfi_offset 20, -7
+ 280 0014 5F93      		push r21
+ 281               	.LCFI33:
+ 282               		.cfi_def_cfa_offset 9
+ 283               		.cfi_offset 21, -8
+ 284 0016 6F93      		push r22
+ 285               	.LCFI34:
+ 286               		.cfi_def_cfa_offset 10
+ 287               		.cfi_offset 22, -9
+ 288 0018 7F93      		push r23
+ 289               	.LCFI35:
+ 290               		.cfi_def_cfa_offset 11
+ 291               		.cfi_offset 23, -10
+ 292 001a 8F93      		push r24
+ 293               	.LCFI36:
+ 294               		.cfi_def_cfa_offset 12
+ 295               		.cfi_offset 24, -11
+ 296 001c 9F93      		push r25
+ 297               	.LCFI37:
+ 298               		.cfi_def_cfa_offset 13
+ 299               		.cfi_offset 25, -12
+ 300 001e AF93      		push r26
+ 301               	.LCFI38:
+ 302               		.cfi_def_cfa_offset 14
+ 303               		.cfi_offset 26, -13
+ 304 0020 BF93      		push r27
+ 305               	.LCFI39:
+ 306               		.cfi_def_cfa_offset 15
+ 307               		.cfi_offset 27, -14
+ 308 0022 EF93      		push r30
+ 309               	.LCFI40:
+ 310               		.cfi_def_cfa_offset 16
+ 311               		.cfi_offset 30, -15
+ 312 0024 FF93      		push r31
+ 313               	.LCFI41:
+ 314               		.cfi_def_cfa_offset 17
+ 315               		.cfi_offset 31, -16
+ 316               	/* prologue: Signal */
+ 317               	/* frame size = 0 */
+ 318               	/* stack size = 16 */
+ 319               	.L__stack_usage = 16
+ 222:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 320               		.loc 1 222 0
+ 321 0026 81E0      		ldi r24,lo8(1)
+ 322 0028 8093 0000 		sts __avr_in_isr,r24
+ 223:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD3.config->channels[1].callback(&PWMD3);
+ 323               		.loc 1 223 0
+ 324 002c E091 0000 		lds r30,PWMD3+1
+ 325 0030 F091 0000 		lds r31,PWMD3+1+1
+ 326 0034 0284      		ldd __tmp_reg__,Z+10
+ 327 0036 F385      		ldd r31,Z+11
+ 328 0038 E02D      		mov r30,__tmp_reg__
+ 329 003a 80E0      		ldi r24,lo8(PWMD3)
+ 330 003c 90E0      		ldi r25,hi8(PWMD3)
+ 331 003e 1995      		eicall
+ 332               	.LVL6:
+ 224:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 333               		.loc 1 224 0
+ 334 0040 1092 0000 		sts __avr_in_isr,__zero_reg__
+ 335 0044 0E94 0000 		call chSchIsPreemptionRequired
+ 336               	.LVL7:
+ 337 0048 8111      		cpse r24,__zero_reg__
+ 338               		.loc 1 224 0 is_stmt 0 discriminator 1
+ 339 004a 0E94 0000 		call chSchDoReschedule
+ 340               	.LVL8:
+ 341               	.L12:
+ 342               	/* epilogue start */
+ 225:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 343               		.loc 1 225 0 is_stmt 1
+ 344 004e FF91      		pop r31
+ 345 0050 EF91      		pop r30
+ 346 0052 BF91      		pop r27
+ 347 0054 AF91      		pop r26
+ 348 0056 9F91      		pop r25
+ 349 0058 8F91      		pop r24
+ 350 005a 7F91      		pop r23
+ 351 005c 6F91      		pop r22
+ 352 005e 5F91      		pop r21
+ 353 0060 4F91      		pop r20
+ 354 0062 3F91      		pop r19
+ 355 0064 2F91      		pop r18
+ 356 0066 0F90      		pop r0
+ 357 0068 0BBE      		out __RAMPZ__,r0
+ 358 006a 0F90      		pop r0
+ 359 006c 0FBE      		out __SREG__,r0
+ 360 006e 0F90      		pop r0
+ 361 0070 1F90      		pop r1
+ 362 0072 1895      		reti
+ 363               		.cfi_endproc
+ 364               	.LFE147:
+ 366               		.section	.text.__vector_34,"ax",@progbits
+ 367               	.global	__vector_34
+ 369               	__vector_34:
+ 370               	.LFB148:
+ 226:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 227:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER3_COMPC_vect)
+ 228:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 371               		.loc 1 228 0
+ 372               		.cfi_startproc
+ 373 0000 1F92      		push r1
+ 374               	.LCFI42:
+ 375               		.cfi_def_cfa_offset 4
+ 376               		.cfi_offset 1, -3
+ 377 0002 0F92      		push r0
+ 378               	.LCFI43:
+ 379               		.cfi_def_cfa_offset 5
+ 380               		.cfi_offset 0, -4
+ 381 0004 0FB6      		in r0,__SREG__
+ 382 0006 0F92      		push r0
+ 383 0008 1124      		clr __zero_reg__
+ 384 000a 0BB6      		in r0,__RAMPZ__
+ 385 000c 0F92      		push r0
+ 386 000e 2F93      		push r18
+ 387               	.LCFI44:
+ 388               		.cfi_def_cfa_offset 6
+ 389               		.cfi_offset 18, -5
+ 390 0010 3F93      		push r19
+ 391               	.LCFI45:
+ 392               		.cfi_def_cfa_offset 7
+ 393               		.cfi_offset 19, -6
+ 394 0012 4F93      		push r20
+ 395               	.LCFI46:
+ 396               		.cfi_def_cfa_offset 8
+ 397               		.cfi_offset 20, -7
+ 398 0014 5F93      		push r21
+ 399               	.LCFI47:
+ 400               		.cfi_def_cfa_offset 9
+ 401               		.cfi_offset 21, -8
+ 402 0016 6F93      		push r22
+ 403               	.LCFI48:
+ 404               		.cfi_def_cfa_offset 10
+ 405               		.cfi_offset 22, -9
+ 406 0018 7F93      		push r23
+ 407               	.LCFI49:
+ 408               		.cfi_def_cfa_offset 11
+ 409               		.cfi_offset 23, -10
+ 410 001a 8F93      		push r24
+ 411               	.LCFI50:
+ 412               		.cfi_def_cfa_offset 12
+ 413               		.cfi_offset 24, -11
+ 414 001c 9F93      		push r25
+ 415               	.LCFI51:
+ 416               		.cfi_def_cfa_offset 13
+ 417               		.cfi_offset 25, -12
+ 418 001e AF93      		push r26
+ 419               	.LCFI52:
+ 420               		.cfi_def_cfa_offset 14
+ 421               		.cfi_offset 26, -13
+ 422 0020 BF93      		push r27
+ 423               	.LCFI53:
+ 424               		.cfi_def_cfa_offset 15
+ 425               		.cfi_offset 27, -14
+ 426 0022 EF93      		push r30
+ 427               	.LCFI54:
+ 428               		.cfi_def_cfa_offset 16
+ 429               		.cfi_offset 30, -15
+ 430 0024 FF93      		push r31
+ 431               	.LCFI55:
+ 432               		.cfi_def_cfa_offset 17
+ 433               		.cfi_offset 31, -16
+ 434               	/* prologue: Signal */
+ 435               	/* frame size = 0 */
+ 436               	/* stack size = 16 */
+ 437               	.L__stack_usage = 16
+ 229:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 438               		.loc 1 229 0
+ 439 0026 81E0      		ldi r24,lo8(1)
+ 440 0028 8093 0000 		sts __avr_in_isr,r24
+ 230:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD3.config->channels[2].callback(&PWMD3);
+ 441               		.loc 1 230 0
+ 442 002c E091 0000 		lds r30,PWMD3+1
+ 443 0030 F091 0000 		lds r31,PWMD3+1+1
+ 444 0034 0584      		ldd __tmp_reg__,Z+13
+ 445 0036 F685      		ldd r31,Z+14
+ 446 0038 E02D      		mov r30,__tmp_reg__
+ 447 003a 80E0      		ldi r24,lo8(PWMD3)
+ 448 003c 90E0      		ldi r25,hi8(PWMD3)
+ 449 003e 1995      		eicall
+ 450               	.LVL9:
+ 231:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 451               		.loc 1 231 0
+ 452 0040 1092 0000 		sts __avr_in_isr,__zero_reg__
+ 453 0044 0E94 0000 		call chSchIsPreemptionRequired
+ 454               	.LVL10:
+ 455 0048 8111      		cpse r24,__zero_reg__
+ 456               		.loc 1 231 0 is_stmt 0 discriminator 1
+ 457 004a 0E94 0000 		call chSchDoReschedule
+ 458               	.LVL11:
+ 459               	.L17:
+ 460               	/* epilogue start */
+ 232:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 461               		.loc 1 232 0 is_stmt 1
+ 462 004e FF91      		pop r31
+ 463 0050 EF91      		pop r30
+ 464 0052 BF91      		pop r27
+ 465 0054 AF91      		pop r26
+ 466 0056 9F91      		pop r25
+ 467 0058 8F91      		pop r24
+ 468 005a 7F91      		pop r23
+ 469 005c 6F91      		pop r22
+ 470 005e 5F91      		pop r21
+ 471 0060 4F91      		pop r20
+ 472 0062 3F91      		pop r19
+ 473 0064 2F91      		pop r18
+ 474 0066 0F90      		pop r0
+ 475 0068 0BBE      		out __RAMPZ__,r0
+ 476 006a 0F90      		pop r0
+ 477 006c 0FBE      		out __SREG__,r0
+ 478 006e 0F90      		pop r0
+ 479 0070 1F90      		pop r1
+ 480 0072 1895      		reti
+ 481               		.cfi_endproc
+ 482               	.LFE148:
+ 484               		.section	.text.pwm_lld_init,"ax",@progbits
+ 485               	.global	pwm_lld_init
+ 487               	pwm_lld_init:
+ 488               	.LFB149:
+ 233:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 234:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 235:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM4 || defined(__DOXYGEN__)
+ 236:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER4_OVF_vect)
+ 237:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 238:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 239:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD4.config->callback(&PWMD4);
+ 240:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 241:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 242:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 243:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER4_COMPA_vect)
+ 244:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 245:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 246:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD4.config->channels[0].callback(&PWMD4);
+ 247:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 248:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 249:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 250:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER4_COMPB_vect)
+ 251:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 252:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 253:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD4.config->channels[1].callback(&PWMD4);
+ 254:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 255:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 256:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 257:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER4_COMPC_vect)
+ 258:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 259:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 260:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD4.config->channels[2].callback(&PWMD4);
+ 261:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 262:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 263:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 264:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 265:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM5 || defined(__DOXYGEN__)
+ 266:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER5_OVF_vect)
+ 267:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 268:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 269:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD5.config->callback(&PWMD5);
+ 270:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 271:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 272:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 273:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER5_COMPA_vect)
+ 274:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 275:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 276:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD5.config->channels[0].callback(&PWMD5);
+ 277:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 278:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 279:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 280:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER5_COMPB_vect)
+ 281:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 282:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 283:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD5.config->channels[1].callback(&PWMD5);
+ 284:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 285:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 286:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 287:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** OSAL_IRQ_HANDLER(TIMER5_COMPC_vect)
+ 288:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 289:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 290:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD5.config->channels[2].callback(&PWMD5);
+ 291:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 292:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 293:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 294:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 295:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*===========================================================================*/
+ 296:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /* Driver exported functions.                                                */
+ 297:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*===========================================================================*/
+ 298:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 299:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /**
+ 300:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @brief   Low level PWM driver initialization.
+ 301:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 302:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @notapi
+ 303:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  */
+ 304:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** void pwm_lld_init(void)
+ 305:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 489               		.loc 1 305 0
+ 490               		.cfi_startproc
+ 491               	/* prologue: function */
+ 492               	/* frame size = 0 */
+ 493               	/* stack size = 0 */
+ 494               	.L__stack_usage = 0
+ 306:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM1 || defined(__DOXYGEN__)
+ 307:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   pwmObjectInit(&PWMD1);
+ 308:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD1.channels = PWM_CHANNELS;
+ 309:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   TCCR1A = (1 << WGM11) | (1 << WGM10);
+ 310:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   TCCR1B = (0 << WGM13) | (1 << WGM12);
+ 311:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 312:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 313:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM2 || defined(__DOXYGEN__)
+ 314:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   pwmObjectInit(&PWMD2);
+ 315:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD2.channels = PWM_CHANNELS;
+ 316:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   TCCR2A = (1 << WGM21) | (1 << WGM20);
+ 317:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   TCCR2B = (0 << WGM22);
+ 318:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 319:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 320:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM3 || defined(__DOXYGEN__)
+ 321:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   pwmObjectInit(&PWMD3);
+ 495               		.loc 1 321 0
+ 496 0000 80E0      		ldi r24,lo8(PWMD3)
+ 497 0002 90E0      		ldi r25,hi8(PWMD3)
+ 498 0004 0E94 0000 		call pwmObjectInit
+ 499               	.LVL12:
+ 322:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD3.channels = PWM_CHANNELS;
+ 500               		.loc 1 322 0
+ 501 0008 83E0      		ldi r24,lo8(3)
+ 502 000a 8093 0000 		sts PWMD3+6,r24
+ 323:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 324:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   /* @brief This is the Fast PWM mode. */
+ 325:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   //TCCR3A = (1 << WGM31) | (1 << WGM30);
+ 326:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   //TCCR3B = (0 << WGM33) | (1 << WGM32);
+ 327:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 328:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   /* @brief this is the CTC mode needed for IP robot. */
+ 329:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   TCCR3A = (1 << WGM31) | (0 << WGM30);
+ 503               		.loc 1 329 0
+ 504 000e 82E0      		ldi r24,lo8(2)
+ 505 0010 8093 9000 		sts 144,r24
+ 330:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   TCCR3B = (0 << WGM33) | (0 << WGM32);
+ 506               		.loc 1 330 0
+ 507 0014 1092 9100 		sts 145,__zero_reg__
+ 508 0018 0895      		ret
+ 509               		.cfi_endproc
+ 510               	.LFE149:
+ 512               		.section	.text.pwm_lld_start,"ax",@progbits
+ 513               	.global	pwm_lld_start
+ 515               	pwm_lld_start:
+ 516               	.LFB150:
+ 331:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 332:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 333:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM4 || defined(__DOXYGEN__)
+ 334:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   pwmObjectInit(&PWMD4);
+ 335:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD4.channels = PWM_CHANNELS;
+ 336:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 337:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   /* @brief This is the Fast PWM mode. */
+ 338:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** //  TCCR4A = (1 << WGM41) | (1 << WGM40);
+ 339:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** //  TCCR4B = (0 << WGM43) | (1 << WGM42);
+ 340:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 341:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   /* @brief this is the CTC mode needed for IP robot */
+ 342:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   TCCR4A = (1 << WGM41) | (0 << WGM40);
+ 343:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   TCCR4B = (0 << WGM43) | (0 << WGM42);
+ 344:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 345:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 346:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM5 || defined(__DOXYGEN__)
+ 347:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   pwmObjectInit(&PWMD5);
+ 348:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   PWMD5.channels = PWM_CHANNELS;
+ 349:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   TCCR5A = (1 << WGM51) | (1 << WGM50);
+ 350:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   TCCR5B = (0 << WGM53) | (1 << WGM52);
+ 351:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 352:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 353:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 354:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /**
+ 355:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @brief   Configures and activates the PWM peripheral.
+ 356:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 357:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] pwmp      pointer to the @p PWMDriver object
+ 358:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 359:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @notapi
+ 360:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  */
+ 361:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** void pwm_lld_start(PWMDriver *pwmp)
+ 362:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 517               		.loc 1 362 0
+ 518               		.cfi_startproc
+ 519               	.LVL13:
+ 520               	/* prologue: function */
+ 521               	/* frame size = 0 */
+ 522               	/* stack size = 0 */
+ 523               	.L__stack_usage = 0
+ 363:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   if (pwmp->state == PWM_STOP) {
+ 524               		.loc 1 363 0
+ 525 0000 DC01      		movw r26,r24
+ 526 0002 2C91      		ld r18,X
+ 527 0004 2130      		cpi r18,lo8(1)
+ 528 0006 01F0      		breq .L31
+ 529               	.LVL14:
+ 530               	.L23:
+ 531 0008 0895      		ret
+ 532               	.LVL15:
+ 533               	.L31:
+ 534               	.LBB23:
+ 364:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 365:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM2 || defined(__DOXYGEN__)
+ 366:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     if (pwmp == &PWMD2) {
+ 367:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****       TCCR2B &= ~((1 << CS22) | (1 << CS21));
+ 368:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****       TCCR2B |= (1 << CS20);
+ 369:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****       if (pwmp->config->callback != NULL)
+ 370:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****         TIMSK2 |= (1 << TOIE2);
+ 371:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****       return;
+ 372:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     }
+ 373:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 374:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 375:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     uint8_t i = timer_index(pwmp);
+ 376:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 377:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     /* TODO: support other prescaler options */
+ 378:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 379:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     //*regs_table[i].tccrb &= ~(1 << CS11);
+ 380:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     //*regs_table[i].tccrb |= (1 << CS12) | (1 << CS10);
+ 381:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 382:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*
+ 383:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     // 000 ==> Disable.
+ 384:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb &= ~(1 << CS10);
+ 385:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb &= ~(1 << CS11);
+ 386:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb &= ~(1 << CS12);
+ 387:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** */
+ 388:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*
+ 389:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     // 001
+ 390:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS10);
+ 391:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb &= ~(1 << CS11);
+ 392:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb &= ~(1 << CS12);
+ 393:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** */
+ 394:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*
+ 395:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     // 010
+ 396:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb &= ~(1 << CS10);
+ 397:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS11);
+ 398:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb &= ~(1 << CS12);
+ 399:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** */
+ 400:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 401:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     // 011, pas mauvais
+ 402:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS10);
+ 535               		.loc 1 402 0
+ 536 000a 21E0      		ldi r18,lo8(1)
+ 537 000c 30E0      		ldi r19,0
+ 538 000e B0E0      		ldi r27,hi8(PWMD3)
+ 539 0010 8030      		cpi r24,lo8(PWMD3)
+ 540 0012 9B07      		cpc r25,r27
+ 541 0014 01F0      		breq .L32
+ 542               	.L26:
+ 543 0016 44E1      		ldi r20,lo8(20)
+ 544 0018 429F      		mul r20,r18
+ 545 001a F001      		movw r30,r0
+ 546 001c 439F      		mul r20,r19
+ 547 001e F00D      		add r31,r0
+ 548 0020 1124      		clr __zero_reg__
+ 549 0022 E050      		subi r30,lo8(-(regs_table))
+ 550 0024 F040      		sbci r31,hi8(-(regs_table))
+ 551 0026 0280      		ldd __tmp_reg__,Z+2
+ 552 0028 F381      		ldd r31,Z+3
+ 553 002a E02D      		mov r30,__tmp_reg__
+ 554 002c 2081      		ld r18,Z
+ 555 002e 2160      		ori r18,lo8(1)
+ 556 0030 2083      		st Z,r18
+ 403:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS11);
+ 557               		.loc 1 403 0
+ 558 0032 2081      		ld r18,Z
+ 559 0034 2260      		ori r18,lo8(2)
+ 560 0036 2083      		st Z,r18
+ 404:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb &= ~(1 << CS12);
+ 561               		.loc 1 404 0
+ 562 0038 2081      		ld r18,Z
+ 563 003a 2B7F      		andi r18,lo8(-5)
+ 564 003c 2083      		st Z,r18
+ 405:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 406:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*
+ 407:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     // 100
+ 408:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb &= ~(1 << CS10);
+ 409:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb &= ~(1 << CS11);
+ 410:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS12);
+ 411:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** */
+ 412:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*
+ 413:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     // 101
+ 414:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS10);
+ 415:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb &= ~(1 << CS11);
+ 416:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS12);
+ 417:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** */
+ 418:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*
+ 419:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     // 110
+ 420:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb &= ~(1 << CS10);
+ 421:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS11);
+ 422:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS12);
+ 423:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** */
+ 424:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /*
+ 425:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     // 111, pas bon pour le robot
+ 426:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS10);
+ 427:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS11);
+ 428:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS12);
+ 429:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** */
+ 430:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 431:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     if (pwmp->config->callback != NULL)
+ 565               		.loc 1 431 0
+ 566 003e DC01      		movw r26,r24
+ 567 0040 1196      		adiw r26,1
+ 568 0042 ED91      		ld r30,X+
+ 569 0044 FC91      		ld r31,X
+ 570 0046 1297      		sbiw r26,1+1
+ 571 0048 8481      		ldd r24,Z+4
+ 572 004a 9581      		ldd r25,Z+5
+ 573               	.LVL16:
+ 574 004c 892B      		or r24,r25
+ 575 004e 01F0      		breq .L23
+ 432:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****       *regs_table[i].timsk = (1 << TOIE1);
+ 576               		.loc 1 432 0
+ 577 0050 81E0      		ldi r24,lo8(1)
+ 578 0052 8093 7100 		sts 113,r24
+ 579 0056 0895      		ret
+ 580               	.LVL17:
+ 581               	.L32:
+ 402:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].tccrb |=  (1 << CS11);
+ 582               		.loc 1 402 0
+ 583 0058 20E0      		ldi r18,0
+ 584 005a 30E0      		ldi r19,0
+ 585 005c 00C0      		rjmp .L26
+ 586               	.LBE23:
+ 587               		.cfi_endproc
+ 588               	.LFE150:
+ 590               		.section	.text.pwm_lld_stop,"ax",@progbits
+ 591               	.global	pwm_lld_stop
+ 593               	pwm_lld_stop:
+ 594               	.LFB151:
+ 433:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   }
+ 434:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 435:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 436:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /**
+ 437:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @brief   Deactivates the PWM peripheral.
+ 438:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 439:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] pwmp      pointer to the @p PWMDriver object
+ 440:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 441:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @notapi
+ 442:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  */
+ 443:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** void pwm_lld_stop(PWMDriver *pwmp)
+ 444:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 595               		.loc 1 444 0
+ 596               		.cfi_startproc
+ 597               	.LVL18:
+ 598               	/* prologue: function */
+ 599               	/* frame size = 0 */
+ 600               	/* stack size = 0 */
+ 601               	.L__stack_usage = 0
+ 445:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   uint8_t i = timer_index(pwmp);
+ 446:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   *regs_table[i].tccrb &= ~((1 << CS12) | (1 << CS11) | (1 << CS10));
+ 602               		.loc 1 446 0
+ 603 0000 21E0      		ldi r18,lo8(1)
+ 604 0002 30E0      		ldi r19,0
+ 605 0004 8050      		subi r24,lo8(PWMD3)
+ 606 0006 9040      		sbci r25,hi8(PWMD3)
+ 607 0008 01F0      		breq .L35
+ 608               	.L34:
+ 609 000a 84E1      		ldi r24,lo8(20)
+ 610               	.LVL19:
+ 611 000c 829F      		mul r24,r18
+ 612 000e F001      		movw r30,r0
+ 613 0010 839F      		mul r24,r19
+ 614 0012 F00D      		add r31,r0
+ 615 0014 1124      		clr __zero_reg__
+ 616 0016 E050      		subi r30,lo8(-(regs_table))
+ 617 0018 F040      		sbci r31,hi8(-(regs_table))
+ 618 001a 0280      		ldd __tmp_reg__,Z+2
+ 619 001c F381      		ldd r31,Z+3
+ 620 001e E02D      		mov r30,__tmp_reg__
+ 621 0020 8081      		ld r24,Z
+ 622 0022 887F      		andi r24,lo8(-8)
+ 623 0024 8083      		st Z,r24
+ 447:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   *regs_table[i].timsk = 0;
+ 624               		.loc 1 447 0
+ 625 0026 1092 7100 		sts 113,__zero_reg__
+ 626 002a 0895      		ret
+ 627               	.LVL20:
+ 628               	.L35:
+ 446:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   *regs_table[i].timsk = 0;
+ 629               		.loc 1 446 0
+ 630 002c 20E0      		ldi r18,0
+ 631 002e 30E0      		ldi r19,0
+ 632 0030 00C0      		rjmp .L34
+ 633               		.cfi_endproc
+ 634               	.LFE151:
+ 636               		.section	.text.pwm_lld_change_period,"ax",@progbits
+ 637               	.global	pwm_lld_change_period
+ 639               	pwm_lld_change_period:
+ 640               	.LFB152:
+ 448:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 449:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 450:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /**
+ 451:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @brief   Changes the period the PWM peripheral.
+ 452:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @details This function changes the period of a PWM unit that has already
+ 453:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *          been activated using @p pwmStart().
+ 454:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @pre     The PWM unit must have been activated using @p pwmStart().
+ 455:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @post    The PWM unit period is changed to the new value.
+ 456:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @note    The function has effect at the next cycle start.
+ 457:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @note    If a period is specified that is shorter than the pulse width
+ 458:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *          programmed in one of the channels then the behavior is not
+ 459:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *          guaranteed.
+ 460:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 461:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] pwmp      pointer to a @p PWMDriver object
+ 462:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] period    new cycle time in ticks
+ 463:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 464:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @notapi
+ 465:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  */
+ 466:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** void pwm_lld_change_period(PWMDriver *pwmp, pwmcnt_t period)
+ 467:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 641               		.loc 1 467 0
+ 642               		.cfi_startproc
+ 643               	.LVL21:
+ 644               	/* prologue: function */
+ 645               	/* frame size = 0 */
+ 646               	/* stack size = 0 */
+ 647               	.L__stack_usage = 0
+ 648 0000 0895      		ret
+ 649               		.cfi_endproc
+ 650               	.LFE152:
+ 652               		.section	.text.pwm_lld_enable_channel,"ax",@progbits
+ 653               	.global	pwm_lld_enable_channel
+ 655               	pwm_lld_enable_channel:
+ 656               	.LFB153:
+ 468:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 469:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 470:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /**
+ 471:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @brief   Enables a PWM channel.
+ 472:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @pre     The PWM unit must have been activated using @p pwmStart().
+ 473:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @post    The channel is active using the specified configuration.
+ 474:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @note    Depending on the hardware implementation this function has
+ 475:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *          effect starting on the next cycle (recommended implementation)
+ 476:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *          or immediately (fallback implementation).
+ 477:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 478:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] pwmp      pointer to a @p PWMDriver object
+ 479:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] channel   PWM channel identifier (0...PWM_CHANNELS-1)
+ 480:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] width     PWM pulse width as clock pulses number
+ 481:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 482:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @notapi
+ 483:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  */
+ 484:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** void pwm_lld_enable_channel(PWMDriver *pwmp,
+ 485:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                             pwmchannel_t channel,
+ 486:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                             pwmcnt_t width)
+ 487:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 657               		.loc 1 487 0
+ 658               		.cfi_startproc
+ 659               	.LVL22:
+ 660               		.loc 1 487 0
+ 661 0000 AF92      		push r10
+ 662               	.LCFI56:
+ 663               		.cfi_def_cfa_offset 4
+ 664               		.cfi_offset 10, -3
+ 665 0002 BF92      		push r11
+ 666               	.LCFI57:
+ 667               		.cfi_def_cfa_offset 5
+ 668               		.cfi_offset 11, -4
+ 669 0004 CF92      		push r12
+ 670               	.LCFI58:
+ 671               		.cfi_def_cfa_offset 6
+ 672               		.cfi_offset 12, -5
+ 673 0006 DF92      		push r13
+ 674               	.LCFI59:
+ 675               		.cfi_def_cfa_offset 7
+ 676               		.cfi_offset 13, -6
+ 677 0008 EF92      		push r14
+ 678               	.LCFI60:
+ 679               		.cfi_def_cfa_offset 8
+ 680               		.cfi_offset 14, -7
+ 681 000a FF92      		push r15
+ 682               	.LCFI61:
+ 683               		.cfi_def_cfa_offset 9
+ 684               		.cfi_offset 15, -8
+ 685 000c 0F93      		push r16
+ 686               	.LCFI62:
+ 687               		.cfi_def_cfa_offset 10
+ 688               		.cfi_offset 16, -9
+ 689 000e 1F93      		push r17
+ 690               	.LCFI63:
+ 691               		.cfi_def_cfa_offset 11
+ 692               		.cfi_offset 17, -10
+ 693 0010 CF93      		push r28
+ 694               	.LCFI64:
+ 695               		.cfi_def_cfa_offset 12
+ 696               		.cfi_offset 28, -11
+ 697 0012 DF93      		push r29
+ 698               	.LCFI65:
+ 699               		.cfi_def_cfa_offset 13
+ 700               		.cfi_offset 29, -12
+ 701               	/* prologue: function */
+ 702               	/* frame size = 0 */
+ 703               	/* stack size = 10 */
+ 704               	.L__stack_usage = 10
+ 705 0014 FC01      		movw r30,r24
+ 706 0016 4115      		cp r20,__zero_reg__
+ 707 0018 84E0      		ldi r24,4
+ 708 001a 5807      		cpc r21,r24
+ 709               	.LVL23:
+ 710 001c 00F0      		brlo .L38
+ 711 001e 4FEF      		ldi r20,lo8(-1)
+ 712 0020 53E0      		ldi r21,lo8(3)
+ 713               	.LVL24:
+ 714               	.L38:
+ 488:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   uint16_t val = width;
+ 489:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   if (val > MAX_PWM_VALUE)
+ 490:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     val = MAX_PWM_VALUE;
+ 491:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 492:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #if AVR_PWM_USE_TIM2 || defined(__DOXYGEN__)
+ 493:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   if (pwmp == &PWMD2) {
+ 494:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     config_channel(&TCCR2A,
+ 495:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                    7 - 2*channel,
+ 496:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                    6 - 2*channel,
+ 497:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                    pwmp->config->channels[channel].mode);
+ 498:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     TIMSK2 |= (1 << (channel + 1));
+ 499:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     /* Timer 2 is 8 bit */
+ 500:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     if (val > 0xFF)
+ 501:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****       val = 0xFF;
+ 502:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     if (pwmp->config->channels[channel].callback) {
+ 503:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****       switch (channel) {
+ 504:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****       case 0: OCR2A = val; break;
+ 505:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****       case 1: OCR2B = val; break;
+ 506:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****       }
+ 507:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     }
+ 508:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     return;
+ 509:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   }
+ 510:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** #endif
+ 511:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 512:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   uint8_t i = timer_index(pwmp);
+ 513:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   config_channel(regs_table[i].tccra,
+ 715               		.loc 1 513 0
+ 716 0022 262F      		mov r18,r22
+ 717 0024 30E0      		ldi r19,0
+ 718 0026 A181      		ldd r26,Z+1
+ 719 0028 B281      		ldd r27,Z+2
+ 720 002a 8901      		movw r16,r18
+ 721 002c 000F      		lsl r16
+ 722 002e 111F      		rol r17
+ 723 0030 C801      		movw r24,r16
+ 724 0032 820F      		add r24,r18
+ 725 0034 931F      		adc r25,r19
+ 726 0036 A80F      		add r26,r24
+ 727 0038 B91F      		adc r27,r25
+ 728 003a 1696      		adiw r26,6
+ 729 003c 7C91      		ld r23,X
+ 730 003e C1E0      		ldi r28,lo8(1)
+ 731 0040 D0E0      		ldi r29,0
+ 732 0042 A0E0      		ldi r26,hi8(PWMD3)
+ 733 0044 E030      		cpi r30,lo8(PWMD3)
+ 734 0046 FA07      		cpc r31,r26
+ 735 0048 01F4      		brne .+2
+ 736 004a 00C0      		rjmp .L52
+ 737               	.LVL25:
+ 738               	.L39:
+ 739 004c 84E1      		ldi r24,lo8(20)
+ 740 004e 8C9F      		mul r24,r28
+ 741 0050 D001      		movw r26,r0
+ 742 0052 8D9F      		mul r24,r29
+ 743 0054 B00D      		add r27,r0
+ 744 0056 1124      		clr __zero_reg__
+ 745 0058 A050      		subi r26,lo8(-(regs_table))
+ 746 005a B040      		sbci r27,hi8(-(regs_table))
+ 747 005c ED90      		ld r14,X+
+ 748 005e FC90      		ld r15,X
+ 749               	.LVL26:
+ 750               	.LBB24:
+ 751               	.LBB25:
+ 108:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   if (mode == PWM_OUTPUT_ACTIVE_HIGH)
+ 752               		.loc 1 108 0
+ 753 0060 D701      		movw r26,r14
+ 754 0062 8C91      		ld r24,X
+ 755 0064 A62F      		mov r26,r22
+ 756 0066 AA0F      		lsl r26
+ 757 0068 97E0      		ldi r25,lo8(7)
+ 758 006a 9A1B      		sub r25,r26
+ 759               	.LVL27:
+ 760 006c A1E0      		ldi r26,lo8(1)
+ 761 006e B0E0      		ldi r27,0
+ 762 0070 6D01      		movw r12,r26
+ 763 0072 00C0      		rjmp 2f
+ 764               		1:
+ 765 0074 CC0C      		lsl r12
+ 766               		2:
+ 767 0076 9A95      		dec r25
+ 768 0078 02F4      		brpl 1b
+ 769 007a 93E0      		ldi r25,lo8(3)
+ 770 007c A92E      		mov r10,r25
+ 771 007e B12C      		mov r11,__zero_reg__
+ 772               	.LVL28:
+ 773 0080 A21A      		sub r10,r18
+ 774 0082 B30A      		sbc r11,r19
+ 775 0084 AA0C      		lsl r10
+ 776 0086 00C0      		rjmp 2f
+ 777               		1:
+ 778 0088 AA0F      		lsl r26
+ 779               		2:
+ 780 008a AA94      		dec r10
+ 781 008c 02F4      		brpl 1b
+ 782 008e BA2E      		mov r11,r26
+ 783 0090 BC28      		or r11,r12
+ 784 0092 9B2D      		mov r25,r11
+ 785 0094 9095      		com r25
+ 786 0096 9823      		and r25,r24
+ 787 0098 D701      		movw r26,r14
+ 788 009a 9C93      		st X,r25
+ 109:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *tccra |= ((1 << com1) | (0 << com0)); /* non inverting mode */
+ 789               		.loc 1 109 0
+ 790 009c 7130      		cpi r23,lo8(1)
+ 791 009e 01F4      		brne .+2
+ 792 00a0 00C0      		rjmp .L53
+ 111:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *tccra |= (1 << com1) | (1 << com0);   /* inverting mode */
+ 793               		.loc 1 111 0
+ 794 00a2 7230      		cpi r23,lo8(2)
+ 795 00a4 01F4      		brne .+2
+ 796 00a6 00C0      		rjmp .L54
+ 797               	.L41:
+ 798               	.LVL29:
+ 799               	.LBE25:
+ 800               	.LBE24:
+ 514:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                  7 - 2*channel,
+ 515:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                  6 - 2*channel,
+ 516:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                  pwmp->config->channels[channel].mode);
+ 517:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   volatile uint8_t *ocrh, *ocrl;
+ 518:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   switch (channel) {
+ 801               		.loc 1 518 0
+ 802 00a8 6130      		cpi r22,lo8(1)
+ 803 00aa 01F4      		brne .+2
+ 804 00ac 00C0      		rjmp .L43
+ 805 00ae 6230      		cpi r22,lo8(2)
+ 806 00b0 01F4      		brne .+2
+ 807 00b2 00C0      		rjmp .L44
+ 519:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   case 1:
+ 520:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     ocrh = regs_table[i].ocrbh;
+ 521:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     ocrl = regs_table[i].ocrbl;
+ 522:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     break;
+ 523:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   case 2:
+ 524:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     ocrh = regs_table[i].ocrch;
+ 525:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     ocrl = regs_table[i].ocrcl;
+ 526:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     break;
+ 527:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   default:
+ 528:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     ocrh = regs_table[i].ocrah;
+ 808               		.loc 1 528 0
+ 809 00b4 84E1      		ldi r24,lo8(20)
+ 810 00b6 8C9F      		mul r24,r28
+ 811 00b8 D001      		movw r26,r0
+ 812 00ba 8D9F      		mul r24,r29
+ 813 00bc B00D      		add r27,r0
+ 814 00be 1124      		clr __zero_reg__
+ 815 00c0 A050      		subi r26,lo8(-(regs_table))
+ 816 00c2 B040      		sbci r27,hi8(-(regs_table))
+ 817 00c4 1496      		adiw r26,4
+ 818 00c6 8D91      		ld r24,X+
+ 819 00c8 9C91      		ld r25,X
+ 820 00ca 1597      		sbiw r26,4+1
+ 821               	.LVL30:
+ 529:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     ocrl = regs_table[i].ocral;
+ 822               		.loc 1 529 0
+ 823 00cc 1696      		adiw r26,6
+ 824 00ce 6D91      		ld r22,X+
+ 825 00d0 7C91      		ld r23,X
+ 826 00d2 1797      		sbiw r26,6+1
+ 827               	.LVL31:
+ 828               	.L45:
+ 530:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   }
+ 531:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   *ocrh = val >> 8;
+ 829               		.loc 1 531 0
+ 830 00d4 DC01      		movw r26,r24
+ 831 00d6 5C93      		st X,r21
+ 532:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   *ocrl = val & 0xFF;
+ 832               		.loc 1 532 0
+ 833 00d8 DB01      		movw r26,r22
+ 834 00da 4C93      		st X,r20
+ 533:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   *regs_table[i].tifr |= (1 << (channel + 1));
+ 835               		.loc 1 533 0
+ 836 00dc 84E1      		ldi r24,lo8(20)
+ 837               	.LVL32:
+ 838 00de 8C9F      		mul r24,r28
+ 839 00e0 D001      		movw r26,r0
+ 840 00e2 8D9F      		mul r24,r29
+ 841 00e4 B00D      		add r27,r0
+ 842 00e6 1124      		clr __zero_reg__
+ 843 00e8 A050      		subi r26,lo8(-(regs_table))
+ 844 00ea B040      		sbci r27,hi8(-(regs_table))
+ 845 00ec 5096      		adiw r26,16
+ 846 00ee 0D90      		ld __tmp_reg__,X+
+ 847 00f0 BC91      		ld r27,X
+ 848 00f2 A02D      		mov r26,__tmp_reg__
+ 849 00f4 8C91      		ld r24,X
+ 850 00f6 B901      		movw r22,r18
+ 851               	.LVL33:
+ 852 00f8 6F5F      		subi r22,-1
+ 853 00fa 7F4F      		sbci r23,-1
+ 854 00fc 41E0      		ldi r20,lo8(1)
+ 855 00fe 50E0      		ldi r21,0
+ 856               	.LVL34:
+ 857 0100 00C0      		rjmp 2f
+ 858               		1:
+ 859 0102 440F      		lsl r20
+ 860               		2:
+ 861 0104 6A95      		dec r22
+ 862 0106 02F4      		brpl 1b
+ 863 0108 842B      		or r24,r20
+ 864 010a 8C93      		st X,r24
+ 534:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   if (pwmp->config->channels[channel].callback != NULL)
+ 865               		.loc 1 534 0
+ 866 010c 0180      		ldd __tmp_reg__,Z+1
+ 867 010e F281      		ldd r31,Z+2
+ 868 0110 E02D      		mov r30,__tmp_reg__
+ 869               	.LVL35:
+ 870 0112 200F      		add r18,r16
+ 871 0114 311F      		adc r19,r17
+ 872               	.LVL36:
+ 873 0116 E20F      		add r30,r18
+ 874 0118 F31F      		adc r31,r19
+ 875 011a 8781      		ldd r24,Z+7
+ 876 011c 9085      		ldd r25,Z+8
+ 877 011e 892B      		or r24,r25
+ 878 0120 01F0      		breq .L37
+ 535:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     *regs_table[i].timsk |= (1 << (channel + 1));
+ 879               		.loc 1 535 0
+ 880 0122 8091 7100 		lds r24,113
+ 881 0126 482B      		or r20,r24
+ 882 0128 4093 7100 		sts 113,r20
+ 883               	.L37:
+ 884               	/* epilogue start */
+ 536:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 885               		.loc 1 536 0
+ 886 012c DF91      		pop r29
+ 887 012e CF91      		pop r28
+ 888 0130 1F91      		pop r17
+ 889 0132 0F91      		pop r16
+ 890 0134 FF90      		pop r15
+ 891 0136 EF90      		pop r14
+ 892 0138 DF90      		pop r13
+ 893 013a CF90      		pop r12
+ 894 013c BF90      		pop r11
+ 895 013e AF90      		pop r10
+ 896 0140 0895      		ret
+ 897               	.LVL37:
+ 898               	.L44:
+ 524:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     ocrl = regs_table[i].ocrcl;
+ 899               		.loc 1 524 0
+ 900 0142 84E1      		ldi r24,lo8(20)
+ 901 0144 8C9F      		mul r24,r28
+ 902 0146 D001      		movw r26,r0
+ 903 0148 8D9F      		mul r24,r29
+ 904 014a B00D      		add r27,r0
+ 905 014c 1124      		clr __zero_reg__
+ 906 014e A050      		subi r26,lo8(-(regs_table))
+ 907 0150 B040      		sbci r27,hi8(-(regs_table))
+ 908 0152 1C96      		adiw r26,12
+ 909 0154 8D91      		ld r24,X+
+ 910 0156 9C91      		ld r25,X
+ 911 0158 1D97      		sbiw r26,12+1
+ 912               	.LVL38:
+ 525:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     break;
+ 913               		.loc 1 525 0
+ 914 015a 1E96      		adiw r26,14
+ 915 015c 6D91      		ld r22,X+
+ 916 015e 7C91      		ld r23,X
+ 917 0160 1F97      		sbiw r26,14+1
+ 918               	.LVL39:
+ 526:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   default:
+ 919               		.loc 1 526 0
+ 920 0162 00C0      		rjmp .L45
+ 921               	.LVL40:
+ 922               	.L43:
+ 520:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     ocrl = regs_table[i].ocrbl;
+ 923               		.loc 1 520 0
+ 924 0164 84E1      		ldi r24,lo8(20)
+ 925 0166 8C9F      		mul r24,r28
+ 926 0168 D001      		movw r26,r0
+ 927 016a 8D9F      		mul r24,r29
+ 928 016c B00D      		add r27,r0
+ 929 016e 1124      		clr __zero_reg__
+ 930 0170 A050      		subi r26,lo8(-(regs_table))
+ 931 0172 B040      		sbci r27,hi8(-(regs_table))
+ 932 0174 1896      		adiw r26,8
+ 933 0176 8D91      		ld r24,X+
+ 934 0178 9C91      		ld r25,X
+ 935 017a 1997      		sbiw r26,8+1
+ 936               	.LVL41:
+ 521:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****     break;
+ 937               		.loc 1 521 0
+ 938 017c 1A96      		adiw r26,10
+ 939 017e 6D91      		ld r22,X+
+ 940 0180 7C91      		ld r23,X
+ 941 0182 1B97      		sbiw r26,10+1
+ 942               	.LVL42:
+ 522:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   case 2:
+ 943               		.loc 1 522 0
+ 944 0184 00C0      		rjmp .L45
+ 945               	.LVL43:
+ 946               	.L53:
+ 947               	.LBB27:
+ 948               	.LBB26:
+ 110:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   else if (mode == PWM_OUTPUT_ACTIVE_LOW)
+ 949               		.loc 1 110 0
+ 950 0186 8C91      		ld r24,X
+ 951 0188 C82A      		or r12,r24
+ 952 018a CC92      		st X,r12
+ 953 018c 00C0      		rjmp .L41
+ 954               	.L54:
+ 112:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 955               		.loc 1 112 0
+ 956 018e D701      		movw r26,r14
+ 957 0190 8C91      		ld r24,X
+ 958 0192 8B29      		or r24,r11
+ 959 0194 8C93      		st X,r24
+ 960 0196 00C0      		rjmp .L41
+ 961               	.LVL44:
+ 962               	.L52:
+ 963               	.LBE26:
+ 964               	.LBE27:
+ 513:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                  7 - 2*channel,
+ 965               		.loc 1 513 0
+ 966 0198 C0E0      		ldi r28,0
+ 967 019a D0E0      		ldi r29,0
+ 968 019c 00C0      		rjmp .L39
+ 969               		.cfi_endproc
+ 970               	.LFE153:
+ 972               		.section	.text.pwm_lld_disable_channel,"ax",@progbits
+ 973               	.global	pwm_lld_disable_channel
+ 975               	pwm_lld_disable_channel:
+ 976               	.LFB154:
+ 537:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 538:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /**
+ 539:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @brief   Disables a PWM channel.
+ 540:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @pre     The PWM unit must have been activated using @p pwmStart().
+ 541:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @post    The channel is disabled and its output line returned to the
+ 542:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *          idle state.
+ 543:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @note    Depending on the hardware implementation this function has
+ 544:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *          effect starting on the next cycle (recommended implementation)
+ 545:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *          or immediately (fallback implementation).
+ 546:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 547:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] pwmp      pointer to a @p PWMDriver object
+ 548:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] channel   PWM channel identifier (0...PWM_CHANNELS-1)
+ 549:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 550:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @notapi
+ 551:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  */
+ 552:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** void pwm_lld_disable_channel(PWMDriver *pwmp, pwmchannel_t channel)
+ 553:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** {
+ 977               		.loc 1 553 0
+ 978               		.cfi_startproc
+ 979               	.LVL45:
+ 980 0000 CF93      		push r28
+ 981               	.LCFI66:
+ 982               		.cfi_def_cfa_offset 4
+ 983               		.cfi_offset 28, -3
+ 984 0002 DF93      		push r29
+ 985               	.LCFI67:
+ 986               		.cfi_def_cfa_offset 5
+ 987               		.cfi_offset 29, -4
+ 988               	/* prologue: function */
+ 989               	/* frame size = 0 */
+ 990               	/* stack size = 2 */
+ 991               	.L__stack_usage = 2
+ 992               	.LVL46:
+ 554:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   uint8_t i = timer_index(pwmp);
+ 555:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   config_channel(regs_table[i].tccra,
+ 556:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                  7 - 2*channel,
+ 557:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                  6 - 2*channel,
+ 993               		.loc 1 557 0
+ 994 0004 E62F      		mov r30,r22
+ 995 0006 F0E0      		ldi r31,0
+ 555:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                  7 - 2*channel,
+ 996               		.loc 1 555 0
+ 997 0008 21E0      		ldi r18,lo8(1)
+ 998 000a 30E0      		ldi r19,0
+ 999 000c 8050      		subi r24,lo8(PWMD3)
+ 1000 000e 9040      		sbci r25,hi8(PWMD3)
+ 1001 0010 01F0      		breq .L57
+ 1002               	.L56:
+ 1003 0012 84E1      		ldi r24,lo8(20)
+ 1004               	.LVL47:
+ 1005 0014 829F      		mul r24,r18
+ 1006 0016 D001      		movw r26,r0
+ 1007 0018 839F      		mul r24,r19
+ 1008 001a B00D      		add r27,r0
+ 1009 001c 1124      		clr __zero_reg__
+ 1010 001e A050      		subi r26,lo8(-(regs_table))
+ 1011 0020 B040      		sbci r27,hi8(-(regs_table))
+ 1012 0022 0D90      		ld __tmp_reg__,X+
+ 1013 0024 BC91      		ld r27,X
+ 1014 0026 A02D      		mov r26,__tmp_reg__
+ 1015               	.LVL48:
+ 1016               	.LBB28:
+ 1017               	.LBB29:
+ 108:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   if (mode == PWM_OUTPUT_ACTIVE_HIGH)
+ 1018               		.loc 1 108 0
+ 1019 0028 7C91      		ld r23,X
+ 1020 002a 660F      		lsl r22
+ 1021               	.LVL49:
+ 1022 002c 27E0      		ldi r18,lo8(7)
+ 1023 002e 261B      		sub r18,r22
+ 1024               	.LVL50:
+ 1025 0030 81E0      		ldi r24,lo8(1)
+ 1026 0032 90E0      		ldi r25,0
+ 1027 0034 EC01      		movw r28,r24
+ 1028 0036 00C0      		rjmp 2f
+ 1029               		1:
+ 1030 0038 CC0F      		lsl r28
+ 1031               		2:
+ 1032 003a 2A95      		dec r18
+ 1033 003c 02F4      		brpl 1b
+ 1034 003e 43E0      		ldi r20,lo8(3)
+ 1035 0040 50E0      		ldi r21,0
+ 1036 0042 4E1B      		sub r20,r30
+ 1037 0044 5F0B      		sbc r21,r31
+ 1038 0046 440F      		lsl r20
+ 1039 0048 9C01      		movw r18,r24
+ 1040               	.LVL51:
+ 1041 004a 00C0      		rjmp 2f
+ 1042               		1:
+ 1043 004c 220F      		lsl r18
+ 1044               		2:
+ 1045 004e 4A95      		dec r20
+ 1046 0050 02F4      		brpl 1b
+ 1047 0052 2C2B      		or r18,r28
+ 1048 0054 2095      		com r18
+ 1049 0056 2723      		and r18,r23
+ 1050 0058 2C93      		st X,r18
+ 1051               	.LVL52:
+ 1052               	.LBE29:
+ 1053               	.LBE28:
+ 558:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                  PWM_OUTPUT_DISABLED);
+ 559:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   *regs_table[i].timsk &= ~(1 << (channel + 1));
+ 1054               		.loc 1 559 0
+ 1055 005a 2091 7100 		lds r18,113
+ 1056 005e 3196      		adiw r30,1
+ 1057               	.LVL53:
+ 1058 0060 00C0      		rjmp 2f
+ 1059               		1:
+ 1060 0062 880F      		lsl r24
+ 1061               		2:
+ 1062 0064 EA95      		dec r30
+ 1063 0066 02F4      		brpl 1b
+ 1064 0068 8095      		com r24
+ 1065 006a 8223      		and r24,r18
+ 1066 006c 8093 7100 		sts 113,r24
+ 1067               	/* epilogue start */
+ 560:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 1068               		.loc 1 560 0
+ 1069 0070 DF91      		pop r29
+ 1070 0072 CF91      		pop r28
+ 1071 0074 0895      		ret
+ 1072               	.LVL54:
+ 1073               	.L57:
+ 555:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                  7 - 2*channel,
+ 1074               		.loc 1 555 0
+ 1075 0076 20E0      		ldi r18,0
+ 1076 0078 30E0      		ldi r19,0
+ 1077 007a 00C0      		rjmp .L56
+ 1078               		.cfi_endproc
+ 1079               	.LFE154:
+ 1081               		.section	.text.pwm_lld_enable_periodic_notification,"ax",@progbits
+ 1082               	.global	pwm_lld_enable_periodic_notification
+ 1084               	pwm_lld_enable_periodic_notification:
+ 1085               	.LFB155:
+ 561:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 562:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /**
+ 563:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @brief   Enables the periodic activation edge notification.
+ 564:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @pre     The PWM unit must have been activated using @p pwmStart().
+ 565:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @note    If the notification is already enabled then the call has no effect.
+ 566:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 567:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] pwmp      pointer to a @p PWMDriver object
+ 568:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 569:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @notapi
+ 570:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  */
+ 571:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** void pwm_lld_enable_periodic_notification(PWMDriver *pwmp) {
+ 1086               		.loc 1 571 0
+ 1087               		.cfi_startproc
+ 1088               	.LVL55:
+ 1089               	/* prologue: function */
+ 1090               	/* frame size = 0 */
+ 1091               	/* stack size = 0 */
+ 1092               	.L__stack_usage = 0
+ 572:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   uint8_t i = timer_index(pwmp);
+ 573:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   *regs_table[i].timsk |= (1 << TOIE1);
+ 1093               		.loc 1 573 0
+ 1094 0000 E1E7      		ldi r30,lo8(113)
+ 1095 0002 F0E0      		ldi r31,0
+ 1096 0004 8081      		ld r24,Z
+ 1097               	.LVL56:
+ 1098 0006 8160      		ori r24,lo8(1)
+ 1099 0008 8083      		st Z,r24
+ 1100 000a 0895      		ret
+ 1101               		.cfi_endproc
+ 1102               	.LFE155:
+ 1104               		.section	.text.pwm_lld_disable_periodic_notification,"ax",@progbits
+ 1105               	.global	pwm_lld_disable_periodic_notification
+ 1107               	pwm_lld_disable_periodic_notification:
+ 1108               	.LFB156:
+ 574:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 575:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 576:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /**
+ 577:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @brief   Disables the periodic activation edge notification.
+ 578:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @pre     The PWM unit must have been activated using @p pwmStart().
+ 579:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @note    If the notification is already disabled then the call has no effect.
+ 580:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 581:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] pwmp      pointer to a @p PWMDriver object
+ 582:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 583:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @notapi
+ 584:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  */
+ 585:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** void pwm_lld_disable_periodic_notification(PWMDriver *pwmp) {
+ 1109               		.loc 1 585 0
+ 1110               		.cfi_startproc
+ 1111               	.LVL57:
+ 1112               	/* prologue: function */
+ 1113               	/* frame size = 0 */
+ 1114               	/* stack size = 0 */
+ 1115               	.L__stack_usage = 0
+ 586:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   uint8_t i = timer_index(pwmp);
+ 587:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   *regs_table[i].timsk &= ~(1 << TOIE1);
+ 1116               		.loc 1 587 0
+ 1117 0000 E1E7      		ldi r30,lo8(113)
+ 1118 0002 F0E0      		ldi r31,0
+ 1119 0004 8081      		ld r24,Z
+ 1120               	.LVL58:
+ 1121 0006 8E7F      		andi r24,lo8(-2)
+ 1122 0008 8083      		st Z,r24
+ 1123 000a 0895      		ret
+ 1124               		.cfi_endproc
+ 1125               	.LFE156:
+ 1127               		.section	.text.pwm_lld_enable_channel_notification,"ax",@progbits
+ 1128               	.global	pwm_lld_enable_channel_notification
+ 1130               	pwm_lld_enable_channel_notification:
+ 1131               	.LFB157:
+ 588:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 589:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 590:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /**
+ 591:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @brief   Enables a channel de-activation edge notification.
+ 592:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @pre     The PWM unit must have been activated using @p pwmStart().
+ 593:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @pre     The channel must have been activated using @p pwmEnableChannel().
+ 594:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @note    If the notification is already enabled then the call has no effect.
+ 595:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 596:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] pwmp      pointer to a @p PWMDriver object
+ 597:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] channel   PWM channel identifier (0...channels-1)
+ 598:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 599:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @notapi
+ 600:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  */
+ 601:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** void pwm_lld_enable_channel_notification(PWMDriver *pwmp,
+ 602:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                                          pwmchannel_t channel) {
+ 1132               		.loc 1 602 0
+ 1133               		.cfi_startproc
+ 1134               	.LVL59:
+ 1135               	/* prologue: function */
+ 1136               	/* frame size = 0 */
+ 1137               	/* stack size = 0 */
+ 1138               	.L__stack_usage = 0
+ 603:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   uint8_t i = timer_index(pwmp);
+ 604:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   *regs_table[i].timsk |= (1 << (channel + 1));
+ 1139               		.loc 1 604 0
+ 1140 0000 E1E7      		ldi r30,lo8(113)
+ 1141 0002 F0E0      		ldi r31,0
+ 1142 0004 2081      		ld r18,Z
+ 1143 0006 6F5F      		subi r22,lo8(-(1))
+ 1144               	.LVL60:
+ 1145 0008 81E0      		ldi r24,lo8(1)
+ 1146 000a 90E0      		ldi r25,0
+ 1147               	.LVL61:
+ 1148 000c 00C0      		rjmp 2f
+ 1149               		1:
+ 1150 000e 880F      		lsl r24
+ 1151               		2:
+ 1152 0010 6A95      		dec r22
+ 1153 0012 02F4      		brpl 1b
+ 1154 0014 822B      		or r24,r18
+ 1155 0016 8083      		st Z,r24
+ 1156 0018 0895      		ret
+ 1157               		.cfi_endproc
+ 1158               	.LFE157:
+ 1160               		.section	.text.pwm_lld_disable_channel_notification,"ax",@progbits
+ 1161               	.global	pwm_lld_disable_channel_notification
+ 1163               	pwm_lld_disable_channel_notification:
+ 1164               	.LFB158:
+ 605:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** }
+ 606:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 607:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** /**
+ 608:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @brief   Disables a channel de-activation edge notification.
+ 609:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @pre     The PWM unit must have been activated using @p pwmStart().
+ 610:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @pre     The channel must have been activated using @p pwmEnableChannel().
+ 611:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @note    If the notification is already disabled then the call has no effect.
+ 612:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 613:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] pwmp      pointer to a @p PWMDriver object
+ 614:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @param[in] channel   PWM channel identifier (0...channels-1)
+ 615:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  *
+ 616:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  * @notapi
+ 617:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****  */
+ 618:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** void pwm_lld_disable_channel_notification(PWMDriver *pwmp,
+ 619:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****                                           pwmchannel_t channel) {
+ 1165               		.loc 1 619 0
+ 1166               		.cfi_startproc
+ 1167               	.LVL62:
+ 1168               	/* prologue: function */
+ 1169               	/* frame size = 0 */
+ 1170               	/* stack size = 0 */
+ 1171               	.L__stack_usage = 0
+ 620:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c **** 
+ 621:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   uint8_t i = timer_index(pwmp);
+ 622:../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.c ****   *regs_table[i].timsk &= ~(1 << (channel + 1));
+ 1172               		.loc 1 622 0
+ 1173 0000 E1E7      		ldi r30,lo8(113)
+ 1174 0002 F0E0      		ldi r31,0
+ 1175 0004 2081      		ld r18,Z
+ 1176 0006 6F5F      		subi r22,lo8(-(1))
+ 1177               	.LVL63:
+ 1178 0008 81E0      		ldi r24,lo8(1)
+ 1179 000a 90E0      		ldi r25,0
+ 1180               	.LVL64:
+ 1181 000c 00C0      		rjmp 2f
+ 1182               		1:
+ 1183 000e 880F      		lsl r24
+ 1184               		2:
+ 1185 0010 6A95      		dec r22
+ 1186 0012 02F4      		brpl 1b
+ 1187 0014 8095      		com r24
+ 1188 0016 8223      		and r24,r18
+ 1189 0018 8083      		st Z,r24
+ 1190 001a 0895      		ret
+ 1191               		.cfi_endproc
+ 1192               	.LFE158:
+ 1194               		.comm	PWMD3,7,1
+ 1195               		.section	.rodata.regs_table,"a",@progbits
+ 1198               	regs_table:
+ 1199 0000 9000      		.word	144
+ 1200 0002 9100      		.word	145
+ 1201 0004 9900      		.word	153
+ 1202 0006 9800      		.word	152
+ 1203 0008 9B00      		.word	155
+ 1204 000a 9A00      		.word	154
+ 1205 000c 9D00      		.word	157
+ 1206 000e 9C00      		.word	156
+ 1207 0010 3800      		.word	56
+ 1208 0012 7100      		.word	113
+ 1209               		.text
+ 1210               	.Letext0:
+ 1211               		.file 2 "/usr/lib/avr/include/stdint.h"
+ 1212               		.file 3 "../../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 1213               		.file 4 "../../../os/rt/include/chsystypes.h"
+ 1214               		.file 5 "../../../os/rt/include/chschd.h"
+ 1215               		.file 6 "../../../os/common/ports/AVR/chcore.h"
+ 1216               		.file 7 "../../../os/rt/include/chsem.h"
+ 1217               		.file 8 "../../../os/rt/include/chmtx.h"
+ 1218               		.file 9 "../../../os/hal/include/hal_pwm.h"
+ 1219               		.file 10 "../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 hal_pwm_lld.c
+     /tmp/ccpw1TkY.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccpw1TkY.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccpw1TkY.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccpw1TkY.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/ccpw1TkY.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccpw1TkY.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccpw1TkY.s:14     .text.__vector_35:0000000000000000 __vector_35
+                            *COM*:0000000000000007 PWMD3
+     /tmp/ccpw1TkY.s:133    .text.__vector_32:0000000000000000 __vector_32
+     /tmp/ccpw1TkY.s:251    .text.__vector_33:0000000000000000 __vector_33
+     /tmp/ccpw1TkY.s:369    .text.__vector_34:0000000000000000 __vector_34
+     /tmp/ccpw1TkY.s:487    .text.pwm_lld_init:0000000000000000 pwm_lld_init
+     /tmp/ccpw1TkY.s:515    .text.pwm_lld_start:0000000000000000 pwm_lld_start
+     /tmp/ccpw1TkY.s:1198   .rodata.regs_table:0000000000000000 regs_table
+     /tmp/ccpw1TkY.s:593    .text.pwm_lld_stop:0000000000000000 pwm_lld_stop
+     /tmp/ccpw1TkY.s:639    .text.pwm_lld_change_period:0000000000000000 pwm_lld_change_period
+     /tmp/ccpw1TkY.s:655    .text.pwm_lld_enable_channel:0000000000000000 pwm_lld_enable_channel
+     /tmp/ccpw1TkY.s:975    .text.pwm_lld_disable_channel:0000000000000000 pwm_lld_disable_channel
+     /tmp/ccpw1TkY.s:1084   .text.pwm_lld_enable_periodic_notification:0000000000000000 pwm_lld_enable_periodic_notification
+     /tmp/ccpw1TkY.s:1107   .text.pwm_lld_disable_periodic_notification:0000000000000000 pwm_lld_disable_periodic_notification
+     /tmp/ccpw1TkY.s:1130   .text.pwm_lld_enable_channel_notification:0000000000000000 pwm_lld_enable_channel_notification
+     /tmp/ccpw1TkY.s:1163   .text.pwm_lld_disable_channel_notification:0000000000000000 pwm_lld_disable_channel_notification
+
+UNDEFINED SYMBOLS
+__avr_in_isr
+chSchIsPreemptionRequired
+chSchDoReschedule
+pwmObjectInit
+__do_copy_data
+__do_clear_bss

@@ -1,0 +1,356 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               		.section	.text.pcintInit,"ax",@progbits
+  12               	.global	pcintInit
+  14               	pcintInit:
+  15               	.LFB143:
+  16               		.file 1 "main.c"
+   1:main.c        **** /*
+   2:main.c        ****     ChibiOS - Copyright (C) 2016 Theodore Ateba
+   3:main.c        **** 
+   4:main.c        ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:main.c        ****     you may not use this file except in compliance with the License.
+   6:main.c        ****     You may obtain a copy of the License at
+   7:main.c        **** 
+   8:main.c        ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:main.c        **** 
+  10:main.c        ****     Unless required by applicable law or agreed to in writing, software
+  11:main.c        ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:main.c        ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:main.c        ****     See the License for the specific language governing permissions and
+  14:main.c        ****     limitations under the License.
+  15:main.c        **** */
+  16:main.c        **** 
+  17:main.c        **** #include "ch.h"
+  18:main.c        **** #include "hal.h"
+  19:main.c        **** #include "chprintf.h"
+  20:main.c        **** 
+  21:main.c        **** /**
+  22:main.c        ****  * @brief Global variables.
+  23:main.c        ****  */
+  24:main.c        **** BaseSequentialStream* chp = (BaseSequentialStream*) &SD1;
+  25:main.c        **** static int isrCpt = 0; /**< Interrupt counter. */
+  26:main.c        **** static int index = 0;
+  27:main.c        **** 
+  28:main.c        **** void pcintInit(void) {
+  17               		.loc 1 28 0
+  18               		.cfi_startproc
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+  29:main.c        **** 
+  30:main.c        ****   //cli();
+  31:main.c        **** 
+  32:main.c        ****   //PCICR |= 1; // ENABLE PCINT7 to PCINT0
+  33:main.c        ****   //PCMSK0 = 0xFF; // PCINT7 to PCINT0 are enabled
+  34:main.c        **** 
+  35:main.c        ****   PCICR   |= (1 << PCIE0); // ENABLE PCINT7 to PCINT0
+  23               		.loc 1 35 0
+  24 0000 E8E6      		ldi r30,lo8(104)
+  25 0002 F0E0      		ldi r31,0
+  26 0004 8081      		ld r24,Z
+  27 0006 8160      		ori r24,lo8(1)
+  28 0008 8083      		st Z,r24
+  36:main.c        ****   PCMSK0  |= (1 << PCINT5); // PCINT5
+  29               		.loc 1 36 0
+  30 000a EBE6      		ldi r30,lo8(107)
+  31 000c F0E0      		ldi r31,0
+  32 000e 8081      		ld r24,Z
+  33 0010 8062      		ori r24,lo8(32)
+  34 0012 8083      		st Z,r24
+  35 0014 0895      		ret
+  36               		.cfi_endproc
+  37               	.LFE143:
+  39               		.section	.rodata.str1.1,"aMS",@progbits,1
+  40               	.LC0:
+  41 0000 0A0D 2045 		.string	"\n\r EXT hal test started..."
+  41      5854 2068 
+  41      616C 2074 
+  41      6573 7420 
+  41      7374 6172 
+  42               	.LC1:
+  43 001b 0A0D 2069 		.string	"\n\r index = %d, ISR Counter = %d"
+  43      6E64 6578 
+  43      203D 2025 
+  43      642C 2049 
+  43      5352 2043 
+  44               		.section	.text.startup.main,"ax",@progbits
+  45               	.global	main
+  47               	main:
+  48               	.LFB144:
+  37:main.c        **** 
+  38:main.c        ****   //sei();
+  39:main.c        **** }
+  40:main.c        **** 
+  41:main.c        **** /**
+  42:main.c        ****  * Application entry point.
+  43:main.c        ****  */
+  44:main.c        **** int main(void) {
+  49               		.loc 1 44 0
+  50               		.cfi_startproc
+  51               	/* prologue: function */
+  52               	/* frame size = 0 */
+  53               	/* stack size = 0 */
+  54               	.L__stack_usage = 0
+  45:main.c        ****   /*
+  46:main.c        ****    * System initializations.
+  47:main.c        ****    * - HAL initialization, this also initializes the configured device drivers
+  48:main.c        ****    *   and performs the board-specific initializations.
+  49:main.c        ****    * - Kernel initialization, the main() function becomes a thread and the
+  50:main.c        ****    *   RTOS is active.
+  51:main.c        ****    */
+  52:main.c        ****   halInit();
+  55               		.loc 1 52 0
+  56 0000 0E94 0000 		call halInit
+  53:main.c        ****   chSysInit();
+  57               		.loc 1 53 0
+  58 0004 0E94 0000 		call chSysInit
+  54:main.c        **** 
+  55:main.c        **** 
+  56:main.c        ****   /*
+  57:main.c        ****    * External interrupt on the Pin D2 of the Arduino Mega2560.
+  58:main.c        ****    */
+  59:main.c        ****   palSetPadMode(IOPORT5, PD0, PAL_MODE_INPUT); // INT0
+  59               		.loc 1 59 0
+  60 0008 42E0      		ldi r20,lo8(2)
+  61 000a 61E0      		ldi r22,lo8(1)
+  62 000c 8CE2      		ldi r24,lo8(44)
+  63 000e 90E0      		ldi r25,0
+  64 0010 0E94 0000 		call _pal_lld_setgroupmode
+  60:main.c        **** 
+  61:main.c        ****   /*
+  62:main.c        ****    * Start the serial driver.
+  63:main.c        ****    */
+  64:main.c        ****   sdStart(&SD1, NULL);
+  65               		.loc 1 64 0
+  66 0014 60E0      		ldi r22,0
+  67 0016 70E0      		ldi r23,0
+  68 0018 80E0      		ldi r24,lo8(SD1)
+  69 001a 90E0      		ldi r25,hi8(SD1)
+  70 001c 0E94 0000 		call sdStart
+  65:main.c        **** 
+  66:main.c        ****   palClearPad(IOPORT2, PORTB_LED1);
+  71               		.loc 1 66 0
+  72 0020 2F98      		cbi 0x5,7
+  67:main.c        ****   chprintf(chp, "\n\r EXT hal test started...");
+  73               		.loc 1 67 0
+  74 0022 80E0      		ldi r24,lo8(.LC0)
+  75 0024 90E0      		ldi r25,hi8(.LC0)
+  76 0026 9F93      		push r25
+  77               	.LCFI0:
+  78               		.cfi_def_cfa_offset 4
+  79 0028 8F93      		push r24
+  80               	.LCFI1:
+  81               		.cfi_def_cfa_offset 5
+  82 002a 8091 0000 		lds r24,chp+1
+  83 002e 8F93      		push r24
+  84               	.LCFI2:
+  85               		.cfi_def_cfa_offset 6
+  86 0030 8091 0000 		lds r24,chp
+  87 0034 8F93      		push r24
+  88               	.LCFI3:
+  89               		.cfi_def_cfa_offset 7
+  90 0036 0E94 0000 		call chprintf
+  91               	.LBB4:
+  92               	.LBB5:
+  35:main.c        ****   PCMSK0  |= (1 << PCINT5); // PCINT5
+  93               		.loc 1 35 0
+  94 003a 8091 6800 		lds r24,104
+  95 003e 8160      		ori r24,lo8(1)
+  96 0040 8093 6800 		sts 104,r24
+  36:main.c        **** 
+  97               		.loc 1 36 0
+  98 0044 8091 6B00 		lds r24,107
+  99 0048 8062      		ori r24,lo8(32)
+ 100 004a 8093 6B00 		sts 107,r24
+ 101 004e 0F90      		pop __tmp_reg__
+ 102 0050 0F90      		pop __tmp_reg__
+ 103 0052 0F90      		pop __tmp_reg__
+ 104 0054 0F90      		pop __tmp_reg__
+ 105               	.LCFI4:
+ 106               		.cfi_def_cfa_offset 3
+ 107               	.LBE5:
+ 108               	.LBE4:
+  68:main.c        **** 
+  69:main.c        ****   pcintInit();
+  70:main.c        **** 
+  71:main.c        ****   /*
+  72:main.c        ****    * Normal main() thread activity, in this demo it print IRQ counter every
+  73:main.c        ****    * seconde.
+  74:main.c        ****    */
+  75:main.c        ****   while (TRUE) {
+  76:main.c        ****     chThdSleepMilliseconds(1000);
+  77:main.c        ****     chprintf(chp, "\n\r index = %d, ISR Counter = %d", index, isrCpt);
+ 109               		.loc 1 77 0
+ 110 0056 C0E0      		ldi r28,lo8(.LC1)
+ 111 0058 D0E0      		ldi r29,hi8(.LC1)
+ 112               	.L3:
+  76:main.c        ****     chprintf(chp, "\n\r index = %d, ISR Counter = %d", index, isrCpt);
+ 113               		.loc 1 76 0 discriminator 1
+ 114 005a 88E0      		ldi r24,lo8(8)
+ 115 005c 9DE3      		ldi r25,lo8(61)
+ 116 005e 0E94 0000 		call chThdSleep
+ 117               		.loc 1 77 0 discriminator 1
+ 118 0062 8091 0000 		lds r24,isrCpt+1
+ 119 0066 8F93      		push r24
+ 120               	.LCFI5:
+ 121               		.cfi_def_cfa_offset 4
+ 122 0068 8091 0000 		lds r24,isrCpt
+ 123 006c 8F93      		push r24
+ 124               	.LCFI6:
+ 125               		.cfi_def_cfa_offset 5
+ 126 006e 8091 0000 		lds r24,index+1
+ 127 0072 8F93      		push r24
+ 128               	.LCFI7:
+ 129               		.cfi_def_cfa_offset 6
+ 130 0074 8091 0000 		lds r24,index
+ 131 0078 8F93      		push r24
+ 132               	.LCFI8:
+ 133               		.cfi_def_cfa_offset 7
+ 134 007a DF93      		push r29
+ 135               	.LCFI9:
+ 136               		.cfi_def_cfa_offset 8
+ 137 007c CF93      		push r28
+ 138               	.LCFI10:
+ 139               		.cfi_def_cfa_offset 9
+ 140 007e 8091 0000 		lds r24,chp+1
+ 141 0082 8F93      		push r24
+ 142               	.LCFI11:
+ 143               		.cfi_def_cfa_offset 10
+ 144 0084 8091 0000 		lds r24,chp
+ 145 0088 8F93      		push r24
+ 146               	.LCFI12:
+ 147               		.cfi_def_cfa_offset 11
+ 148 008a 0E94 0000 		call chprintf
+  78:main.c        ****     index++;
+ 149               		.loc 1 78 0 discriminator 1
+ 150 008e 8091 0000 		lds r24,index
+ 151 0092 9091 0000 		lds r25,index+1
+ 152 0096 0196      		adiw r24,1
+ 153 0098 9093 0000 		sts index+1,r25
+ 154 009c 8093 0000 		sts index,r24
+ 155 00a0 8DB7      		in r24,__SP_L__
+ 156 00a2 9EB7      		in r25,__SP_H__
+ 157 00a4 0896      		adiw r24,8
+ 158 00a6 0FB6      		in __tmp_reg__,__SREG__
+ 159 00a8 F894      		cli
+ 160 00aa 9EBF      		out __SP_H__,r25
+ 161 00ac 0FBE      		out __SREG__,__tmp_reg__
+ 162 00ae 8DBF      		out __SP_L__,r24
+ 163               	.LCFI13:
+ 164               		.cfi_def_cfa_offset 3
+ 165 00b0 00C0      		rjmp .L3
+ 166               		.cfi_endproc
+ 167               	.LFE144:
+ 169               		.section	.text.__vector_9,"ax",@progbits
+ 170               	.global	__vector_9
+ 172               	__vector_9:
+ 173               	.LFB145:
+  79:main.c        ****   }
+  80:main.c        **** }
+  81:main.c        **** 
+  82:main.c        **** ISR(PCINT0_vect) {
+ 174               		.loc 1 82 0
+ 175               		.cfi_startproc
+ 176 0000 1F92      		push r1
+ 177               	.LCFI14:
+ 178               		.cfi_def_cfa_offset 4
+ 179               		.cfi_offset 1, -3
+ 180 0002 0F92      		push r0
+ 181               	.LCFI15:
+ 182               		.cfi_def_cfa_offset 5
+ 183               		.cfi_offset 0, -4
+ 184 0004 0FB6      		in r0,__SREG__
+ 185 0006 0F92      		push r0
+ 186 0008 1124      		clr __zero_reg__
+ 187 000a 8F93      		push r24
+ 188               	.LCFI16:
+ 189               		.cfi_def_cfa_offset 6
+ 190               		.cfi_offset 24, -5
+ 191 000c 9F93      		push r25
+ 192               	.LCFI17:
+ 193               		.cfi_def_cfa_offset 7
+ 194               		.cfi_offset 25, -6
+ 195               	/* prologue: Signal */
+ 196               	/* frame size = 0 */
+ 197               	/* stack size = 5 */
+ 198               	.L__stack_usage = 5
+  83:main.c        ****   isrCpt++;
+ 199               		.loc 1 83 0
+ 200 000e 8091 0000 		lds r24,isrCpt
+ 201 0012 9091 0000 		lds r25,isrCpt+1
+ 202 0016 0196      		adiw r24,1
+ 203 0018 9093 0000 		sts isrCpt+1,r25
+ 204 001c 8093 0000 		sts isrCpt,r24
+ 205               	/* epilogue start */
+  84:main.c        **** }
+ 206               		.loc 1 84 0
+ 207 0020 9F91      		pop r25
+ 208 0022 8F91      		pop r24
+ 209 0024 0F90      		pop r0
+ 210 0026 0FBE      		out __SREG__,r0
+ 211 0028 0F90      		pop r0
+ 212 002a 1F90      		pop r1
+ 213 002c 1895      		reti
+ 214               		.cfi_endproc
+ 215               	.LFE145:
+ 217               		.section	.bss.index,"aw",@nobits
+ 220               	index:
+ 221 0000 0000      		.zero	2
+ 222               		.section	.bss.isrCpt,"aw",@nobits
+ 225               	isrCpt:
+ 226 0000 0000      		.zero	2
+ 227               	.global	chp
+ 228               		.section	.data.chp,"aw",@progbits
+ 231               	chp:
+ 232 0000 0000      		.word	SD1
+ 233               		.text
+ 234               	.Letext0:
+ 235               		.file 2 "/usr/lib/gcc/avr/5.4.0/include/stddef.h"
+ 236               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 237               		.file 4 "../../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 238               		.file 5 "../../../os/rt/include/chsystypes.h"
+ 239               		.file 6 "../../../os/rt/include/chschd.h"
+ 240               		.file 7 "../../../os/common/ports/AVR/chcore.h"
+ 241               		.file 8 "../../../os/rt/include/chsem.h"
+ 242               		.file 9 "../../../os/rt/include/chmtx.h"
+ 243               		.file 10 "../../../os/rt/include/chevents.h"
+ 244               		.file 11 "../../../os/hal/include/hal_streams.h"
+ 245               		.file 12 "../../../os/hal/include/hal_queues.h"
+ 246               		.file 13 "../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.h"
+ 247               		.file 14 "../../../os/hal/include/hal_serial.h"
+ 248               		.file 15 "../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/ccMKD0c6.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccMKD0c6.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccMKD0c6.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccMKD0c6.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/ccMKD0c6.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccMKD0c6.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccMKD0c6.s:14     .text.pcintInit:0000000000000000 pcintInit
+     /tmp/ccMKD0c6.s:47     .text.startup.main:0000000000000000 main
+     /tmp/ccMKD0c6.s:231    .data.chp:0000000000000000 chp
+     /tmp/ccMKD0c6.s:225    .bss.isrCpt:0000000000000000 isrCpt
+     /tmp/ccMKD0c6.s:220    .bss.index:0000000000000000 index
+     /tmp/ccMKD0c6.s:172    .text.__vector_9:0000000000000000 __vector_9
+
+UNDEFINED SYMBOLS
+halInit
+chSysInit
+_pal_lld_setgroupmode
+SD1
+sdStart
+chprintf
+chThdSleep
+__do_copy_data
+__do_clear_bss

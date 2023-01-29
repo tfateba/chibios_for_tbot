@@ -1,0 +1,198 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               		.section	.text.startup.main,"ax",@progbits
+  12               	.global	main
+  14               	main:
+  15               	.LFB143:
+  16               		.file 1 "main.c"
+   1:main.c        **** /*
+   2:main.c        ****     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
+   3:main.c        **** 
+   4:main.c        ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:main.c        ****     you may not use this file except in compliance with the License.
+   6:main.c        ****     You may obtain a copy of the License at
+   7:main.c        **** 
+   8:main.c        ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:main.c        **** 
+  10:main.c        ****     Unless required by applicable law or agreed to in writing, software
+  11:main.c        ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:main.c        ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:main.c        ****     See the License for the specific language governing permissions and
+  14:main.c        ****     limitations under the License.
+  15:main.c        **** */
+  16:main.c        **** 
+  17:main.c        **** #include "hal.h"
+  18:main.c        **** 
+  19:main.c        **** #ifdef _NIL_
+  20:main.c        **** #include "nil.h"
+  21:main.c        **** #else
+  22:main.c        **** #include "ch.h"
+  23:main.c        **** #endif
+  24:main.c        **** 
+  25:main.c        **** #ifdef _NIL_
+  26:main.c        **** THD_WORKING_AREA(waThread1, 128);
+  27:main.c        **** THD_FUNCTION(Thread1, arg) {
+  28:main.c        ****   (void)arg;
+  29:main.c        ****   while (true) {
+  30:main.c        ****     chThdSleepMilliseconds(1);
+  31:main.c        ****   }
+  32:main.c        **** }
+  33:main.c        **** 
+  34:main.c        **** THD_TABLE_BEGIN
+  35:main.c        ****   THD_TABLE_ENTRY(waThread1, "main", Thread1, NULL)
+  36:main.c        **** THD_TABLE_END
+  37:main.c        **** #endif
+  38:main.c        **** 
+  39:main.c        **** int main(void) {
+  17               		.loc 1 39 0
+  18               		.cfi_startproc
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+  40:main.c        **** 
+  41:main.c        ****   halInit();
+  23               		.loc 1 41 0
+  24 0000 0E94 0000 		call halInit
+  25               	.LVL0:
+  42:main.c        **** 
+  43:main.c        ****   /*
+  44:main.c        ****    * NOTE: when compiling for NIL, after the chSysInit() call, nothing
+  45:main.c        ****    * more can be done in this thread so we first initialize PWM subsystem.
+  46:main.c        ****    */
+  47:main.c        **** 
+  48:main.c        ****   static PWMConfig pwm3cfg = {
+  49:main.c        ****     1023,   /* Not real clock */
+  50:main.c        ****     1023,   /* Maximum PWM count */
+  51:main.c        ****     NULL,
+  52:main.c        ****     {
+  53:main.c        ****       {PWM_OUTPUT_ACTIVE_HIGH, NULL},
+  54:main.c        ****       {PWM_OUTPUT_ACTIVE_HIGH, NULL},
+  55:main.c        ****       {PWM_OUTPUT_ACTIVE_HIGH, NULL},
+  56:main.c        ****     },
+  57:main.c        ****   };
+  58:main.c        **** 
+  59:main.c        ****   /* PE3-5 are timer 3 pwm channel outputs */
+  60:main.c        ****   palSetPadMode(IOPORT5, 3, PAL_MODE_OUTPUT_PUSHPULL);
+  26               		.loc 1 60 0
+  27 0004 46E0      		ldi r20,lo8(6)
+  28 0006 68E0      		ldi r22,lo8(8)
+  29 0008 8CE2      		ldi r24,lo8(44)
+  30 000a 90E0      		ldi r25,0
+  31 000c 0E94 0000 		call _pal_lld_setgroupmode
+  32               	.LVL1:
+  61:main.c        ****   palSetPadMode(IOPORT5, 4, PAL_MODE_OUTPUT_PUSHPULL);
+  33               		.loc 1 61 0
+  34 0010 46E0      		ldi r20,lo8(6)
+  35 0012 60E1      		ldi r22,lo8(16)
+  36 0014 8CE2      		ldi r24,lo8(44)
+  37 0016 90E0      		ldi r25,0
+  38 0018 0E94 0000 		call _pal_lld_setgroupmode
+  39               	.LVL2:
+  62:main.c        ****   palSetPadMode(IOPORT5, 5, PAL_MODE_OUTPUT_PUSHPULL);
+  40               		.loc 1 62 0
+  41 001c 46E0      		ldi r20,lo8(6)
+  42 001e 60E2      		ldi r22,lo8(32)
+  43 0020 8CE2      		ldi r24,lo8(44)
+  44 0022 90E0      		ldi r25,0
+  45 0024 0E94 0000 		call _pal_lld_setgroupmode
+  46               	.LVL3:
+  63:main.c        **** 
+  64:main.c        ****   pwmStart(&PWMD3, &pwm3cfg);
+  47               		.loc 1 64 0
+  48 0028 60E0      		ldi r22,lo8(pwm3cfg.3125)
+  49 002a 70E0      		ldi r23,hi8(pwm3cfg.3125)
+  50 002c 80E0      		ldi r24,lo8(PWMD3)
+  51 002e 90E0      		ldi r25,hi8(PWMD3)
+  52 0030 0E94 0000 		call pwmStart
+  53               	.LVL4:
+  65:main.c        **** 
+  66:main.c        ****   /* channel 0 with 50% duty cycle, 1 with 25% and 2 with 75% */
+  67:main.c        ****   pwmEnableChannel(&PWMD3, 0, 511);
+  54               		.loc 1 67 0
+  55 0034 4FEF      		ldi r20,lo8(-1)
+  56 0036 51E0      		ldi r21,lo8(1)
+  57 0038 60E0      		ldi r22,0
+  58 003a 80E0      		ldi r24,lo8(PWMD3)
+  59 003c 90E0      		ldi r25,hi8(PWMD3)
+  60 003e 0E94 0000 		call pwmEnableChannel
+  61               	.LVL5:
+  68:main.c        ****   pwmEnableChannel(&PWMD3, 1, 255);
+  62               		.loc 1 68 0
+  63 0042 4FEF      		ldi r20,lo8(-1)
+  64 0044 50E0      		ldi r21,0
+  65 0046 61E0      		ldi r22,lo8(1)
+  66 0048 80E0      		ldi r24,lo8(PWMD3)
+  67 004a 90E0      		ldi r25,hi8(PWMD3)
+  68 004c 0E94 0000 		call pwmEnableChannel
+  69               	.LVL6:
+  69:main.c        ****   pwmEnableChannel(&PWMD3, 2, 767);
+  70               		.loc 1 69 0
+  71 0050 4FEF      		ldi r20,lo8(-1)
+  72 0052 52E0      		ldi r21,lo8(2)
+  73 0054 62E0      		ldi r22,lo8(2)
+  74 0056 80E0      		ldi r24,lo8(PWMD3)
+  75 0058 90E0      		ldi r25,hi8(PWMD3)
+  76 005a 0E94 0000 		call pwmEnableChannel
+  77               	.LVL7:
+  70:main.c        **** 
+  71:main.c        ****   chSysInit();
+  78               		.loc 1 71 0
+  79 005e 0E94 0000 		call chSysInit
+  80               	.LVL8:
+  81               	.L2:
+  82 0062 00C0      		rjmp .L2
+  83               		.cfi_endproc
+  84               	.LFE143:
+  86               		.section	.data.pwm3cfg.3125,"aw",@progbits
+  89               	pwm3cfg.3125:
+  90 0000 FF03      		.word	1023
+  91 0002 FF03      		.word	1023
+  92 0004 0000      		.word	0
+  93 0006 01        		.byte	1
+  94 0007 0000      		.word	0
+  95 0009 01        		.byte	1
+  96 000a 0000      		.word	0
+  97 000c 01        		.byte	1
+  98 000d 0000      		.word	0
+  99               		.text
+ 100               	.Letext0:
+ 101               		.file 2 "/usr/lib/avr/include/stdint.h"
+ 102               		.file 3 "../../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 103               		.file 4 "../../../os/rt/include/chsystypes.h"
+ 104               		.file 5 "../../../os/rt/include/chschd.h"
+ 105               		.file 6 "../../../os/common/ports/AVR/chcore.h"
+ 106               		.file 7 "../../../os/rt/include/chsem.h"
+ 107               		.file 8 "../../../os/rt/include/chmtx.h"
+ 108               		.file 9 "../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.h"
+ 109               		.file 10 "../../../os/hal/include/hal_pwm.h"
+ 110               		.file 11 "../../../os/hal/ports/AVR/MEGA/TIMv1/hal_pwm_lld.h"
+ 111               		.file 12 "../../../os/hal/include/hal.h"
+ 112               		.file 13 "../../../os/rt/include/chsys.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/cc9tE7eJ.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc9tE7eJ.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc9tE7eJ.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc9tE7eJ.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/cc9tE7eJ.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc9tE7eJ.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc9tE7eJ.s:14     .text.startup.main:0000000000000000 main
+     /tmp/cc9tE7eJ.s:89     .data.pwm3cfg.3125:0000000000000000 pwm3cfg.3125
+
+UNDEFINED SYMBOLS
+halInit
+_pal_lld_setgroupmode
+PWMD3
+pwmStart
+pwmEnableChannel
+chSysInit
+__do_copy_data

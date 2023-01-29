@@ -1,0 +1,2409 @@
+   1               		.file	"hal_ext_lld.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               		.section	.text.ext_lld_set_intx_edges,"ax",@progbits
+  12               	.global	ext_lld_set_intx_edges
+  14               	ext_lld_set_intx_edges:
+  15               	.LFB143:
+  16               		.file 1 "../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c"
+   1:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*
+   2:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   ChibiOS - Copyright (C) 2016 Theodore Ateba
+   3:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+   4:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   Licensed under the Apache License, Version 2.0 (the "License");
+   5:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   you may not use this file except in compliance with the License.
+   6:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   You may obtain a copy of the License at
+   7:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+   8:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       http://www.apache.org/licenses/LICENSE-2.0
+   9:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+  10:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   Unless required by applicable law or agreed to in writing, software
+  11:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   distributed under the License is distributed on an "AS IS" BASIS,
+  12:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   See the License for the specific language governing permissions and
+  14:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   limitations under the License.
+  15:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** */
+  16:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+  17:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+  18:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @file  AVR/hal_ext_lld.c
+  19:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief AVR EXT subsystem low level driver source.
+  20:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+  21:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @addtogroup EXT
+  22:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @{
+  23:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+  24:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+  25:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #include "hal.h"
+  26:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+  27:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if HAL_USE_EXT || defined(__DOXYGEN__)
+  28:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+  29:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*===========================================================================*/
+  30:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /* Driver local definitions.                                                 */
+  31:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*===========================================================================*/
+  32:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+  33:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*===========================================================================*/
+  34:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /* Driver exported variables.                                                */
+  35:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*===========================================================================*/
+  36:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+  37:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+  38:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief EXTD1 driver identifier.
+  39:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+  40:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** EXTDriver EXTD1;
+  41:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+  42:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*===========================================================================*/
+  43:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /* Driver local variables and types.                                         */
+  44:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*===========================================================================*/
+  45:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+  46:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*===========================================================================*/
+  47:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /* Driver local functions.                                                   */
+  48:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*===========================================================================*/
+  49:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+  50:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+  51:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief   Set the INTx interrupt trigger front or state.
+  52:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+  53:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @param[in] channel   the channel to configure
+  54:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @param[in] edge      the front or state to configure
+  55:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+  56:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** void ext_lld_set_intx_edges(expchannel_t channel, uint8_t edge) {
+  17               		.loc 1 56 0
+  18               		.cfi_startproc
+  19               	.LVL0:
+  20               	/* prologue: function */
+  21               	/* frame size = 0 */
+  22               	/* stack size = 0 */
+  23               	.L__stack_usage = 0
+  57:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT0 || defined(__DOXYGEN__)
+  58:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT0) {
+  24               		.loc 1 58 0
+  25 0000 0097      		sbiw r24,0
+  26 0002 01F4      		brne .L2
+  59:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     if (edge == EXT_CH_MODE_RISING_EDGE) {
+  60:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 0);
+  27               		.loc 1 60 0
+  28 0004 2091 6900 		lds r18,105
+  59:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     if (edge == EXT_CH_MODE_RISING_EDGE) {
+  29               		.loc 1 59 0
+  30 0008 6130      		cpi r22,lo8(1)
+  31 000a 01F4      		brne .+2
+  32 000c 00C0      		rjmp .L33
+  61:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 1);
+  62:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+  63:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     else if (edge == EXT_CH_MODE_FALLING_EDGE) {
+  33               		.loc 1 63 0
+  34 000e 6230      		cpi r22,lo8(2)
+  35 0010 01F4      		brne .+2
+  36 0012 00C0      		rjmp .L34
+  64:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 0);
+  65:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 1);
+  66:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+  67:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     else if (edge == EXT_CH_MODE_BOTH_EDGES) {
+  37               		.loc 1 67 0
+  38 0014 6330      		cpi r22,lo8(3)
+  39 0016 01F4      		brne .+2
+  40 0018 00C0      		rjmp .L35
+  68:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 0);
+  69:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 1);
+  70:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+  71:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     else {
+  72:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 0);
+  41               		.loc 1 72 0
+  42 001a 2E7F      		andi r18,lo8(-2)
+  43 001c 2093 6900 		sts 105,r18
+  73:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 1);
+  44               		.loc 1 73 0
+  45 0020 2091 6900 		lds r18,105
+  46 0024 2D7F      		andi r18,lo8(-3)
+  47 0026 2093 6900 		sts 105,r18
+  48               	.L31:
+  74:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+  75:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+  76:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+  77:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT1 || defined(__DOXYGEN__)
+  78:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT1) {
+  79:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     if (edge == EXT_CH_MODE_RISING_EDGE) {
+  80:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 2);
+  81:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 3);
+  82:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_FALLING_EDGE) {
+  83:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 2);
+  84:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 3);
+  85:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_BOTH_EDGES) {
+  86:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 2);
+  87:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 3);
+  88:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else {
+  89:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 2);
+  90:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 3);
+  91:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+  92:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+  93:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+  94:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT2 || defined(__DOXYGEN__)
+  95:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT2) {
+  96:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     if (edge == EXT_CH_MODE_RISING_EDGE) {
+  97:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 4);
+  98:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 5);
+  99:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_FALLING_EDGE) {
+ 100:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 4);
+ 101:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 5);
+ 102:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_BOTH_EDGES) {
+ 103:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 4);
+ 104:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 5);
+ 105:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else {
+ 106:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 4);
+ 107:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 5);
+ 108:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+ 109:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 110:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 111:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT3 || defined(__DOXYGEN__)
+ 112:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT3) {
+ 113:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     if (edge == EXT_CH_MODE_RISING_EDGE) {
+ 114:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 6);
+ 115:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 7);
+ 116:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_FALLING_EDGE) {
+ 117:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 6);
+ 118:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 7);
+ 119:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_BOTH_EDGES) {
+ 120:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 6);
+ 121:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 7);
+ 122:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else {
+ 123:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 6);
+ 124:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 7);
+ 125:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+ 126:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 127:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 128:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT4 || defined(__DOXYGEN__)
+ 129:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT4) {
+ 130:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     if (edge == EXT_CH_MODE_RISING_EDGE) {
+ 131:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 0);
+ 132:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 1);
+ 133:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_FALLING_EDGE) {
+ 134:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB &= ~(1 << 0);
+ 135:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 1);
+ 136:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_BOTH_EDGES) {
+ 137:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 0);
+ 138:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB &= ~(1 << 1);
+ 139:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else {
+ 140:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB &= ~(1 << 0);
+ 141:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB &= ~(1 << 1);
+ 142:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+ 143:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 144:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 145:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT5 || defined(__DOXYGEN__)
+ 146:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT5) {
+  49               		.loc 1 146 0
+  50 002a 0597      		sbiw r24,5
+  51 002c 01F0      		breq .+2
+  52 002e 00C0      		rjmp .L36
+ 147:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     if (edge == EXT_CH_MODE_RISING_EDGE) {
+ 148:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 2);
+  53               		.loc 1 148 0
+  54 0030 8091 6A00 		lds r24,106
+  55               	.LVL1:
+ 147:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     if (edge == EXT_CH_MODE_RISING_EDGE) {
+  56               		.loc 1 147 0
+  57 0034 6130      		cpi r22,lo8(1)
+  58 0036 01F4      		brne .+2
+  59 0038 00C0      		rjmp .L37
+ 149:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 3);
+ 150:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_FALLING_EDGE) {
+  60               		.loc 1 150 0
+  61 003a 6230      		cpi r22,lo8(2)
+  62 003c 01F4      		brne .+2
+  63 003e 00C0      		rjmp .L38
+ 151:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB &= ~(1 << 2);
+ 152:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 3);
+ 153:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_BOTH_EDGES) {
+  64               		.loc 1 153 0
+  65 0040 6330      		cpi r22,lo8(3)
+  66 0042 01F4      		brne .+2
+  67 0044 00C0      		rjmp .L39
+ 154:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 2);
+ 155:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB &= ~(1 << 3);
+ 156:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else {
+ 157:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB &= ~(1 << 2);
+  68               		.loc 1 157 0
+  69 0046 8B7F      		andi r24,lo8(-5)
+  70 0048 8093 6A00 		sts 106,r24
+ 158:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB &= ~(1 << 3);
+  71               		.loc 1 158 0
+  72 004c 8091 6A00 		lds r24,106
+  73 0050 877F      		andi r24,lo8(-9)
+  74 0052 8093 6A00 		sts 106,r24
+ 159:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+ 160:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 161:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 162:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** }
+  75               		.loc 1 162 0
+  76 0056 0895      		ret
+  77               	.LVL2:
+  78               	.L2:
+  78:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     if (edge == EXT_CH_MODE_RISING_EDGE) {
+  79               		.loc 1 78 0
+  80 0058 8130      		cpi r24,1
+  81 005a 9105      		cpc r25,__zero_reg__
+  82 005c 01F4      		brne .L7
+  80:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 3);
+  83               		.loc 1 80 0
+  84 005e 2091 6900 		lds r18,105
+  79:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 2);
+  85               		.loc 1 79 0
+  86 0062 6130      		cpi r22,lo8(1)
+  87 0064 01F4      		brne .+2
+  88 0066 00C0      		rjmp .L40
+  82:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 2);
+  89               		.loc 1 82 0
+  90 0068 6230      		cpi r22,lo8(2)
+  91 006a 01F0      		breq .L41
+  85:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 2);
+  92               		.loc 1 85 0
+  93 006c 6330      		cpi r22,lo8(3)
+  94 006e 01F4      		brne .+2
+  95 0070 00C0      		rjmp .L42
+  89:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 3);
+  96               		.loc 1 89 0
+  97 0072 2B7F      		andi r18,lo8(-5)
+  98 0074 2093 6900 		sts 105,r18
+  90:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+  99               		.loc 1 90 0
+ 100 0078 2091 6900 		lds r18,105
+ 101 007c 277F      		andi r18,lo8(-9)
+ 102 007e 2093 6900 		sts 105,r18
+ 103 0082 00C0      		rjmp .L31
+ 104               	.L7:
+  95:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     if (edge == EXT_CH_MODE_RISING_EDGE) {
+ 105               		.loc 1 95 0
+ 106 0084 8230      		cpi r24,2
+ 107 0086 9105      		cpc r25,__zero_reg__
+ 108 0088 01F0      		breq .+2
+ 109 008a 00C0      		rjmp .L12
+  97:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 5);
+ 110               		.loc 1 97 0
+ 111 008c 8091 6900 		lds r24,105
+ 112               	.LVL3:
+  96:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 4);
+ 113               		.loc 1 96 0
+ 114 0090 6130      		cpi r22,lo8(1)
+ 115 0092 01F4      		brne .+2
+ 116 0094 00C0      		rjmp .L43
+  99:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 4);
+ 117               		.loc 1 99 0
+ 118 0096 6230      		cpi r22,lo8(2)
+ 119 0098 01F0      		breq .L44
+ 102:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 4);
+ 120               		.loc 1 102 0
+ 121 009a 6330      		cpi r22,lo8(3)
+ 122 009c 01F4      		brne .+2
+ 123 009e 00C0      		rjmp .L45
+ 106:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 5);
+ 124               		.loc 1 106 0
+ 125 00a0 8F7E      		andi r24,lo8(-17)
+ 126 00a2 8093 6900 		sts 105,r24
+ 107:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+ 127               		.loc 1 107 0
+ 128 00a6 8091 6900 		lds r24,105
+ 129 00aa 8F7D      		andi r24,lo8(-33)
+ 130 00ac 8093 6900 		sts 105,r24
+ 131 00b0 0895      		ret
+ 132               	.LVL4:
+ 133               	.L33:
+  60:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 1);
+ 134               		.loc 1 60 0
+ 135 00b2 2160      		ori r18,lo8(1)
+ 136 00b4 2093 6900 		sts 105,r18
+  61:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+ 137               		.loc 1 61 0
+ 138 00b8 2091 6900 		lds r18,105
+ 139 00bc 2260      		ori r18,lo8(2)
+ 140 00be 2093 6900 		sts 105,r18
+ 141 00c2 00C0      		rjmp .L31
+ 142               	.L35:
+  68:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 1);
+ 143               		.loc 1 68 0
+ 144 00c4 2160      		ori r18,lo8(1)
+ 145 00c6 2093 6900 		sts 105,r18
+  69:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+ 146               		.loc 1 69 0
+ 147 00ca 2091 6900 		lds r18,105
+ 148 00ce 2D7F      		andi r18,lo8(-3)
+ 149 00d0 2093 6900 		sts 105,r18
+ 150 00d4 00C0      		rjmp .L31
+ 151               	.L41:
+  83:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 3);
+ 152               		.loc 1 83 0
+ 153 00d6 2B7F      		andi r18,lo8(-5)
+ 154 00d8 2093 6900 		sts 105,r18
+  84:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_BOTH_EDGES) {
+ 155               		.loc 1 84 0
+ 156 00dc 2091 6900 		lds r18,105
+ 157 00e0 2860      		ori r18,lo8(8)
+ 158 00e2 2093 6900 		sts 105,r18
+ 159 00e6 00C0      		rjmp .L31
+ 160               	.LVL5:
+ 161               	.L44:
+ 100:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 5);
+ 162               		.loc 1 100 0
+ 163 00e8 8F7E      		andi r24,lo8(-17)
+ 164 00ea 8093 6900 		sts 105,r24
+ 101:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_BOTH_EDGES) {
+ 165               		.loc 1 101 0
+ 166 00ee 8091 6900 		lds r24,105
+ 167 00f2 8062      		ori r24,lo8(32)
+ 168 00f4 8093 6900 		sts 105,r24
+ 169 00f8 0895      		ret
+ 170               	.LVL6:
+ 171               	.L36:
+ 172 00fa 0895      		ret
+ 173               	.L34:
+  64:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 1);
+ 174               		.loc 1 64 0
+ 175 00fc 2E7F      		andi r18,lo8(-2)
+ 176 00fe 2093 6900 		sts 105,r18
+  65:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+ 177               		.loc 1 65 0
+ 178 0102 2091 6900 		lds r18,105
+ 179 0106 2260      		ori r18,lo8(2)
+ 180 0108 2093 6900 		sts 105,r18
+ 181 010c 00C0      		rjmp .L31
+ 182               	.L40:
+  80:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 3);
+ 183               		.loc 1 80 0
+ 184 010e 2460      		ori r18,lo8(4)
+ 185 0110 2093 6900 		sts 105,r18
+  81:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_FALLING_EDGE) {
+ 186               		.loc 1 81 0
+ 187 0114 2091 6900 		lds r18,105
+ 188 0118 2860      		ori r18,lo8(8)
+ 189 011a 2093 6900 		sts 105,r18
+ 190 011e 00C0      		rjmp .L31
+ 191               	.LVL7:
+ 192               	.L43:
+  97:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 5);
+ 193               		.loc 1 97 0
+ 194 0120 8061      		ori r24,lo8(16)
+ 195 0122 8093 6900 		sts 105,r24
+  98:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_FALLING_EDGE) {
+ 196               		.loc 1 98 0
+ 197 0126 8091 6900 		lds r24,105
+ 198 012a 8062      		ori r24,lo8(32)
+ 199 012c 8093 6900 		sts 105,r24
+ 200 0130 0895      		ret
+ 201               	.L37:
+ 148:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 3);
+ 202               		.loc 1 148 0
+ 203 0132 8460      		ori r24,lo8(4)
+ 204 0134 8093 6A00 		sts 106,r24
+ 149:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_FALLING_EDGE) {
+ 205               		.loc 1 149 0
+ 206 0138 8091 6A00 		lds r24,106
+ 207 013c 8860      		ori r24,lo8(8)
+ 208 013e 8093 6A00 		sts 106,r24
+ 209 0142 0895      		ret
+ 210               	.L38:
+ 151:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 3);
+ 211               		.loc 1 151 0
+ 212 0144 8B7F      		andi r24,lo8(-5)
+ 213 0146 8093 6A00 		sts 106,r24
+ 152:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_BOTH_EDGES) {
+ 214               		.loc 1 152 0
+ 215 014a 8091 6A00 		lds r24,106
+ 216 014e 8860      		ori r24,lo8(8)
+ 217 0150 8093 6A00 		sts 106,r24
+ 218 0154 0895      		ret
+ 219               	.L39:
+ 154:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB &= ~(1 << 3);
+ 220               		.loc 1 154 0
+ 221 0156 8460      		ori r24,lo8(4)
+ 222 0158 8093 6A00 		sts 106,r24
+ 155:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else {
+ 223               		.loc 1 155 0
+ 224 015c 8091 6A00 		lds r24,106
+ 225 0160 877F      		andi r24,lo8(-9)
+ 226 0162 8093 6A00 		sts 106,r24
+ 227 0166 0895      		ret
+ 228               	.LVL8:
+ 229               	.L42:
+  86:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 3);
+ 230               		.loc 1 86 0
+ 231 0168 2460      		ori r18,lo8(4)
+ 232 016a 2093 6900 		sts 105,r18
+  87:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else {
+ 233               		.loc 1 87 0
+ 234 016e 2091 6900 		lds r18,105
+ 235 0172 277F      		andi r18,lo8(-9)
+ 236 0174 2093 6900 		sts 105,r18
+ 237 0178 00C0      		rjmp .L31
+ 238               	.LVL9:
+ 239               	.L45:
+ 103:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 5);
+ 240               		.loc 1 103 0
+ 241 017a 8061      		ori r24,lo8(16)
+ 242 017c 8093 6900 		sts 105,r24
+ 104:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else {
+ 243               		.loc 1 104 0
+ 244 0180 8091 6900 		lds r24,105
+ 245 0184 8F7D      		andi r24,lo8(-33)
+ 246 0186 8093 6900 		sts 105,r24
+ 247 018a 0895      		ret
+ 248               	.LVL10:
+ 249               	.L12:
+ 112:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     if (edge == EXT_CH_MODE_RISING_EDGE) {
+ 250               		.loc 1 112 0
+ 251 018c 8330      		cpi r24,3
+ 252 018e 9105      		cpc r25,__zero_reg__
+ 253 0190 01F4      		brne .L46
+ 114:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 7);
+ 254               		.loc 1 114 0
+ 255 0192 8091 6900 		lds r24,105
+ 256               	.LVL11:
+ 113:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 6);
+ 257               		.loc 1 113 0
+ 258 0196 6130      		cpi r22,lo8(1)
+ 259 0198 01F0      		breq .L47
+ 116:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 6);
+ 260               		.loc 1 116 0
+ 261 019a 6230      		cpi r22,lo8(2)
+ 262 019c 01F0      		breq .L48
+ 119:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 6);
+ 263               		.loc 1 119 0
+ 264 019e 6330      		cpi r22,lo8(3)
+ 265 01a0 01F0      		breq .L49
+ 123:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 7);
+ 266               		.loc 1 123 0
+ 267 01a2 8F7B      		andi r24,lo8(-65)
+ 268 01a4 8093 6900 		sts 105,r24
+ 124:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+ 269               		.loc 1 124 0
+ 270 01a8 8091 6900 		lds r24,105
+ 271 01ac 8F77      		andi r24,lo8(127)
+ 272 01ae 8093 6900 		sts 105,r24
+ 273 01b2 0895      		ret
+ 274               	.L47:
+ 114:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 7);
+ 275               		.loc 1 114 0
+ 276 01b4 8064      		ori r24,lo8(64)
+ 277 01b6 8093 6900 		sts 105,r24
+ 115:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_FALLING_EDGE) {
+ 278               		.loc 1 115 0
+ 279 01ba 8091 6900 		lds r24,105
+ 280 01be 8068      		ori r24,lo8(-128)
+ 281 01c0 8093 6900 		sts 105,r24
+ 282 01c4 0895      		ret
+ 283               	.L48:
+ 117:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA |= (1 << 7);
+ 284               		.loc 1 117 0
+ 285 01c6 8F7B      		andi r24,lo8(-65)
+ 286 01c8 8093 6900 		sts 105,r24
+ 118:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_BOTH_EDGES) {
+ 287               		.loc 1 118 0
+ 288 01cc 8091 6900 		lds r24,105
+ 289 01d0 8068      		ori r24,lo8(-128)
+ 290 01d2 8093 6900 		sts 105,r24
+ 291 01d6 0895      		ret
+ 292               	.L49:
+ 120:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRA &= ~(1 << 7);
+ 293               		.loc 1 120 0
+ 294 01d8 8064      		ori r24,lo8(64)
+ 295 01da 8093 6900 		sts 105,r24
+ 121:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else {
+ 296               		.loc 1 121 0
+ 297 01de 8091 6900 		lds r24,105
+ 298 01e2 8F77      		andi r24,lo8(127)
+ 299 01e4 8093 6900 		sts 105,r24
+ 300 01e8 0895      		ret
+ 301               	.LVL12:
+ 302               	.L46:
+ 129:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     if (edge == EXT_CH_MODE_RISING_EDGE) {
+ 303               		.loc 1 129 0
+ 304 01ea 8430      		cpi r24,4
+ 305 01ec 9105      		cpc r25,__zero_reg__
+ 306 01ee 01F0      		breq .+2
+ 307 01f0 00C0      		rjmp .L31
+ 131:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 1);
+ 308               		.loc 1 131 0
+ 309 01f2 8091 6A00 		lds r24,106
+ 310               	.LVL13:
+ 130:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 0);
+ 311               		.loc 1 130 0
+ 312 01f6 6130      		cpi r22,lo8(1)
+ 313 01f8 01F0      		breq .L50
+ 133:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB &= ~(1 << 0);
+ 314               		.loc 1 133 0
+ 315 01fa 6230      		cpi r22,lo8(2)
+ 316 01fc 01F0      		breq .L51
+ 136:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 0);
+ 317               		.loc 1 136 0
+ 318 01fe 6330      		cpi r22,lo8(3)
+ 319 0200 01F0      		breq .L52
+ 140:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB &= ~(1 << 1);
+ 320               		.loc 1 140 0
+ 321 0202 8E7F      		andi r24,lo8(-2)
+ 322 0204 8093 6A00 		sts 106,r24
+ 141:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     }
+ 323               		.loc 1 141 0
+ 324 0208 8091 6A00 		lds r24,106
+ 325 020c 8D7F      		andi r24,lo8(-3)
+ 326 020e 8093 6A00 		sts 106,r24
+ 327 0212 0895      		ret
+ 328               	.L50:
+ 131:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 1);
+ 329               		.loc 1 131 0
+ 330 0214 8160      		ori r24,lo8(1)
+ 331 0216 8093 6A00 		sts 106,r24
+ 132:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_FALLING_EDGE) {
+ 332               		.loc 1 132 0
+ 333 021a 8091 6A00 		lds r24,106
+ 334 021e 8260      		ori r24,lo8(2)
+ 335 0220 8093 6A00 		sts 106,r24
+ 336 0224 0895      		ret
+ 337               	.L51:
+ 134:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB |= (1 << 1);
+ 338               		.loc 1 134 0
+ 339 0226 8E7F      		andi r24,lo8(-2)
+ 340 0228 8093 6A00 		sts 106,r24
+ 135:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else if (edge == EXT_CH_MODE_BOTH_EDGES) {
+ 341               		.loc 1 135 0
+ 342 022c 8091 6A00 		lds r24,106
+ 343 0230 8260      		ori r24,lo8(2)
+ 344 0232 8093 6A00 		sts 106,r24
+ 345 0236 0895      		ret
+ 346               	.L52:
+ 137:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       EICRB &= ~(1 << 1);
+ 347               		.loc 1 137 0
+ 348 0238 8160      		ori r24,lo8(1)
+ 349 023a 8093 6A00 		sts 106,r24
+ 138:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     } else {
+ 350               		.loc 1 138 0
+ 351 023e 8091 6A00 		lds r24,106
+ 352 0242 8D7F      		andi r24,lo8(-3)
+ 353 0244 8093 6A00 		sts 106,r24
+ 354 0248 0895      		ret
+ 355               		.cfi_endproc
+ 356               	.LFE143:
+ 358               		.section	.text.__vector_1,"ax",@progbits
+ 359               	.global	__vector_1
+ 361               	__vector_1:
+ 362               	.LFB144:
+ 163:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 164:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*===========================================================================*/
+ 165:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /* Driver interrupt handlers.                                                */
+ 166:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*===========================================================================*/
+ 167:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 168:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT0 || defined(__DOXYGEN__)
+ 169:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+ 170:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief EXTI[INT0] interrupt handler.
+ 171:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 172:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @isr
+ 173:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+ 174:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** OSAL_IRQ_HANDLER(INT0_vect) {
+ 363               		.loc 1 174 0
+ 364               		.cfi_startproc
+ 365 0000 1F92      		push r1
+ 366               	.LCFI0:
+ 367               		.cfi_def_cfa_offset 4
+ 368               		.cfi_offset 1, -3
+ 369 0002 0F92      		push r0
+ 370               	.LCFI1:
+ 371               		.cfi_def_cfa_offset 5
+ 372               		.cfi_offset 0, -4
+ 373 0004 0FB6      		in r0,__SREG__
+ 374 0006 0F92      		push r0
+ 375 0008 1124      		clr __zero_reg__
+ 376 000a 0BB6      		in r0,__RAMPZ__
+ 377 000c 0F92      		push r0
+ 378 000e 2F93      		push r18
+ 379               	.LCFI2:
+ 380               		.cfi_def_cfa_offset 6
+ 381               		.cfi_offset 18, -5
+ 382 0010 3F93      		push r19
+ 383               	.LCFI3:
+ 384               		.cfi_def_cfa_offset 7
+ 385               		.cfi_offset 19, -6
+ 386 0012 4F93      		push r20
+ 387               	.LCFI4:
+ 388               		.cfi_def_cfa_offset 8
+ 389               		.cfi_offset 20, -7
+ 390 0014 5F93      		push r21
+ 391               	.LCFI5:
+ 392               		.cfi_def_cfa_offset 9
+ 393               		.cfi_offset 21, -8
+ 394 0016 6F93      		push r22
+ 395               	.LCFI6:
+ 396               		.cfi_def_cfa_offset 10
+ 397               		.cfi_offset 22, -9
+ 398 0018 7F93      		push r23
+ 399               	.LCFI7:
+ 400               		.cfi_def_cfa_offset 11
+ 401               		.cfi_offset 23, -10
+ 402 001a 8F93      		push r24
+ 403               	.LCFI8:
+ 404               		.cfi_def_cfa_offset 12
+ 405               		.cfi_offset 24, -11
+ 406 001c 9F93      		push r25
+ 407               	.LCFI9:
+ 408               		.cfi_def_cfa_offset 13
+ 409               		.cfi_offset 25, -12
+ 410 001e AF93      		push r26
+ 411               	.LCFI10:
+ 412               		.cfi_def_cfa_offset 14
+ 413               		.cfi_offset 26, -13
+ 414 0020 BF93      		push r27
+ 415               	.LCFI11:
+ 416               		.cfi_def_cfa_offset 15
+ 417               		.cfi_offset 27, -14
+ 418 0022 EF93      		push r30
+ 419               	.LCFI12:
+ 420               		.cfi_def_cfa_offset 16
+ 421               		.cfi_offset 30, -15
+ 422 0024 FF93      		push r31
+ 423               	.LCFI13:
+ 424               		.cfi_def_cfa_offset 17
+ 425               		.cfi_offset 31, -16
+ 426               	/* prologue: Signal */
+ 427               	/* frame size = 0 */
+ 428               	/* stack size = 16 */
+ 429               	.L__stack_usage = 16
+ 175:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 430               		.loc 1 175 0
+ 431 0026 81E0      		ldi r24,lo8(1)
+ 432 0028 8093 0000 		sts __avr_in_isr,r24
+ 176:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   EXTD1.config->channels[INT0].cb(&EXTD1, INT0);
+ 433               		.loc 1 176 0
+ 434 002c E091 0000 		lds r30,EXTD1+1
+ 435 0030 F091 0000 		lds r31,EXTD1+1+1
+ 436 0034 0480      		ldd __tmp_reg__,Z+4
+ 437 0036 F581      		ldd r31,Z+5
+ 438 0038 E02D      		mov r30,__tmp_reg__
+ 439 003a 60E0      		ldi r22,0
+ 440 003c 70E0      		ldi r23,0
+ 441 003e 80E0      		ldi r24,lo8(EXTD1)
+ 442 0040 90E0      		ldi r25,hi8(EXTD1)
+ 443 0042 1995      		eicall
+ 444               	.LVL14:
+ 177:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 445               		.loc 1 177 0
+ 446 0044 1092 0000 		sts __avr_in_isr,__zero_reg__
+ 447 0048 0E94 0000 		call chSchIsPreemptionRequired
+ 448               	.LVL15:
+ 449 004c 8111      		cpse r24,__zero_reg__
+ 450               		.loc 1 177 0 is_stmt 0 discriminator 1
+ 451 004e 0E94 0000 		call chSchDoReschedule
+ 452               	.LVL16:
+ 453               	.L53:
+ 454               	/* epilogue start */
+ 178:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** }
+ 455               		.loc 1 178 0 is_stmt 1
+ 456 0052 FF91      		pop r31
+ 457 0054 EF91      		pop r30
+ 458 0056 BF91      		pop r27
+ 459 0058 AF91      		pop r26
+ 460 005a 9F91      		pop r25
+ 461 005c 8F91      		pop r24
+ 462 005e 7F91      		pop r23
+ 463 0060 6F91      		pop r22
+ 464 0062 5F91      		pop r21
+ 465 0064 4F91      		pop r20
+ 466 0066 3F91      		pop r19
+ 467 0068 2F91      		pop r18
+ 468 006a 0F90      		pop r0
+ 469 006c 0BBE      		out __RAMPZ__,r0
+ 470 006e 0F90      		pop r0
+ 471 0070 0FBE      		out __SREG__,r0
+ 472 0072 0F90      		pop r0
+ 473 0074 1F90      		pop r1
+ 474 0076 1895      		reti
+ 475               		.cfi_endproc
+ 476               	.LFE144:
+ 478               		.section	.text.__vector_2,"ax",@progbits
+ 479               	.global	__vector_2
+ 481               	__vector_2:
+ 482               	.LFB145:
+ 179:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 180:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 181:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT1 || defined(__DOXYGEN__)
+ 182:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+ 183:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief EXTI[INT1] interrupt handler.
+ 184:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 185:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @isr
+ 186:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+ 187:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** OSAL_IRQ_HANDLER(INT1_vect) {
+ 483               		.loc 1 187 0
+ 484               		.cfi_startproc
+ 485 0000 1F92      		push r1
+ 486               	.LCFI14:
+ 487               		.cfi_def_cfa_offset 4
+ 488               		.cfi_offset 1, -3
+ 489 0002 0F92      		push r0
+ 490               	.LCFI15:
+ 491               		.cfi_def_cfa_offset 5
+ 492               		.cfi_offset 0, -4
+ 493 0004 0FB6      		in r0,__SREG__
+ 494 0006 0F92      		push r0
+ 495 0008 1124      		clr __zero_reg__
+ 496 000a 0BB6      		in r0,__RAMPZ__
+ 497 000c 0F92      		push r0
+ 498 000e 2F93      		push r18
+ 499               	.LCFI16:
+ 500               		.cfi_def_cfa_offset 6
+ 501               		.cfi_offset 18, -5
+ 502 0010 3F93      		push r19
+ 503               	.LCFI17:
+ 504               		.cfi_def_cfa_offset 7
+ 505               		.cfi_offset 19, -6
+ 506 0012 4F93      		push r20
+ 507               	.LCFI18:
+ 508               		.cfi_def_cfa_offset 8
+ 509               		.cfi_offset 20, -7
+ 510 0014 5F93      		push r21
+ 511               	.LCFI19:
+ 512               		.cfi_def_cfa_offset 9
+ 513               		.cfi_offset 21, -8
+ 514 0016 6F93      		push r22
+ 515               	.LCFI20:
+ 516               		.cfi_def_cfa_offset 10
+ 517               		.cfi_offset 22, -9
+ 518 0018 7F93      		push r23
+ 519               	.LCFI21:
+ 520               		.cfi_def_cfa_offset 11
+ 521               		.cfi_offset 23, -10
+ 522 001a 8F93      		push r24
+ 523               	.LCFI22:
+ 524               		.cfi_def_cfa_offset 12
+ 525               		.cfi_offset 24, -11
+ 526 001c 9F93      		push r25
+ 527               	.LCFI23:
+ 528               		.cfi_def_cfa_offset 13
+ 529               		.cfi_offset 25, -12
+ 530 001e AF93      		push r26
+ 531               	.LCFI24:
+ 532               		.cfi_def_cfa_offset 14
+ 533               		.cfi_offset 26, -13
+ 534 0020 BF93      		push r27
+ 535               	.LCFI25:
+ 536               		.cfi_def_cfa_offset 15
+ 537               		.cfi_offset 27, -14
+ 538 0022 EF93      		push r30
+ 539               	.LCFI26:
+ 540               		.cfi_def_cfa_offset 16
+ 541               		.cfi_offset 30, -15
+ 542 0024 FF93      		push r31
+ 543               	.LCFI27:
+ 544               		.cfi_def_cfa_offset 17
+ 545               		.cfi_offset 31, -16
+ 546               	/* prologue: Signal */
+ 547               	/* frame size = 0 */
+ 548               	/* stack size = 16 */
+ 549               	.L__stack_usage = 16
+ 188:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 550               		.loc 1 188 0
+ 551 0026 81E0      		ldi r24,lo8(1)
+ 552 0028 8093 0000 		sts __avr_in_isr,r24
+ 189:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   EXTD1.config->channels[INT1].cb(&EXTD1, INT1);
+ 553               		.loc 1 189 0
+ 554 002c E091 0000 		lds r30,EXTD1+1
+ 555 0030 F091 0000 		lds r31,EXTD1+1+1
+ 556 0034 0284      		ldd __tmp_reg__,Z+10
+ 557 0036 F385      		ldd r31,Z+11
+ 558 0038 E02D      		mov r30,__tmp_reg__
+ 559 003a 61E0      		ldi r22,lo8(1)
+ 560 003c 70E0      		ldi r23,0
+ 561 003e 80E0      		ldi r24,lo8(EXTD1)
+ 562 0040 90E0      		ldi r25,hi8(EXTD1)
+ 563 0042 1995      		eicall
+ 564               	.LVL17:
+ 190:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 565               		.loc 1 190 0
+ 566 0044 1092 0000 		sts __avr_in_isr,__zero_reg__
+ 567 0048 0E94 0000 		call chSchIsPreemptionRequired
+ 568               	.LVL18:
+ 569 004c 8111      		cpse r24,__zero_reg__
+ 570               		.loc 1 190 0 is_stmt 0 discriminator 1
+ 571 004e 0E94 0000 		call chSchDoReschedule
+ 572               	.LVL19:
+ 573               	.L58:
+ 574               	/* epilogue start */
+ 191:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** }
+ 575               		.loc 1 191 0 is_stmt 1
+ 576 0052 FF91      		pop r31
+ 577 0054 EF91      		pop r30
+ 578 0056 BF91      		pop r27
+ 579 0058 AF91      		pop r26
+ 580 005a 9F91      		pop r25
+ 581 005c 8F91      		pop r24
+ 582 005e 7F91      		pop r23
+ 583 0060 6F91      		pop r22
+ 584 0062 5F91      		pop r21
+ 585 0064 4F91      		pop r20
+ 586 0066 3F91      		pop r19
+ 587 0068 2F91      		pop r18
+ 588 006a 0F90      		pop r0
+ 589 006c 0BBE      		out __RAMPZ__,r0
+ 590 006e 0F90      		pop r0
+ 591 0070 0FBE      		out __SREG__,r0
+ 592 0072 0F90      		pop r0
+ 593 0074 1F90      		pop r1
+ 594 0076 1895      		reti
+ 595               		.cfi_endproc
+ 596               	.LFE145:
+ 598               		.section	.text.__vector_3,"ax",@progbits
+ 599               	.global	__vector_3
+ 601               	__vector_3:
+ 602               	.LFB146:
+ 192:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 193:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 194:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT2 || defined(__DOXYGEN__)
+ 195:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+ 196:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief EXTI[INT2] interrupt handler.
+ 197:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 198:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @isr
+ 199:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+ 200:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** OSAL_IRQ_HANDLER(INT2_vect) {
+ 603               		.loc 1 200 0
+ 604               		.cfi_startproc
+ 605 0000 1F92      		push r1
+ 606               	.LCFI28:
+ 607               		.cfi_def_cfa_offset 4
+ 608               		.cfi_offset 1, -3
+ 609 0002 0F92      		push r0
+ 610               	.LCFI29:
+ 611               		.cfi_def_cfa_offset 5
+ 612               		.cfi_offset 0, -4
+ 613 0004 0FB6      		in r0,__SREG__
+ 614 0006 0F92      		push r0
+ 615 0008 1124      		clr __zero_reg__
+ 616 000a 0BB6      		in r0,__RAMPZ__
+ 617 000c 0F92      		push r0
+ 618 000e 2F93      		push r18
+ 619               	.LCFI30:
+ 620               		.cfi_def_cfa_offset 6
+ 621               		.cfi_offset 18, -5
+ 622 0010 3F93      		push r19
+ 623               	.LCFI31:
+ 624               		.cfi_def_cfa_offset 7
+ 625               		.cfi_offset 19, -6
+ 626 0012 4F93      		push r20
+ 627               	.LCFI32:
+ 628               		.cfi_def_cfa_offset 8
+ 629               		.cfi_offset 20, -7
+ 630 0014 5F93      		push r21
+ 631               	.LCFI33:
+ 632               		.cfi_def_cfa_offset 9
+ 633               		.cfi_offset 21, -8
+ 634 0016 6F93      		push r22
+ 635               	.LCFI34:
+ 636               		.cfi_def_cfa_offset 10
+ 637               		.cfi_offset 22, -9
+ 638 0018 7F93      		push r23
+ 639               	.LCFI35:
+ 640               		.cfi_def_cfa_offset 11
+ 641               		.cfi_offset 23, -10
+ 642 001a 8F93      		push r24
+ 643               	.LCFI36:
+ 644               		.cfi_def_cfa_offset 12
+ 645               		.cfi_offset 24, -11
+ 646 001c 9F93      		push r25
+ 647               	.LCFI37:
+ 648               		.cfi_def_cfa_offset 13
+ 649               		.cfi_offset 25, -12
+ 650 001e AF93      		push r26
+ 651               	.LCFI38:
+ 652               		.cfi_def_cfa_offset 14
+ 653               		.cfi_offset 26, -13
+ 654 0020 BF93      		push r27
+ 655               	.LCFI39:
+ 656               		.cfi_def_cfa_offset 15
+ 657               		.cfi_offset 27, -14
+ 658 0022 EF93      		push r30
+ 659               	.LCFI40:
+ 660               		.cfi_def_cfa_offset 16
+ 661               		.cfi_offset 30, -15
+ 662 0024 FF93      		push r31
+ 663               	.LCFI41:
+ 664               		.cfi_def_cfa_offset 17
+ 665               		.cfi_offset 31, -16
+ 666               	/* prologue: Signal */
+ 667               	/* frame size = 0 */
+ 668               	/* stack size = 16 */
+ 669               	.L__stack_usage = 16
+ 201:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 670               		.loc 1 201 0
+ 671 0026 81E0      		ldi r24,lo8(1)
+ 672 0028 8093 0000 		sts __avr_in_isr,r24
+ 202:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   EXTD1.config->channels[INT2].cb(&EXTD1, INT2);
+ 673               		.loc 1 202 0
+ 674 002c E091 0000 		lds r30,EXTD1+1
+ 675 0030 F091 0000 		lds r31,EXTD1+1+1
+ 676 0034 0088      		ldd __tmp_reg__,Z+16
+ 677 0036 F189      		ldd r31,Z+17
+ 678 0038 E02D      		mov r30,__tmp_reg__
+ 679 003a 62E0      		ldi r22,lo8(2)
+ 680 003c 70E0      		ldi r23,0
+ 681 003e 80E0      		ldi r24,lo8(EXTD1)
+ 682 0040 90E0      		ldi r25,hi8(EXTD1)
+ 683 0042 1995      		eicall
+ 684               	.LVL20:
+ 203:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 685               		.loc 1 203 0
+ 686 0044 1092 0000 		sts __avr_in_isr,__zero_reg__
+ 687 0048 0E94 0000 		call chSchIsPreemptionRequired
+ 688               	.LVL21:
+ 689 004c 8111      		cpse r24,__zero_reg__
+ 690               		.loc 1 203 0 is_stmt 0 discriminator 1
+ 691 004e 0E94 0000 		call chSchDoReschedule
+ 692               	.LVL22:
+ 693               	.L63:
+ 694               	/* epilogue start */
+ 204:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** }
+ 695               		.loc 1 204 0 is_stmt 1
+ 696 0052 FF91      		pop r31
+ 697 0054 EF91      		pop r30
+ 698 0056 BF91      		pop r27
+ 699 0058 AF91      		pop r26
+ 700 005a 9F91      		pop r25
+ 701 005c 8F91      		pop r24
+ 702 005e 7F91      		pop r23
+ 703 0060 6F91      		pop r22
+ 704 0062 5F91      		pop r21
+ 705 0064 4F91      		pop r20
+ 706 0066 3F91      		pop r19
+ 707 0068 2F91      		pop r18
+ 708 006a 0F90      		pop r0
+ 709 006c 0BBE      		out __RAMPZ__,r0
+ 710 006e 0F90      		pop r0
+ 711 0070 0FBE      		out __SREG__,r0
+ 712 0072 0F90      		pop r0
+ 713 0074 1F90      		pop r1
+ 714 0076 1895      		reti
+ 715               		.cfi_endproc
+ 716               	.LFE146:
+ 718               		.section	.text.__vector_4,"ax",@progbits
+ 719               	.global	__vector_4
+ 721               	__vector_4:
+ 722               	.LFB147:
+ 205:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 206:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 207:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT3 || defined(__DOXYGEN__)
+ 208:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+ 209:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief EXTI[INT3] interrupt handler.
+ 210:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 211:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @isr
+ 212:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+ 213:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** OSAL_IRQ_HANDLER(INT3_vect) {
+ 723               		.loc 1 213 0
+ 724               		.cfi_startproc
+ 725 0000 1F92      		push r1
+ 726               	.LCFI42:
+ 727               		.cfi_def_cfa_offset 4
+ 728               		.cfi_offset 1, -3
+ 729 0002 0F92      		push r0
+ 730               	.LCFI43:
+ 731               		.cfi_def_cfa_offset 5
+ 732               		.cfi_offset 0, -4
+ 733 0004 0FB6      		in r0,__SREG__
+ 734 0006 0F92      		push r0
+ 735 0008 1124      		clr __zero_reg__
+ 736 000a 0BB6      		in r0,__RAMPZ__
+ 737 000c 0F92      		push r0
+ 738 000e 2F93      		push r18
+ 739               	.LCFI44:
+ 740               		.cfi_def_cfa_offset 6
+ 741               		.cfi_offset 18, -5
+ 742 0010 3F93      		push r19
+ 743               	.LCFI45:
+ 744               		.cfi_def_cfa_offset 7
+ 745               		.cfi_offset 19, -6
+ 746 0012 4F93      		push r20
+ 747               	.LCFI46:
+ 748               		.cfi_def_cfa_offset 8
+ 749               		.cfi_offset 20, -7
+ 750 0014 5F93      		push r21
+ 751               	.LCFI47:
+ 752               		.cfi_def_cfa_offset 9
+ 753               		.cfi_offset 21, -8
+ 754 0016 6F93      		push r22
+ 755               	.LCFI48:
+ 756               		.cfi_def_cfa_offset 10
+ 757               		.cfi_offset 22, -9
+ 758 0018 7F93      		push r23
+ 759               	.LCFI49:
+ 760               		.cfi_def_cfa_offset 11
+ 761               		.cfi_offset 23, -10
+ 762 001a 8F93      		push r24
+ 763               	.LCFI50:
+ 764               		.cfi_def_cfa_offset 12
+ 765               		.cfi_offset 24, -11
+ 766 001c 9F93      		push r25
+ 767               	.LCFI51:
+ 768               		.cfi_def_cfa_offset 13
+ 769               		.cfi_offset 25, -12
+ 770 001e AF93      		push r26
+ 771               	.LCFI52:
+ 772               		.cfi_def_cfa_offset 14
+ 773               		.cfi_offset 26, -13
+ 774 0020 BF93      		push r27
+ 775               	.LCFI53:
+ 776               		.cfi_def_cfa_offset 15
+ 777               		.cfi_offset 27, -14
+ 778 0022 EF93      		push r30
+ 779               	.LCFI54:
+ 780               		.cfi_def_cfa_offset 16
+ 781               		.cfi_offset 30, -15
+ 782 0024 FF93      		push r31
+ 783               	.LCFI55:
+ 784               		.cfi_def_cfa_offset 17
+ 785               		.cfi_offset 31, -16
+ 786               	/* prologue: Signal */
+ 787               	/* frame size = 0 */
+ 788               	/* stack size = 16 */
+ 789               	.L__stack_usage = 16
+ 214:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 790               		.loc 1 214 0
+ 791 0026 81E0      		ldi r24,lo8(1)
+ 792 0028 8093 0000 		sts __avr_in_isr,r24
+ 215:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   EXTD1.config->channels[INT3].cb(&EXTD1, INT3);
+ 793               		.loc 1 215 0
+ 794 002c E091 0000 		lds r30,EXTD1+1
+ 795 0030 F091 0000 		lds r31,EXTD1+1+1
+ 796 0034 0688      		ldd __tmp_reg__,Z+22
+ 797 0036 F789      		ldd r31,Z+23
+ 798 0038 E02D      		mov r30,__tmp_reg__
+ 799 003a 63E0      		ldi r22,lo8(3)
+ 800 003c 70E0      		ldi r23,0
+ 801 003e 80E0      		ldi r24,lo8(EXTD1)
+ 802 0040 90E0      		ldi r25,hi8(EXTD1)
+ 803 0042 1995      		eicall
+ 804               	.LVL23:
+ 216:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 805               		.loc 1 216 0
+ 806 0044 1092 0000 		sts __avr_in_isr,__zero_reg__
+ 807 0048 0E94 0000 		call chSchIsPreemptionRequired
+ 808               	.LVL24:
+ 809 004c 8111      		cpse r24,__zero_reg__
+ 810               		.loc 1 216 0 is_stmt 0 discriminator 1
+ 811 004e 0E94 0000 		call chSchDoReschedule
+ 812               	.LVL25:
+ 813               	.L68:
+ 814               	/* epilogue start */
+ 217:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** }
+ 815               		.loc 1 217 0 is_stmt 1
+ 816 0052 FF91      		pop r31
+ 817 0054 EF91      		pop r30
+ 818 0056 BF91      		pop r27
+ 819 0058 AF91      		pop r26
+ 820 005a 9F91      		pop r25
+ 821 005c 8F91      		pop r24
+ 822 005e 7F91      		pop r23
+ 823 0060 6F91      		pop r22
+ 824 0062 5F91      		pop r21
+ 825 0064 4F91      		pop r20
+ 826 0066 3F91      		pop r19
+ 827 0068 2F91      		pop r18
+ 828 006a 0F90      		pop r0
+ 829 006c 0BBE      		out __RAMPZ__,r0
+ 830 006e 0F90      		pop r0
+ 831 0070 0FBE      		out __SREG__,r0
+ 832 0072 0F90      		pop r0
+ 833 0074 1F90      		pop r1
+ 834 0076 1895      		reti
+ 835               		.cfi_endproc
+ 836               	.LFE147:
+ 838               		.section	.text.__vector_5,"ax",@progbits
+ 839               	.global	__vector_5
+ 841               	__vector_5:
+ 842               	.LFB148:
+ 218:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 219:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 220:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT4 || defined(__DOXYGEN__)
+ 221:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+ 222:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief EXTI[INT4] interrupt handler.
+ 223:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 224:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @isr
+ 225:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+ 226:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** OSAL_IRQ_HANDLER(INT4_vect) {
+ 843               		.loc 1 226 0
+ 844               		.cfi_startproc
+ 845 0000 1F92      		push r1
+ 846               	.LCFI56:
+ 847               		.cfi_def_cfa_offset 4
+ 848               		.cfi_offset 1, -3
+ 849 0002 0F92      		push r0
+ 850               	.LCFI57:
+ 851               		.cfi_def_cfa_offset 5
+ 852               		.cfi_offset 0, -4
+ 853 0004 0FB6      		in r0,__SREG__
+ 854 0006 0F92      		push r0
+ 855 0008 1124      		clr __zero_reg__
+ 856 000a 0BB6      		in r0,__RAMPZ__
+ 857 000c 0F92      		push r0
+ 858 000e 2F93      		push r18
+ 859               	.LCFI58:
+ 860               		.cfi_def_cfa_offset 6
+ 861               		.cfi_offset 18, -5
+ 862 0010 3F93      		push r19
+ 863               	.LCFI59:
+ 864               		.cfi_def_cfa_offset 7
+ 865               		.cfi_offset 19, -6
+ 866 0012 4F93      		push r20
+ 867               	.LCFI60:
+ 868               		.cfi_def_cfa_offset 8
+ 869               		.cfi_offset 20, -7
+ 870 0014 5F93      		push r21
+ 871               	.LCFI61:
+ 872               		.cfi_def_cfa_offset 9
+ 873               		.cfi_offset 21, -8
+ 874 0016 6F93      		push r22
+ 875               	.LCFI62:
+ 876               		.cfi_def_cfa_offset 10
+ 877               		.cfi_offset 22, -9
+ 878 0018 7F93      		push r23
+ 879               	.LCFI63:
+ 880               		.cfi_def_cfa_offset 11
+ 881               		.cfi_offset 23, -10
+ 882 001a 8F93      		push r24
+ 883               	.LCFI64:
+ 884               		.cfi_def_cfa_offset 12
+ 885               		.cfi_offset 24, -11
+ 886 001c 9F93      		push r25
+ 887               	.LCFI65:
+ 888               		.cfi_def_cfa_offset 13
+ 889               		.cfi_offset 25, -12
+ 890 001e AF93      		push r26
+ 891               	.LCFI66:
+ 892               		.cfi_def_cfa_offset 14
+ 893               		.cfi_offset 26, -13
+ 894 0020 BF93      		push r27
+ 895               	.LCFI67:
+ 896               		.cfi_def_cfa_offset 15
+ 897               		.cfi_offset 27, -14
+ 898 0022 EF93      		push r30
+ 899               	.LCFI68:
+ 900               		.cfi_def_cfa_offset 16
+ 901               		.cfi_offset 30, -15
+ 902 0024 FF93      		push r31
+ 903               	.LCFI69:
+ 904               		.cfi_def_cfa_offset 17
+ 905               		.cfi_offset 31, -16
+ 906               	/* prologue: Signal */
+ 907               	/* frame size = 0 */
+ 908               	/* stack size = 16 */
+ 909               	.L__stack_usage = 16
+ 227:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 910               		.loc 1 227 0
+ 911 0026 81E0      		ldi r24,lo8(1)
+ 912 0028 8093 0000 		sts __avr_in_isr,r24
+ 228:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   EXTD1.config->channels[INT4].cb(&EXTD1, INT4);
+ 913               		.loc 1 228 0
+ 914 002c E091 0000 		lds r30,EXTD1+1
+ 915 0030 F091 0000 		lds r31,EXTD1+1+1
+ 916 0034 048C      		ldd __tmp_reg__,Z+28
+ 917 0036 F58D      		ldd r31,Z+29
+ 918 0038 E02D      		mov r30,__tmp_reg__
+ 919 003a 64E0      		ldi r22,lo8(4)
+ 920 003c 70E0      		ldi r23,0
+ 921 003e 80E0      		ldi r24,lo8(EXTD1)
+ 922 0040 90E0      		ldi r25,hi8(EXTD1)
+ 923 0042 1995      		eicall
+ 924               	.LVL26:
+ 229:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 925               		.loc 1 229 0
+ 926 0044 1092 0000 		sts __avr_in_isr,__zero_reg__
+ 927 0048 0E94 0000 		call chSchIsPreemptionRequired
+ 928               	.LVL27:
+ 929 004c 8111      		cpse r24,__zero_reg__
+ 930               		.loc 1 229 0 is_stmt 0 discriminator 1
+ 931 004e 0E94 0000 		call chSchDoReschedule
+ 932               	.LVL28:
+ 933               	.L73:
+ 934               	/* epilogue start */
+ 230:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** }
+ 935               		.loc 1 230 0 is_stmt 1
+ 936 0052 FF91      		pop r31
+ 937 0054 EF91      		pop r30
+ 938 0056 BF91      		pop r27
+ 939 0058 AF91      		pop r26
+ 940 005a 9F91      		pop r25
+ 941 005c 8F91      		pop r24
+ 942 005e 7F91      		pop r23
+ 943 0060 6F91      		pop r22
+ 944 0062 5F91      		pop r21
+ 945 0064 4F91      		pop r20
+ 946 0066 3F91      		pop r19
+ 947 0068 2F91      		pop r18
+ 948 006a 0F90      		pop r0
+ 949 006c 0BBE      		out __RAMPZ__,r0
+ 950 006e 0F90      		pop r0
+ 951 0070 0FBE      		out __SREG__,r0
+ 952 0072 0F90      		pop r0
+ 953 0074 1F90      		pop r1
+ 954 0076 1895      		reti
+ 955               		.cfi_endproc
+ 956               	.LFE148:
+ 958               		.section	.text.__vector_6,"ax",@progbits
+ 959               	.global	__vector_6
+ 961               	__vector_6:
+ 962               	.LFB149:
+ 231:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 232:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT5 || defined(__DOXYGEN__)
+ 233:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+ 234:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief EXTI[INT5] interrupt handler.
+ 235:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 236:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @isr
+ 237:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+ 238:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** OSAL_IRQ_HANDLER(INT5_vect) {
+ 963               		.loc 1 238 0
+ 964               		.cfi_startproc
+ 965 0000 1F92      		push r1
+ 966               	.LCFI70:
+ 967               		.cfi_def_cfa_offset 4
+ 968               		.cfi_offset 1, -3
+ 969 0002 0F92      		push r0
+ 970               	.LCFI71:
+ 971               		.cfi_def_cfa_offset 5
+ 972               		.cfi_offset 0, -4
+ 973 0004 0FB6      		in r0,__SREG__
+ 974 0006 0F92      		push r0
+ 975 0008 1124      		clr __zero_reg__
+ 976 000a 0BB6      		in r0,__RAMPZ__
+ 977 000c 0F92      		push r0
+ 978 000e 2F93      		push r18
+ 979               	.LCFI72:
+ 980               		.cfi_def_cfa_offset 6
+ 981               		.cfi_offset 18, -5
+ 982 0010 3F93      		push r19
+ 983               	.LCFI73:
+ 984               		.cfi_def_cfa_offset 7
+ 985               		.cfi_offset 19, -6
+ 986 0012 4F93      		push r20
+ 987               	.LCFI74:
+ 988               		.cfi_def_cfa_offset 8
+ 989               		.cfi_offset 20, -7
+ 990 0014 5F93      		push r21
+ 991               	.LCFI75:
+ 992               		.cfi_def_cfa_offset 9
+ 993               		.cfi_offset 21, -8
+ 994 0016 6F93      		push r22
+ 995               	.LCFI76:
+ 996               		.cfi_def_cfa_offset 10
+ 997               		.cfi_offset 22, -9
+ 998 0018 7F93      		push r23
+ 999               	.LCFI77:
+ 1000               		.cfi_def_cfa_offset 11
+ 1001               		.cfi_offset 23, -10
+ 1002 001a 8F93      		push r24
+ 1003               	.LCFI78:
+ 1004               		.cfi_def_cfa_offset 12
+ 1005               		.cfi_offset 24, -11
+ 1006 001c 9F93      		push r25
+ 1007               	.LCFI79:
+ 1008               		.cfi_def_cfa_offset 13
+ 1009               		.cfi_offset 25, -12
+ 1010 001e AF93      		push r26
+ 1011               	.LCFI80:
+ 1012               		.cfi_def_cfa_offset 14
+ 1013               		.cfi_offset 26, -13
+ 1014 0020 BF93      		push r27
+ 1015               	.LCFI81:
+ 1016               		.cfi_def_cfa_offset 15
+ 1017               		.cfi_offset 27, -14
+ 1018 0022 EF93      		push r30
+ 1019               	.LCFI82:
+ 1020               		.cfi_def_cfa_offset 16
+ 1021               		.cfi_offset 30, -15
+ 1022 0024 FF93      		push r31
+ 1023               	.LCFI83:
+ 1024               		.cfi_def_cfa_offset 17
+ 1025               		.cfi_offset 31, -16
+ 1026               	/* prologue: Signal */
+ 1027               	/* frame size = 0 */
+ 1028               	/* stack size = 16 */
+ 1029               	.L__stack_usage = 16
+ 239:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   OSAL_IRQ_PROLOGUE();
+ 1030               		.loc 1 239 0
+ 1031 0026 81E0      		ldi r24,lo8(1)
+ 1032 0028 8093 0000 		sts __avr_in_isr,r24
+ 240:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   EXTD1.config->channels[INT5].cb(&EXTD1, INT5);
+ 1033               		.loc 1 240 0
+ 1034 002c E091 0000 		lds r30,EXTD1+1
+ 1035 0030 F091 0000 		lds r31,EXTD1+1+1
+ 1036 0034 02A0      		ldd __tmp_reg__,Z+34
+ 1037 0036 F3A1      		ldd r31,Z+35
+ 1038 0038 E02D      		mov r30,__tmp_reg__
+ 1039 003a 65E0      		ldi r22,lo8(5)
+ 1040 003c 70E0      		ldi r23,0
+ 1041 003e 80E0      		ldi r24,lo8(EXTD1)
+ 1042 0040 90E0      		ldi r25,hi8(EXTD1)
+ 1043 0042 1995      		eicall
+ 1044               	.LVL29:
+ 241:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   OSAL_IRQ_EPILOGUE();
+ 1045               		.loc 1 241 0
+ 1046 0044 1092 0000 		sts __avr_in_isr,__zero_reg__
+ 1047 0048 0E94 0000 		call chSchIsPreemptionRequired
+ 1048               	.LVL30:
+ 1049 004c 8111      		cpse r24,__zero_reg__
+ 1050               		.loc 1 241 0 is_stmt 0 discriminator 1
+ 1051 004e 0E94 0000 		call chSchDoReschedule
+ 1052               	.LVL31:
+ 1053               	.L78:
+ 1054               	/* epilogue start */
+ 242:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** }
+ 1055               		.loc 1 242 0 is_stmt 1
+ 1056 0052 FF91      		pop r31
+ 1057 0054 EF91      		pop r30
+ 1058 0056 BF91      		pop r27
+ 1059 0058 AF91      		pop r26
+ 1060 005a 9F91      		pop r25
+ 1061 005c 8F91      		pop r24
+ 1062 005e 7F91      		pop r23
+ 1063 0060 6F91      		pop r22
+ 1064 0062 5F91      		pop r21
+ 1065 0064 4F91      		pop r20
+ 1066 0066 3F91      		pop r19
+ 1067 0068 2F91      		pop r18
+ 1068 006a 0F90      		pop r0
+ 1069 006c 0BBE      		out __RAMPZ__,r0
+ 1070 006e 0F90      		pop r0
+ 1071 0070 0FBE      		out __SREG__,r0
+ 1072 0072 0F90      		pop r0
+ 1073 0074 1F90      		pop r1
+ 1074 0076 1895      		reti
+ 1075               		.cfi_endproc
+ 1076               	.LFE149:
+ 1078               		.section	.text.ext_lld_channel_enable,"ax",@progbits
+ 1079               	.global	ext_lld_channel_enable
+ 1081               	ext_lld_channel_enable:
+ 1082               	.LFB150:
+ 243:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 244:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 245:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*===========================================================================*/
+ 246:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /* Driver functions.                                                         */
+ 247:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /*===========================================================================*/
+ 248:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 249:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+ 250:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief   Enables an EXT channel.
+ 251:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 252:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @param[in] extp      pointer to the @p EXTDriver object
+ 253:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @param[in] channel   channel to be enabled
+ 254:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 255:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @notapi
+ 256:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+ 257:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** void ext_lld_channel_enable(EXTDriver *extp, expchannel_t channel) {
+ 1083               		.loc 1 257 0
+ 1084               		.cfi_startproc
+ 1085               	.LVL32:
+ 1086 0000 0F93      		push r16
+ 1087               	.LCFI84:
+ 1088               		.cfi_def_cfa_offset 4
+ 1089               		.cfi_offset 16, -3
+ 1090 0002 1F93      		push r17
+ 1091               	.LCFI85:
+ 1092               		.cfi_def_cfa_offset 5
+ 1093               		.cfi_offset 17, -4
+ 1094 0004 CF93      		push r28
+ 1095               	.LCFI86:
+ 1096               		.cfi_def_cfa_offset 6
+ 1097               		.cfi_offset 28, -5
+ 1098 0006 DF93      		push r29
+ 1099               	.LCFI87:
+ 1100               		.cfi_def_cfa_offset 7
+ 1101               		.cfi_offset 29, -6
+ 1102               	/* prologue: function */
+ 1103               	/* frame size = 0 */
+ 1104               	/* stack size = 4 */
+ 1105               	.L__stack_usage = 4
+ 1106 0008 8C01      		movw r16,r24
+ 1107 000a EB01      		movw r28,r22
+ 258:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT0 || defined(__DOXYGEN__)
+ 259:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT0) {
+ 1108               		.loc 1 259 0
+ 1109 000c 2097      		sbiw r28,0
+ 1110 000e 01F0      		breq .L91
+ 260:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK |= (1 << INT0);
+ 261:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     ext_lld_set_intx_edges(channel, extp->config->channels[channel].mode);
+ 262:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 263:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 264:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT1 || defined(__DOXYGEN__)
+ 265:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT1) {
+ 1111               		.loc 1 265 0
+ 1112 0010 6130      		cpi r22,1
+ 1113 0012 7105      		cpc r23,__zero_reg__
+ 1114 0014 01F4      		brne .+2
+ 1115 0016 00C0      		rjmp .L92
+ 266:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK |= (1 << INT1);
+ 267:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     ext_lld_set_intx_edges(channel, extp->config->channels[channel].mode);
+ 268:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 269:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 270:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT2 || defined(__DOXYGEN__)
+ 271:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT2) {
+ 1116               		.loc 1 271 0
+ 1117 0018 6230      		cpi r22,2
+ 1118 001a 7105      		cpc r23,__zero_reg__
+ 1119 001c 01F0      		breq .L93
+ 272:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK |= (1 << INT2);
+ 273:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     ext_lld_set_intx_edges(channel, extp->config->channels[channel].mode);
+ 274:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 275:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 276:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT3 || defined(__DOXYGEN__)
+ 277:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT3) {
+ 1120               		.loc 1 277 0
+ 1121 001e 6330      		cpi r22,3
+ 1122 0020 7105      		cpc r23,__zero_reg__
+ 1123 0022 01F4      		brne .+2
+ 1124 0024 00C0      		rjmp .L94
+ 278:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK |= (1 << INT3);
+ 279:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     ext_lld_set_intx_edges(channel, extp->config->channels[channel].mode);
+ 280:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 281:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 282:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT4 || defined(__DOXYGEN__)
+ 283:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT4) {
+ 1125               		.loc 1 283 0
+ 1126 0026 6430      		cpi r22,4
+ 1127 0028 7105      		cpc r23,__zero_reg__
+ 1128 002a 01F0      		breq .L95
+ 1129               	.LVL33:
+ 1130               	.L85:
+ 284:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK |= (1 << INT4);
+ 285:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     ext_lld_set_intx_edges(channel, extp->config->channels[channel].mode);
+ 286:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 287:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 288:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT5 || defined(__DOXYGEN__)
+ 289:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT5) {
+ 1131               		.loc 1 289 0
+ 1132 002c 2597      		sbiw r28,5
+ 1133 002e 01F0      		breq .L96
+ 1134               	.L83:
+ 1135               	/* epilogue start */
+ 290:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK |= (1 << INT5);
+ 291:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     ext_lld_set_intx_edges(channel, extp->config->channels[channel].mode);
+ 292:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 293:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 294:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** }
+ 1136               		.loc 1 294 0
+ 1137 0030 DF91      		pop r29
+ 1138 0032 CF91      		pop r28
+ 1139               	.LVL34:
+ 1140 0034 1F91      		pop r17
+ 1141 0036 0F91      		pop r16
+ 1142               	.LVL35:
+ 1143 0038 0895      		ret
+ 1144               	.LVL36:
+ 1145               	.L91:
+ 260:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     ext_lld_set_intx_edges(channel, extp->config->channels[channel].mode);
+ 1146               		.loc 1 260 0
+ 1147 003a E89A      		sbi 0x1d,0
+ 261:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 1148               		.loc 1 261 0
+ 1149 003c DC01      		movw r26,r24
+ 1150 003e 1196      		adiw r26,1
+ 1151 0040 ED91      		ld r30,X+
+ 1152 0042 FC91      		ld r31,X
+ 1153 0044 1297      		sbiw r26,1+1
+ 1154 0046 6081      		ld r22,Z
+ 1155               	.LVL37:
+ 1156 0048 80E0      		ldi r24,0
+ 1157 004a 90E0      		ldi r25,0
+ 1158 004c 0E94 0000 		call ext_lld_set_intx_edges
+ 1159               	.LVL38:
+ 289:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK |= (1 << INT5);
+ 1160               		.loc 1 289 0
+ 1161 0050 2597      		sbiw r28,5
+ 1162 0052 01F4      		brne .L83
+ 1163               	.L96:
+ 290:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     ext_lld_set_intx_edges(channel, extp->config->channels[channel].mode);
+ 1164               		.loc 1 290 0
+ 1165 0054 ED9A      		sbi 0x1d,5
+ 291:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 1166               		.loc 1 291 0
+ 1167 0056 D801      		movw r26,r16
+ 1168 0058 1196      		adiw r26,1
+ 1169 005a ED91      		ld r30,X+
+ 1170 005c FC91      		ld r31,X
+ 1171 005e 1297      		sbiw r26,1+1
+ 1172 0060 668D      		ldd r22,Z+30
+ 1173 0062 85E0      		ldi r24,lo8(5)
+ 1174 0064 90E0      		ldi r25,0
+ 1175               	/* epilogue start */
+ 1176               		.loc 1 294 0
+ 1177 0066 DF91      		pop r29
+ 1178 0068 CF91      		pop r28
+ 1179               	.LVL39:
+ 1180 006a 1F91      		pop r17
+ 1181 006c 0F91      		pop r16
+ 1182               	.LVL40:
+ 291:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 1183               		.loc 1 291 0
+ 1184 006e 0C94 0000 		jmp ext_lld_set_intx_edges
+ 1185               	.LVL41:
+ 1186               	.L95:
+ 284:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     ext_lld_set_intx_edges(channel, extp->config->channels[channel].mode);
+ 1187               		.loc 1 284 0
+ 1188 0072 EC9A      		sbi 0x1d,4
+ 285:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 1189               		.loc 1 285 0
+ 1190 0074 DC01      		movw r26,r24
+ 1191 0076 1196      		adiw r26,1
+ 1192 0078 ED91      		ld r30,X+
+ 1193 007a FC91      		ld r31,X
+ 1194 007c 1297      		sbiw r26,1+1
+ 1195 007e 608D      		ldd r22,Z+24
+ 1196               	.LVL42:
+ 1197 0080 84E0      		ldi r24,lo8(4)
+ 1198 0082 90E0      		ldi r25,0
+ 1199               	/* epilogue start */
+ 1200               		.loc 1 294 0
+ 1201 0084 DF91      		pop r29
+ 1202 0086 CF91      		pop r28
+ 1203               	.LVL43:
+ 1204 0088 1F91      		pop r17
+ 1205 008a 0F91      		pop r16
+ 1206               	.LVL44:
+ 291:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 1207               		.loc 1 291 0
+ 1208 008c 0C94 0000 		jmp ext_lld_set_intx_edges
+ 1209               	.LVL45:
+ 1210               	.L93:
+ 272:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     ext_lld_set_intx_edges(channel, extp->config->channels[channel].mode);
+ 1211               		.loc 1 272 0
+ 1212 0090 EA9A      		sbi 0x1d,2
+ 273:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 1213               		.loc 1 273 0
+ 1214 0092 DC01      		movw r26,r24
+ 1215 0094 1196      		adiw r26,1
+ 1216 0096 ED91      		ld r30,X+
+ 1217 0098 FC91      		ld r31,X
+ 1218 009a 1297      		sbiw r26,1+1
+ 1219 009c 6485      		ldd r22,Z+12
+ 1220               	.LVL46:
+ 1221 009e 82E0      		ldi r24,lo8(2)
+ 1222 00a0 90E0      		ldi r25,0
+ 1223               	/* epilogue start */
+ 1224               		.loc 1 294 0
+ 1225 00a2 DF91      		pop r29
+ 1226 00a4 CF91      		pop r28
+ 1227               	.LVL47:
+ 1228 00a6 1F91      		pop r17
+ 1229 00a8 0F91      		pop r16
+ 1230               	.LVL48:
+ 291:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 1231               		.loc 1 291 0
+ 1232 00aa 0C94 0000 		jmp ext_lld_set_intx_edges
+ 1233               	.LVL49:
+ 1234               	.L94:
+ 278:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     ext_lld_set_intx_edges(channel, extp->config->channels[channel].mode);
+ 1235               		.loc 1 278 0
+ 1236 00ae EB9A      		sbi 0x1d,3
+ 279:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 1237               		.loc 1 279 0
+ 1238 00b0 DC01      		movw r26,r24
+ 1239 00b2 1196      		adiw r26,1
+ 1240 00b4 ED91      		ld r30,X+
+ 1241 00b6 FC91      		ld r31,X
+ 1242 00b8 1297      		sbiw r26,1+1
+ 1243 00ba 6289      		ldd r22,Z+18
+ 1244               	.LVL50:
+ 1245 00bc 83E0      		ldi r24,lo8(3)
+ 1246 00be 90E0      		ldi r25,0
+ 1247               	/* epilogue start */
+ 1248               		.loc 1 294 0
+ 1249 00c0 DF91      		pop r29
+ 1250 00c2 CF91      		pop r28
+ 1251               	.LVL51:
+ 1252 00c4 1F91      		pop r17
+ 1253 00c6 0F91      		pop r16
+ 1254               	.LVL52:
+ 291:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 1255               		.loc 1 291 0
+ 1256 00c8 0C94 0000 		jmp ext_lld_set_intx_edges
+ 1257               	.LVL53:
+ 1258               	.L92:
+ 266:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     ext_lld_set_intx_edges(channel, extp->config->channels[channel].mode);
+ 1259               		.loc 1 266 0
+ 1260 00cc E99A      		sbi 0x1d,1
+ 267:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 1261               		.loc 1 267 0
+ 1262 00ce DC01      		movw r26,r24
+ 1263 00d0 1196      		adiw r26,1
+ 1264 00d2 ED91      		ld r30,X+
+ 1265 00d4 FC91      		ld r31,X
+ 1266 00d6 1297      		sbiw r26,1+1
+ 1267 00d8 6681      		ldd r22,Z+6
+ 1268               	.LVL54:
+ 1269 00da 81E0      		ldi r24,lo8(1)
+ 1270 00dc 90E0      		ldi r25,0
+ 1271 00de 0E94 0000 		call ext_lld_set_intx_edges
+ 1272               	.LVL55:
+ 1273 00e2 00C0      		rjmp .L85
+ 1274               		.cfi_endproc
+ 1275               	.LFE150:
+ 1277               		.section	.text.ext_lld_channel_disable,"ax",@progbits
+ 1278               	.global	ext_lld_channel_disable
+ 1280               	ext_lld_channel_disable:
+ 1281               	.LFB151:
+ 295:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 296:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+ 297:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief   Disables an EXT channel.
+ 298:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 299:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @param[in] extp      pinter to the @p EXTDriver object
+ 300:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @param[in] channel   channel to be disabled
+ 301:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 302:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @notapi
+ 303:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+ 304:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** void ext_lld_channel_disable(EXTDriver *extp, expchannel_t channel) {
+ 1282               		.loc 1 304 0
+ 1283               		.cfi_startproc
+ 1284               	.LVL56:
+ 1285               	/* prologue: function */
+ 1286               	/* frame size = 0 */
+ 1287               	/* stack size = 0 */
+ 1288               	.L__stack_usage = 0
+ 305:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT0 || defined(__DOXYGEN__)
+ 306:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT0)
+ 1289               		.loc 1 306 0
+ 1290 0000 6115      		cp r22,__zero_reg__
+ 1291 0002 7105      		cpc r23,__zero_reg__
+ 1292 0004 01F4      		brne .L98
+ 307:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK &= ~(1 << INT0);
+ 1293               		.loc 1 307 0
+ 1294 0006 E898      		cbi 0x1d,0
+ 1295               	.L99:
+ 308:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 309:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT1 || defined(__DOXYGEN__)
+ 310:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT1)
+ 311:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK &= ~(1 << INT1);
+ 312:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 313:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT2 || defined(__DOXYGEN__)
+ 314:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT2)
+ 315:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK &= ~(1 << INT2);
+ 316:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 317:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT3 || defined(__DOXYGEN__)
+ 318:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT3)
+ 319:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK &= ~(1 << INT3);
+ 320:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 321:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT4 || defined(__DOXYGEN__)
+ 322:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT4)
+ 323:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK &= ~(1 << INT4);
+ 324:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 325:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #if AVR_EXT_USE_INT5 || defined(__DOXYGEN__)
+ 326:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (channel == INT5)
+ 1296               		.loc 1 326 0
+ 1297 0008 6530      		cpi r22,5
+ 1298 000a 7105      		cpc r23,__zero_reg__
+ 1299 000c 01F4      		brne .L97
+ 327:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK &= ~(1 << INT5);
+ 1300               		.loc 1 327 0
+ 1301 000e ED98      		cbi 0x1d,5
+ 1302               	.L97:
+ 1303 0010 0895      		ret
+ 1304               	.L98:
+ 310:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK &= ~(1 << INT1);
+ 1305               		.loc 1 310 0
+ 1306 0012 6130      		cpi r22,1
+ 1307 0014 7105      		cpc r23,__zero_reg__
+ 1308 0016 01F4      		brne .L100
+ 311:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 1309               		.loc 1 311 0
+ 1310 0018 E998      		cbi 0x1d,1
+ 1311 001a 00C0      		rjmp .L99
+ 1312               	.L100:
+ 314:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK &= ~(1 << INT2);
+ 1313               		.loc 1 314 0
+ 1314 001c 6230      		cpi r22,2
+ 1315 001e 7105      		cpc r23,__zero_reg__
+ 1316 0020 01F4      		brne .L101
+ 315:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 1317               		.loc 1 315 0
+ 1318 0022 EA98      		cbi 0x1d,2
+ 1319 0024 0895      		ret
+ 1320               	.L101:
+ 318:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK &= ~(1 << INT3);
+ 1321               		.loc 1 318 0
+ 1322 0026 6330      		cpi r22,3
+ 1323 0028 7105      		cpc r23,__zero_reg__
+ 1324 002a 01F4      		brne .L103
+ 319:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 1325               		.loc 1 319 0
+ 1326 002c EB98      		cbi 0x1d,3
+ 1327 002e 0895      		ret
+ 1328               	.L103:
+ 322:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     EIMSK &= ~(1 << INT4);
+ 1329               		.loc 1 322 0
+ 1330 0030 6430      		cpi r22,4
+ 1331 0032 7105      		cpc r23,__zero_reg__
+ 1332 0034 01F4      		brne .L99
+ 323:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 1333               		.loc 1 323 0
+ 1334 0036 EC98      		cbi 0x1d,4
+ 1335 0038 0895      		ret
+ 1336               		.cfi_endproc
+ 1337               	.LFE151:
+ 1339               		.section	.text.ext_lld_init,"ax",@progbits
+ 1340               	.global	ext_lld_init
+ 1342               	ext_lld_init:
+ 1343               	.LFB152:
+ 328:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** #endif
+ 329:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** }
+ 330:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 331:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+ 332:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief   Low level EXT driver initialization.
+ 333:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 334:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @notapi
+ 335:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+ 336:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** void ext_lld_init(void) {
+ 1344               		.loc 1 336 0
+ 1345               		.cfi_startproc
+ 1346               	/* prologue: function */
+ 1347               	/* frame size = 0 */
+ 1348               	/* stack size = 0 */
+ 1349               	.L__stack_usage = 0
+ 337:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   /* Driver initialization.*/
+ 338:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   extObjectInit(&EXTD1);
+ 1350               		.loc 1 338 0
+ 1351 0000 80E0      		ldi r24,lo8(EXTD1)
+ 1352 0002 90E0      		ldi r25,hi8(EXTD1)
+ 1353 0004 0C94 0000 		jmp extObjectInit
+ 1354               	.LVL57:
+ 1355               		.cfi_endproc
+ 1356               	.LFE152:
+ 1358               		.section	.text.ext_lld_start,"ax",@progbits
+ 1359               	.global	ext_lld_start
+ 1361               	ext_lld_start:
+ 1362               	.LFB153:
+ 339:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** }
+ 340:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 341:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+ 342:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief   Configures and activates the EXT peripheral.
+ 343:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 344:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @param[in] extp  pointer to the @p EXTDriver object
+ 345:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 346:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @notapi
+ 347:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+ 348:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** void ext_lld_start(EXTDriver *extp) {
+ 1363               		.loc 1 348 0
+ 1364               		.cfi_startproc
+ 1365               	.LVL58:
+ 1366 0000 0F93      		push r16
+ 1367               	.LCFI88:
+ 1368               		.cfi_def_cfa_offset 4
+ 1369               		.cfi_offset 16, -3
+ 1370 0002 1F93      		push r17
+ 1371               	.LCFI89:
+ 1372               		.cfi_def_cfa_offset 5
+ 1373               		.cfi_offset 17, -4
+ 1374 0004 CF93      		push r28
+ 1375               	.LCFI90:
+ 1376               		.cfi_def_cfa_offset 6
+ 1377               		.cfi_offset 28, -5
+ 1378 0006 DF93      		push r29
+ 1379               	.LCFI91:
+ 1380               		.cfi_def_cfa_offset 7
+ 1381               		.cfi_offset 29, -6
+ 1382               	/* prologue: function */
+ 1383               	/* frame size = 0 */
+ 1384               	/* stack size = 4 */
+ 1385               	.L__stack_usage = 4
+ 1386 0008 8C01      		movw r16,r24
+ 349:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   expchannel_t line;
+ 350:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 351:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (extp->state == EXT_STOP)
+ 1387               		.loc 1 351 0
+ 1388 000a FC01      		movw r30,r24
+ 1389 000c 8081      		ld r24,Z
+ 1390               	.LVL59:
+ 1391 000e 8130      		cpi r24,lo8(1)
+ 1392 0010 01F0      		breq .L109
+ 1393               	.L106:
+ 1394               	.LVL60:
+ 348:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   expchannel_t line;
+ 1395               		.loc 1 348 0 discriminator 1
+ 1396 0012 C0E0      		ldi r28,0
+ 1397 0014 D0E0      		ldi r29,0
+ 1398               	.LVL61:
+ 1399               	.L107:
+ 352:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     osalSysUnlock();
+ 353:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 354:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   /* Configuration of automatic channels. */
+ 355:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   for (line = 0; line < EXT_MAX_CHANNELS; line++) {
+ 356:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     //if (extp->config->channels[line].mode & EXT_CH_MODE_AUTOSTART)
+ 357:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****       ext_lld_channel_enable(extp, line);
+ 1400               		.loc 1 357 0 discriminator 3
+ 1401 0016 BE01      		movw r22,r28
+ 1402 0018 C801      		movw r24,r16
+ 1403 001a 0E94 0000 		call ext_lld_channel_enable
+ 1404               	.LVL62:
+ 355:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     //if (extp->config->channels[line].mode & EXT_CH_MODE_AUTOSTART)
+ 1405               		.loc 1 355 0 discriminator 3
+ 1406 001e 2196      		adiw r28,1
+ 1407               	.LVL63:
+ 1408 0020 C630      		cpi r28,6
+ 1409 0022 D105      		cpc r29,__zero_reg__
+ 1410 0024 01F4      		brne .L107
+ 1411               	/* epilogue start */
+ 358:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     //else
+ 359:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****     //  ext_lld_channel_disable(extp, line);
+ 360:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   }
+ 361:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** }
+ 1412               		.loc 1 361 0
+ 1413 0026 DF91      		pop r29
+ 1414 0028 CF91      		pop r28
+ 1415               	.LVL64:
+ 1416 002a 1F91      		pop r17
+ 1417 002c 0F91      		pop r16
+ 1418               	.LVL65:
+ 1419 002e 0895      		ret
+ 1420               	.LVL66:
+ 1421               	.L109:
+ 1422               	.LBB25:
+ 1423               	.LBB26:
+ 1424               	.LBB27:
+ 1425               	.LBB28:
+ 1426               	.LBB29:
+ 1427               		.file 2 "../../../os/common/ports/AVR/chcore.h"
+   1:../../../os/common/ports/AVR/chcore.h **** /*
+   2:../../../os/common/ports/AVR/chcore.h ****     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio.
+   3:../../../os/common/ports/AVR/chcore.h **** 
+   4:../../../os/common/ports/AVR/chcore.h ****     This file is part of ChibiOS.
+   5:../../../os/common/ports/AVR/chcore.h **** 
+   6:../../../os/common/ports/AVR/chcore.h ****     ChibiOS is free software; you can redistribute it and/or modify
+   7:../../../os/common/ports/AVR/chcore.h ****     it under the terms of the GNU General Public License as published by
+   8:../../../os/common/ports/AVR/chcore.h ****     the Free Software Foundation; either version 3 of the License, or
+   9:../../../os/common/ports/AVR/chcore.h ****     (at your option) any later version.
+  10:../../../os/common/ports/AVR/chcore.h **** 
+  11:../../../os/common/ports/AVR/chcore.h ****     ChibiOS is distributed in the hope that it will be useful,
+  12:../../../os/common/ports/AVR/chcore.h ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:../../../os/common/ports/AVR/chcore.h ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:../../../os/common/ports/AVR/chcore.h ****     GNU General Public License for more details.
+  15:../../../os/common/ports/AVR/chcore.h **** 
+  16:../../../os/common/ports/AVR/chcore.h ****     You should have received a copy of the GNU General Public License
+  17:../../../os/common/ports/AVR/chcore.h ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  18:../../../os/common/ports/AVR/chcore.h **** */
+  19:../../../os/common/ports/AVR/chcore.h **** 
+  20:../../../os/common/ports/AVR/chcore.h **** /**
+  21:../../../os/common/ports/AVR/chcore.h ****  * @file    templates/chcore.h
+  22:../../../os/common/ports/AVR/chcore.h ****  * @brief   Port related template macros and structures.
+  23:../../../os/common/ports/AVR/chcore.h ****  * @details This file is a template of the system driver macros provided by
+  24:../../../os/common/ports/AVR/chcore.h ****  *          a port.
+  25:../../../os/common/ports/AVR/chcore.h ****  *
+  26:../../../os/common/ports/AVR/chcore.h ****  * @addtogroup core
+  27:../../../os/common/ports/AVR/chcore.h ****  * @{
+  28:../../../os/common/ports/AVR/chcore.h ****  */
+  29:../../../os/common/ports/AVR/chcore.h **** 
+  30:../../../os/common/ports/AVR/chcore.h **** #ifndef CHCORE_H
+  31:../../../os/common/ports/AVR/chcore.h **** #define CHCORE_H
+  32:../../../os/common/ports/AVR/chcore.h **** 
+  33:../../../os/common/ports/AVR/chcore.h **** #include <avr/io.h>
+  34:../../../os/common/ports/AVR/chcore.h **** #include <avr/interrupt.h>
+  35:../../../os/common/ports/AVR/chcore.h **** 
+  36:../../../os/common/ports/AVR/chcore.h **** extern bool __avr_in_isr;
+  37:../../../os/common/ports/AVR/chcore.h **** 
+  38:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+  39:../../../os/common/ports/AVR/chcore.h **** /* Module constants.                                                         */
+  40:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+  41:../../../os/common/ports/AVR/chcore.h **** 
+  42:../../../os/common/ports/AVR/chcore.h **** /**
+  43:../../../os/common/ports/AVR/chcore.h ****  * @name    Port Capabilities and Constants
+  44:../../../os/common/ports/AVR/chcore.h ****  * @{
+  45:../../../os/common/ports/AVR/chcore.h ****  */
+  46:../../../os/common/ports/AVR/chcore.h **** /**
+  47:../../../os/common/ports/AVR/chcore.h ****  * @brief   This port supports a realtime counter.
+  48:../../../os/common/ports/AVR/chcore.h ****  */
+  49:../../../os/common/ports/AVR/chcore.h **** #define PORT_SUPPORTS_RT                FALSE
+  50:../../../os/common/ports/AVR/chcore.h **** 
+  51:../../../os/common/ports/AVR/chcore.h **** /**
+  52:../../../os/common/ports/AVR/chcore.h ****  * @brief   Natural alignment constant.
+  53:../../../os/common/ports/AVR/chcore.h ****  * @note    It is the minimum alignment for pointer-size variables.
+  54:../../../os/common/ports/AVR/chcore.h ****  */
+  55:../../../os/common/ports/AVR/chcore.h **** #define PORT_NATURAL_ALIGN              1U
+  56:../../../os/common/ports/AVR/chcore.h **** 
+  57:../../../os/common/ports/AVR/chcore.h **** /**
+  58:../../../os/common/ports/AVR/chcore.h ****  * @brief   Stack alignment constant.
+  59:../../../os/common/ports/AVR/chcore.h ****  * @note    It is the alignement required for the stack pointer.
+  60:../../../os/common/ports/AVR/chcore.h ****  */
+  61:../../../os/common/ports/AVR/chcore.h **** #define PORT_STACK_ALIGN                1U
+  62:../../../os/common/ports/AVR/chcore.h **** 
+  63:../../../os/common/ports/AVR/chcore.h **** /**
+  64:../../../os/common/ports/AVR/chcore.h ****  * @brief   Working Areas alignment constant.
+  65:../../../os/common/ports/AVR/chcore.h ****  * @note    It is the alignment to be enforced for thread working areas.
+  66:../../../os/common/ports/AVR/chcore.h ****  */
+  67:../../../os/common/ports/AVR/chcore.h **** #define PORT_WORKING_AREA_ALIGN         1U
+  68:../../../os/common/ports/AVR/chcore.h **** /** @} */
+  69:../../../os/common/ports/AVR/chcore.h **** 
+  70:../../../os/common/ports/AVR/chcore.h **** /**
+  71:../../../os/common/ports/AVR/chcore.h ****  * @name    Architecture and Compiler
+  72:../../../os/common/ports/AVR/chcore.h ****  * @{
+  73:../../../os/common/ports/AVR/chcore.h ****  */
+  74:../../../os/common/ports/AVR/chcore.h **** /**
+  75:../../../os/common/ports/AVR/chcore.h ****  * @brief   Macro defining an AVR architecture.
+  76:../../../os/common/ports/AVR/chcore.h ****  */
+  77:../../../os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_AVR
+  78:../../../os/common/ports/AVR/chcore.h **** 
+  79:../../../os/common/ports/AVR/chcore.h **** /**
+  80:../../../os/common/ports/AVR/chcore.h ****  * @brief   Macro defining the specific AVR architecture.
+  81:../../../os/common/ports/AVR/chcore.h ****  */
+  82:../../../os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_AVR_MEGAAVR
+  83:../../../os/common/ports/AVR/chcore.h **** 
+  84:../../../os/common/ports/AVR/chcore.h **** /**
+  85:../../../os/common/ports/AVR/chcore.h ****  * @brief   Name of the implemented architecture.
+  86:../../../os/common/ports/AVR/chcore.h ****  */
+  87:../../../os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_NAME          "MegaAVR"
+  88:../../../os/common/ports/AVR/chcore.h **** 
+  89:../../../os/common/ports/AVR/chcore.h **** /**
+  90:../../../os/common/ports/AVR/chcore.h ****  * @brief   Compiler name and version.
+  91:../../../os/common/ports/AVR/chcore.h ****  */
+  92:../../../os/common/ports/AVR/chcore.h **** #if defined(__GNUC__) || defined(__DOXYGEN__)
+  93:../../../os/common/ports/AVR/chcore.h **** #define PORT_COMPILER_NAME              "GCC " __VERSION__
+  94:../../../os/common/ports/AVR/chcore.h **** 
+  95:../../../os/common/ports/AVR/chcore.h **** #else
+  96:../../../os/common/ports/AVR/chcore.h **** #error "unsupported compiler"
+  97:../../../os/common/ports/AVR/chcore.h **** #endif
+  98:../../../os/common/ports/AVR/chcore.h **** 
+  99:../../../os/common/ports/AVR/chcore.h **** /**
+ 100:../../../os/common/ports/AVR/chcore.h ****  * @brief   Port-specific information string.
+ 101:../../../os/common/ports/AVR/chcore.h ****  */
+ 102:../../../os/common/ports/AVR/chcore.h **** #define PORT_INFO                       "None"
+ 103:../../../os/common/ports/AVR/chcore.h **** /** @} */
+ 104:../../../os/common/ports/AVR/chcore.h **** 
+ 105:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 106:../../../os/common/ports/AVR/chcore.h **** /* Module pre-compile time settings.                                         */
+ 107:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 108:../../../os/common/ports/AVR/chcore.h **** 
+ 109:../../../os/common/ports/AVR/chcore.h **** /**
+ 110:../../../os/common/ports/AVR/chcore.h ****  * @brief   Stack size for the system idle thread.
+ 111:../../../os/common/ports/AVR/chcore.h ****  * @details This size depends on the idle thread implementation, usually
+ 112:../../../os/common/ports/AVR/chcore.h ****  *          the idle thread should take no more space than those reserved
+ 113:../../../os/common/ports/AVR/chcore.h ****  *          by @p PORT_INT_REQUIRED_STACK.
+ 114:../../../os/common/ports/AVR/chcore.h ****  */
+ 115:../../../os/common/ports/AVR/chcore.h **** #if !defined(PORT_IDLE_THREAD_STACK_SIZE) || defined(__DOXYGEN__)
+ 116:../../../os/common/ports/AVR/chcore.h **** #define PORT_IDLE_THREAD_STACK_SIZE     8
+ 117:../../../os/common/ports/AVR/chcore.h **** #endif
+ 118:../../../os/common/ports/AVR/chcore.h **** 
+ 119:../../../os/common/ports/AVR/chcore.h **** /**
+ 120:../../../os/common/ports/AVR/chcore.h ****  * @brief   Per-thread stack overhead for interrupts servicing.
+ 121:../../../os/common/ports/AVR/chcore.h ****  * @details This constant is used in the calculation of the correct working
+ 122:../../../os/common/ports/AVR/chcore.h ****  *          area size.
+ 123:../../../os/common/ports/AVR/chcore.h ****  */
+ 124:../../../os/common/ports/AVR/chcore.h **** #if !defined(PORT_INT_REQUIRED_STACK) || defined(__DOXYGEN__)
+ 125:../../../os/common/ports/AVR/chcore.h **** #define PORT_INT_REQUIRED_STACK         32
+ 126:../../../os/common/ports/AVR/chcore.h **** #endif
+ 127:../../../os/common/ports/AVR/chcore.h **** 
+ 128:../../../os/common/ports/AVR/chcore.h **** /**
+ 129:../../../os/common/ports/AVR/chcore.h ****  * @brief   Enables an alternative timer implementation.
+ 130:../../../os/common/ports/AVR/chcore.h ****  * @details Usually the port uses a timer interface defined in the file
+ 131:../../../os/common/ports/AVR/chcore.h ****  *          @p chcore_timer.h, if this option is enabled then the file
+ 132:../../../os/common/ports/AVR/chcore.h ****  *          @p chcore_timer_alt.h is included instead.
+ 133:../../../os/common/ports/AVR/chcore.h ****  */
+ 134:../../../os/common/ports/AVR/chcore.h **** #if !defined(PORT_USE_ALT_TIMER) || defined(__DOXYGEN__)
+ 135:../../../os/common/ports/AVR/chcore.h **** #define PORT_USE_ALT_TIMER              FALSE
+ 136:../../../os/common/ports/AVR/chcore.h **** #endif
+ 137:../../../os/common/ports/AVR/chcore.h **** 
+ 138:../../../os/common/ports/AVR/chcore.h **** /**
+ 139:../../../os/common/ports/AVR/chcore.h ****  * @brief   Enables a "wait for interrupt" instruction in the idle loop.
+ 140:../../../os/common/ports/AVR/chcore.h ****  */
+ 141:../../../os/common/ports/AVR/chcore.h **** #if !defined(PORT_AVR_WFI_SLEEP_IDLE) || defined(__DOXYGEN__)
+ 142:../../../os/common/ports/AVR/chcore.h **** #define PORT_AVR_WFI_SLEEP_IDLE      FALSE
+ 143:../../../os/common/ports/AVR/chcore.h **** #endif
+ 144:../../../os/common/ports/AVR/chcore.h **** 
+ 145:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 146:../../../os/common/ports/AVR/chcore.h **** /* Derived constants and error checks.                                       */
+ 147:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 148:../../../os/common/ports/AVR/chcore.h **** 
+ 149:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 150:../../../os/common/ports/AVR/chcore.h **** /* Module data structures and types.                                         */
+ 151:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 152:../../../os/common/ports/AVR/chcore.h **** 
+ 153:../../../os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
+ 154:../../../os/common/ports/AVR/chcore.h ****    asm module.*/
+ 155:../../../os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
+ 156:../../../os/common/ports/AVR/chcore.h **** 
+ 157:../../../os/common/ports/AVR/chcore.h **** /**
+ 158:../../../os/common/ports/AVR/chcore.h ****  * @brief   Type of stack and memory alignment enforcement.
+ 159:../../../os/common/ports/AVR/chcore.h ****  * @note    In this architecture the stack alignment is enforced to 8 bits.
+ 160:../../../os/common/ports/AVR/chcore.h ****  */
+ 161:../../../os/common/ports/AVR/chcore.h **** typedef uint8_t stkalign_t;
+ 162:../../../os/common/ports/AVR/chcore.h **** 
+ 163:../../../os/common/ports/AVR/chcore.h **** /**
+ 164:../../../os/common/ports/AVR/chcore.h ****  * @brief   Interrupt saved context.
+ 165:../../../os/common/ports/AVR/chcore.h ****  * @details This structure represents the stack frame saved during a
+ 166:../../../os/common/ports/AVR/chcore.h ****  *          preemption-capable interrupt handler.
+ 167:../../../os/common/ports/AVR/chcore.h ****  * @note    R2 and R13 are not saved because those are assumed to be immutable
+ 168:../../../os/common/ports/AVR/chcore.h ****  *          during the system life cycle.
+ 169:../../../os/common/ports/AVR/chcore.h ****  */
+ 170:../../../os/common/ports/AVR/chcore.h **** struct port_extctx {
+ 171:../../../os/common/ports/AVR/chcore.h ****   uint8_t       _next;
+ 172:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r31;
+ 173:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r30;
+ 174:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r27;
+ 175:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r26;
+ 176:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r25;
+ 177:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r24;
+ 178:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r23;
+ 179:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r22;
+ 180:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r21;
+ 181:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r20;
+ 182:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r19;
+ 183:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r18;
+ 184:../../../os/common/ports/AVR/chcore.h ****   uint8_t       sr;
+ 185:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r1;
+ 186:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r0;
+ 187:../../../os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__)
+ 188:../../../os/common/ports/AVR/chcore.h ****   uint8_t       pcx;
+ 189:../../../os/common/ports/AVR/chcore.h **** #endif
+ 190:../../../os/common/ports/AVR/chcore.h ****   uint16_t      pc;
+ 191:../../../os/common/ports/AVR/chcore.h **** };
+ 192:../../../os/common/ports/AVR/chcore.h **** 
+ 193:../../../os/common/ports/AVR/chcore.h **** /**
+ 194:../../../os/common/ports/AVR/chcore.h ****  * @brief   System saved context.
+ 195:../../../os/common/ports/AVR/chcore.h ****  * @details This structure represents the inner stack frame during a context
+ 196:../../../os/common/ports/AVR/chcore.h ****  *          switching.
+ 197:../../../os/common/ports/AVR/chcore.h ****  * @note    R2 and R13 are not saved because those are assumed to be immutable
+ 198:../../../os/common/ports/AVR/chcore.h ****  *          during the system life cycle.
+ 199:../../../os/common/ports/AVR/chcore.h ****  * @note    LR is stored in the caller context so it is not present in this
+ 200:../../../os/common/ports/AVR/chcore.h ****  *          structure.
+ 201:../../../os/common/ports/AVR/chcore.h ****  */
+ 202:../../../os/common/ports/AVR/chcore.h **** struct port_intctx {
+ 203:../../../os/common/ports/AVR/chcore.h ****   uint8_t       _next;
+ 204:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r29;
+ 205:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r28;
+ 206:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r17;
+ 207:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r16;
+ 208:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r15;
+ 209:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r14;
+ 210:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r13;
+ 211:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r12;
+ 212:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r11;
+ 213:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r10;
+ 214:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r9;
+ 215:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r8;
+ 216:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r7;
+ 217:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r6;
+ 218:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r5;
+ 219:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r4;
+ 220:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r3;
+ 221:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r2;
+ 222:../../../os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__)
+ 223:../../../os/common/ports/AVR/chcore.h ****   uint8_t       pcx;
+ 224:../../../os/common/ports/AVR/chcore.h **** #endif
+ 225:../../../os/common/ports/AVR/chcore.h ****   uint8_t       pcl;
+ 226:../../../os/common/ports/AVR/chcore.h ****   uint8_t       pch;
+ 227:../../../os/common/ports/AVR/chcore.h **** };
+ 228:../../../os/common/ports/AVR/chcore.h **** 
+ 229:../../../os/common/ports/AVR/chcore.h **** /**
+ 230:../../../os/common/ports/AVR/chcore.h ****  * @brief   Platform dependent part of the @p thread_t structure.
+ 231:../../../os/common/ports/AVR/chcore.h ****  * @details This structure usually contains just the saved stack pointer
+ 232:../../../os/common/ports/AVR/chcore.h ****  *          defined as a pointer to a @p port_intctx structure.
+ 233:../../../os/common/ports/AVR/chcore.h ****  */
+ 234:../../../os/common/ports/AVR/chcore.h **** struct port_context {
+ 235:../../../os/common/ports/AVR/chcore.h ****   struct port_intctx *sp;
+ 236:../../../os/common/ports/AVR/chcore.h **** };
+ 237:../../../os/common/ports/AVR/chcore.h **** 
+ 238:../../../os/common/ports/AVR/chcore.h **** #endif /* !defined(_FROM_ASM_) */
+ 239:../../../os/common/ports/AVR/chcore.h **** 
+ 240:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 241:../../../os/common/ports/AVR/chcore.h **** /* Module macros.                                                            */
+ 242:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 243:../../../os/common/ports/AVR/chcore.h **** 
+ 244:../../../os/common/ports/AVR/chcore.h **** /**
+ 245:../../../os/common/ports/AVR/chcore.h ****  * @brief   Platform dependent part of the @p chThdCreateI() API.
+ 246:../../../os/common/ports/AVR/chcore.h ****  * @details This code usually setup the context switching frame represented
+ 247:../../../os/common/ports/AVR/chcore.h ****  *          by an @p port_intctx structure.
+ 248:../../../os/common/ports/AVR/chcore.h ****  */
+ 249:../../../os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__) || defined(__DOXYGEN__)
+ 250:../../../os/common/ports/AVR/chcore.h **** #define PORT_SETUP_CONTEXT(tp, wbase, wtop, pf, arg) {                      \
+ 251:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp = (struct port_intctx *)((uint8_t *)(wtop) -                   \
+ 252:../../../os/common/ports/AVR/chcore.h ****                                       sizeof(struct port_intctx));          \
+ 253:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r2  = (uint8_t)(0xff & (uint16_t)pf);                         \
+ 254:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r3  = (uint8_t)((uint16_t)(pf) >> 8);                         \
+ 255:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r4  = (uint8_t)(0xff & (uint16_t)arg);                        \
+ 256:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r5  = (uint8_t)((uint16_t)(arg) >> 8);                        \
+ 257:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcx = (uint8_t)0;                                             \
+ 258:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcl = (uint16_t)_port_thread_start >> 8;                      \
+ 259:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pch = (uint8_t)(0xff & (uint16_t)_port_thread_start);         \
+ 260:../../../os/common/ports/AVR/chcore.h **** }
+ 261:../../../os/common/ports/AVR/chcore.h **** #else /* !__AVR_3_BYTE_PC__ */
+ 262:../../../os/common/ports/AVR/chcore.h **** #define PORT_SETUP_CONTEXT(tp, wbase, wtop, pf, arg) {                      \
+ 263:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp = (struct port_intctx *)((uint8_t *)(wtop) -                   \
+ 264:../../../os/common/ports/AVR/chcore.h ****                                       sizeof(struct port_intctx));          \
+ 265:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r2  = (uint8_t)(0xff & (uint16_t)pf);                         \
+ 266:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r3  = (uint8_t)((uint16_t)(pf) >> 8);                         \
+ 267:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r4  = (uint8_t)(0xff & (uint16_t)arg);                        \
+ 268:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r5  = (uint8_t)((uint16_t)(arg) >> 8);                        \
+ 269:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcl = (uint16_t)_port_thread_start >> 8;                      \
+ 270:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pch = (uint8_t)(0xff & (uint16_t)_port_thread_start);         \
+ 271:../../../os/common/ports/AVR/chcore.h **** }
+ 272:../../../os/common/ports/AVR/chcore.h **** #endif /* !__AVR_3_BYTE_PC__ */
+ 273:../../../os/common/ports/AVR/chcore.h **** 
+ 274:../../../os/common/ports/AVR/chcore.h **** /**
+ 275:../../../os/common/ports/AVR/chcore.h ****  * @brief   Computes the thread working area global size.
+ 276:../../../os/common/ports/AVR/chcore.h ****  * @note    There is no need to perform alignments in this macro.
+ 277:../../../os/common/ports/AVR/chcore.h ****  */
+ 278:../../../os/common/ports/AVR/chcore.h **** #define PORT_WA_SIZE(n) ((sizeof(struct port_intctx) - 1) +                \
+ 279:../../../os/common/ports/AVR/chcore.h ****                          (sizeof(struct port_extctx) - 1) +                \
+ 280:../../../os/common/ports/AVR/chcore.h ****                          ((size_t)(n)) + ((size_t)(PORT_INT_REQUIRED_STACK)))
+ 281:../../../os/common/ports/AVR/chcore.h **** 
+ 282:../../../os/common/ports/AVR/chcore.h **** /**
+ 283:../../../os/common/ports/AVR/chcore.h ****  * @brief   Static working area allocation.
+ 284:../../../os/common/ports/AVR/chcore.h ****  * @details This macro is used to allocate a static thread working area
+ 285:../../../os/common/ports/AVR/chcore.h ****  *          aligned as both position and size.
+ 286:../../../os/common/ports/AVR/chcore.h ****  *
+ 287:../../../os/common/ports/AVR/chcore.h ****  * @param[in] s         the name to be assigned to the stack array
+ 288:../../../os/common/ports/AVR/chcore.h ****  * @param[in] n         the stack size to be assigned to the thread
+ 289:../../../os/common/ports/AVR/chcore.h ****  */
+ 290:../../../os/common/ports/AVR/chcore.h **** #define PORT_WORKING_AREA(s, n)                                             \
+ 291:../../../os/common/ports/AVR/chcore.h ****   stkalign_t s[THD_WORKING_AREA_SIZE(n) / sizeof (stkalign_t)]
+ 292:../../../os/common/ports/AVR/chcore.h **** 
+ 293:../../../os/common/ports/AVR/chcore.h **** /**
+ 294:../../../os/common/ports/AVR/chcore.h ****  * @brief   Priority level verification macro.
+ 295:../../../os/common/ports/AVR/chcore.h ****  */
+ 296:../../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_IS_VALID_PRIORITY(n) false
+ 297:../../../os/common/ports/AVR/chcore.h **** 
+ 298:../../../os/common/ports/AVR/chcore.h **** /**
+ 299:../../../os/common/ports/AVR/chcore.h ****  * @brief   Priority level verification macro.
+ 300:../../../os/common/ports/AVR/chcore.h ****  */
+ 301:../../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_IS_VALID_KERNEL_PRIORITY(n) false
+ 302:../../../os/common/ports/AVR/chcore.h **** 
+ 303:../../../os/common/ports/AVR/chcore.h **** /**
+ 304:../../../os/common/ports/AVR/chcore.h ****  * @brief   IRQ prologue code.
+ 305:../../../os/common/ports/AVR/chcore.h ****  * @details This macro must be inserted at the start of all IRQ handlers
+ 306:../../../os/common/ports/AVR/chcore.h ****  *          enabled to invoke system APIs.
+ 307:../../../os/common/ports/AVR/chcore.h ****  * @note    This code tricks the compiler to save all the specified registers
+ 308:../../../os/common/ports/AVR/chcore.h ****  *          by "touching" them.
+ 309:../../../os/common/ports/AVR/chcore.h ****  */
+ 310:../../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_PROLOGUE() {                                               \
+ 311:../../../os/common/ports/AVR/chcore.h ****   asm ("" : : : "r18", "r19", "r20", "r21", "r22", "r23", "r24",            \
+ 312:../../../os/common/ports/AVR/chcore.h ****                 "r25", "r26", "r27", "r30", "r31");                         \
+ 313:../../../os/common/ports/AVR/chcore.h ****   __avr_in_isr = true;                                                      \
+ 314:../../../os/common/ports/AVR/chcore.h **** }
+ 315:../../../os/common/ports/AVR/chcore.h **** 
+ 316:../../../os/common/ports/AVR/chcore.h **** /**
+ 317:../../../os/common/ports/AVR/chcore.h ****  * @brief   IRQ epilogue code.
+ 318:../../../os/common/ports/AVR/chcore.h ****  * @details This macro must be inserted at the end of all IRQ handlers
+ 319:../../../os/common/ports/AVR/chcore.h ****  *          enabled to invoke system APIs.
+ 320:../../../os/common/ports/AVR/chcore.h ****  */
+ 321:../../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_EPILOGUE() {                                               \
+ 322:../../../os/common/ports/AVR/chcore.h ****   __avr_in_isr = false;                                                     \
+ 323:../../../os/common/ports/AVR/chcore.h ****   _dbg_check_lock();                                                        \
+ 324:../../../os/common/ports/AVR/chcore.h ****   if (chSchIsPreemptionRequired())                                          \
+ 325:../../../os/common/ports/AVR/chcore.h ****     chSchDoReschedule();                                                    \
+ 326:../../../os/common/ports/AVR/chcore.h ****   _dbg_check_unlock();                                                      \
+ 327:../../../os/common/ports/AVR/chcore.h **** }
+ 328:../../../os/common/ports/AVR/chcore.h **** 
+ 329:../../../os/common/ports/AVR/chcore.h **** /**
+ 330:../../../os/common/ports/AVR/chcore.h ****  * @brief   IRQ handler function declaration.
+ 331:../../../os/common/ports/AVR/chcore.h ****  * @note    @p id can be a function name or a vector number depending on the
+ 332:../../../os/common/ports/AVR/chcore.h ****  *          port implementation.
+ 333:../../../os/common/ports/AVR/chcore.h ****  */
+ 334:../../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_HANDLER(id) ISR(id)
+ 335:../../../os/common/ports/AVR/chcore.h **** 
+ 336:../../../os/common/ports/AVR/chcore.h **** /**
+ 337:../../../os/common/ports/AVR/chcore.h ****  * @brief   Fast IRQ handler function declaration.
+ 338:../../../os/common/ports/AVR/chcore.h ****  * @note    @p id can be a function name or a vector number depending on the
+ 339:../../../os/common/ports/AVR/chcore.h ****  *          port implementation.
+ 340:../../../os/common/ports/AVR/chcore.h ****  */
+ 341:../../../os/common/ports/AVR/chcore.h **** #define PORT_FAST_IRQ_HANDLER(id) ISR(id)
+ 342:../../../os/common/ports/AVR/chcore.h **** 
+ 343:../../../os/common/ports/AVR/chcore.h **** /**
+ 344:../../../os/common/ports/AVR/chcore.h ****  * @brief   Performs a context switch between two threads.
+ 345:../../../os/common/ports/AVR/chcore.h ****  * @details This is the most critical code in any port, this function
+ 346:../../../os/common/ports/AVR/chcore.h ****  *          is responsible for the context switch between 2 threads.
+ 347:../../../os/common/ports/AVR/chcore.h ****  * @note    The implementation of this code affects <b>directly</b> the context
+ 348:../../../os/common/ports/AVR/chcore.h ****  *          switch performance so optimize here as much as you can.
+ 349:../../../os/common/ports/AVR/chcore.h ****  *
+ 350:../../../os/common/ports/AVR/chcore.h ****  * @param[in] ntp       the thread to be switched in
+ 351:../../../os/common/ports/AVR/chcore.h ****  * @param[in] otp       the thread to be switched out
+ 352:../../../os/common/ports/AVR/chcore.h ****  */
+ 353:../../../os/common/ports/AVR/chcore.h **** #define port_switch(ntp, otp) {                                             \
+ 354:../../../os/common/ports/AVR/chcore.h ****   _port_switch(ntp, otp);                                                   \
+ 355:../../../os/common/ports/AVR/chcore.h ****   asm volatile ("" : : : "memory");                                         \
+ 356:../../../os/common/ports/AVR/chcore.h **** }
+ 357:../../../os/common/ports/AVR/chcore.h **** 
+ 358:../../../os/common/ports/AVR/chcore.h **** 
+ 359:../../../os/common/ports/AVR/chcore.h **** /**
+ 360:../../../os/common/ports/AVR/chcore.h ****  * @brief   Port-related initialization code.
+ 361:../../../os/common/ports/AVR/chcore.h ****  * @note    This function is empty in this port.
+ 362:../../../os/common/ports/AVR/chcore.h ****  */
+ 363:../../../os/common/ports/AVR/chcore.h **** #define port_init() {                                                       \
+ 364:../../../os/common/ports/AVR/chcore.h ****   __avr_in_isr = true;                                                      \
+ 365:../../../os/common/ports/AVR/chcore.h **** }
+ 366:../../../os/common/ports/AVR/chcore.h **** 
+ 367:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 368:../../../os/common/ports/AVR/chcore.h **** /* External declarations.                                                    */
+ 369:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 370:../../../os/common/ports/AVR/chcore.h **** 
+ 371:../../../os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
+ 372:../../../os/common/ports/AVR/chcore.h ****    asm module.*/
+ 373:../../../os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
+ 374:../../../os/common/ports/AVR/chcore.h **** 
+ 375:../../../os/common/ports/AVR/chcore.h **** #ifdef __cplusplus
+ 376:../../../os/common/ports/AVR/chcore.h **** extern "C" {
+ 377:../../../os/common/ports/AVR/chcore.h **** #endif
+ 378:../../../os/common/ports/AVR/chcore.h ****   void _port_switch(thread_t *ntp, thread_t *otp);
+ 379:../../../os/common/ports/AVR/chcore.h ****   void _port_thread_start(void);
+ 380:../../../os/common/ports/AVR/chcore.h **** #ifdef __cplusplus
+ 381:../../../os/common/ports/AVR/chcore.h **** }
+ 382:../../../os/common/ports/AVR/chcore.h **** #endif
+ 383:../../../os/common/ports/AVR/chcore.h **** 
+ 384:../../../os/common/ports/AVR/chcore.h **** #endif /* !defined(_FROM_ASM_) */
+ 385:../../../os/common/ports/AVR/chcore.h **** 
+ 386:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 387:../../../os/common/ports/AVR/chcore.h **** /* Module inline functions.                                                  */
+ 388:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 389:../../../os/common/ports/AVR/chcore.h **** 
+ 390:../../../os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
+ 391:../../../os/common/ports/AVR/chcore.h ****    asm module.*/
+ 392:../../../os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
+ 393:../../../os/common/ports/AVR/chcore.h **** 
+ 394:../../../os/common/ports/AVR/chcore.h **** /**
+ 395:../../../os/common/ports/AVR/chcore.h ****  * @brief   Returns a word encoding the current interrupts status.
+ 396:../../../os/common/ports/AVR/chcore.h ****  *
+ 397:../../../os/common/ports/AVR/chcore.h ****  * @return              The interrupts status.
+ 398:../../../os/common/ports/AVR/chcore.h ****  */
+ 399:../../../os/common/ports/AVR/chcore.h **** static inline syssts_t port_get_irq_status(void) {
+ 400:../../../os/common/ports/AVR/chcore.h **** 
+ 401:../../../os/common/ports/AVR/chcore.h ****   return SREG;
+ 402:../../../os/common/ports/AVR/chcore.h **** }
+ 403:../../../os/common/ports/AVR/chcore.h **** 
+ 404:../../../os/common/ports/AVR/chcore.h **** /**
+ 405:../../../os/common/ports/AVR/chcore.h ****  * @brief   Checks the interrupt status.
+ 406:../../../os/common/ports/AVR/chcore.h ****  *
+ 407:../../../os/common/ports/AVR/chcore.h ****  * @param[in] sts       the interrupt status word
+ 408:../../../os/common/ports/AVR/chcore.h ****  *
+ 409:../../../os/common/ports/AVR/chcore.h ****  * @return              The interrupt status.
+ 410:../../../os/common/ports/AVR/chcore.h ****  * @retval false        the word specified a disabled interrupts status.
+ 411:../../../os/common/ports/AVR/chcore.h ****  * @retval true         the word specified an enabled interrupts status.
+ 412:../../../os/common/ports/AVR/chcore.h ****  */
+ 413:../../../os/common/ports/AVR/chcore.h **** static inline bool port_irq_enabled(syssts_t sts) {
+ 414:../../../os/common/ports/AVR/chcore.h **** 
+ 415:../../../os/common/ports/AVR/chcore.h ****   return (bool)((sts & 0x80) != 0);
+ 416:../../../os/common/ports/AVR/chcore.h **** }
+ 417:../../../os/common/ports/AVR/chcore.h **** 
+ 418:../../../os/common/ports/AVR/chcore.h **** /**
+ 419:../../../os/common/ports/AVR/chcore.h ****  * @brief   Determines the current execution context.
+ 420:../../../os/common/ports/AVR/chcore.h ****  *
+ 421:../../../os/common/ports/AVR/chcore.h ****  * @return              The execution context.
+ 422:../../../os/common/ports/AVR/chcore.h ****  * @retval false        not running in ISR mode.
+ 423:../../../os/common/ports/AVR/chcore.h ****  * @retval true         running in ISR mode.
+ 424:../../../os/common/ports/AVR/chcore.h ****  */
+ 425:../../../os/common/ports/AVR/chcore.h **** static inline bool port_is_isr_context(void) {
+ 426:../../../os/common/ports/AVR/chcore.h **** 
+ 427:../../../os/common/ports/AVR/chcore.h ****   return __avr_in_isr;
+ 428:../../../os/common/ports/AVR/chcore.h **** }
+ 429:../../../os/common/ports/AVR/chcore.h **** 
+ 430:../../../os/common/ports/AVR/chcore.h **** /**
+ 431:../../../os/common/ports/AVR/chcore.h ****  * @brief   Kernel-lock action.
+ 432:../../../os/common/ports/AVR/chcore.h ****  * @details Usually this function just disables interrupts but may perform more
+ 433:../../../os/common/ports/AVR/chcore.h ****  *          actions.
+ 434:../../../os/common/ports/AVR/chcore.h ****  */
+ 435:../../../os/common/ports/AVR/chcore.h **** static inline void port_lock(void) {
+ 436:../../../os/common/ports/AVR/chcore.h **** 
+ 437:../../../os/common/ports/AVR/chcore.h ****   asm volatile ("cli" : : : "memory");
+ 438:../../../os/common/ports/AVR/chcore.h **** }
+ 439:../../../os/common/ports/AVR/chcore.h **** 
+ 440:../../../os/common/ports/AVR/chcore.h **** /**
+ 441:../../../os/common/ports/AVR/chcore.h ****  * @brief   Kernel-unlock action.
+ 442:../../../os/common/ports/AVR/chcore.h ****  * @details Usually this function just enables interrupts but may perform more
+ 443:../../../os/common/ports/AVR/chcore.h ****  *          actions.
+ 444:../../../os/common/ports/AVR/chcore.h ****  */
+ 445:../../../os/common/ports/AVR/chcore.h **** static inline void port_unlock(void) {
+ 446:../../../os/common/ports/AVR/chcore.h **** 
+ 447:../../../os/common/ports/AVR/chcore.h ****   asm volatile ("sei" : : : "memory");
+ 1428               		.loc 2 447 0
+ 1429               	/* #APP */
+ 1430               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 1431 0030 7894      		sei
+ 1432               	 ;  0 "" 2
+ 1433               	/* #NOAPP */
+ 1434 0032 00C0      		rjmp .L106
+ 1435               	.LBE29:
+ 1436               	.LBE28:
+ 1437               	.LBE27:
+ 1438               	.LBE26:
+ 1439               	.LBE25:
+ 1440               		.cfi_endproc
+ 1441               	.LFE153:
+ 1443               		.section	.text.ext_lld_stop,"ax",@progbits
+ 1444               	.global	ext_lld_stop
+ 1446               	ext_lld_stop:
+ 1447               	.LFB154:
+ 362:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** 
+ 363:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** /**
+ 364:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @brief   Deactivates the EXT peripheral.
+ 365:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 366:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @param[in] extp  pointer to the @p EXTDriver object
+ 367:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  *
+ 368:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  * @notapi
+ 369:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****  */
+ 370:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c **** void ext_lld_stop(EXTDriver *extp) {
+ 1448               		.loc 1 370 0
+ 1449               		.cfi_startproc
+ 1450               	.LVL67:
+ 1451               	/* prologue: function */
+ 1452               	/* frame size = 0 */
+ 1453               	/* stack size = 0 */
+ 1454               	.L__stack_usage = 0
+ 371:../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.c ****   if (extp->state == EXT_ACTIVE)
+ 1455               		.loc 1 371 0
+ 1456 0000 FC01      		movw r30,r24
+ 1457 0002 8081      		ld r24,Z
+ 1458               	.LVL68:
+ 1459 0004 8230      		cpi r24,lo8(2)
+ 1460 0006 01F0      		breq .L112
+ 1461 0008 0895      		ret
+ 1462               	.L112:
+ 1463               	.LBB30:
+ 1464               	.LBB31:
+ 1465               	.LBB32:
+ 1466               	.LBB33:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+ 1467               		.loc 2 437 0
+ 1468               	/* #APP */
+ 1469               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+ 1470 000a F894      		cli
+ 1471               	 ;  0 "" 2
+ 1472               	/* #NOAPP */
+ 1473 000c 0895      		ret
+ 1474               	.LBE33:
+ 1475               	.LBE32:
+ 1476               	.LBE31:
+ 1477               	.LBE30:
+ 1478               		.cfi_endproc
+ 1479               	.LFE154:
+ 1481               		.comm	EXTD1,3,1
+ 1482               		.text
+ 1483               	.Letext0:
+ 1484               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 1485               		.file 4 "../../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 1486               		.file 5 "../../../os/rt/include/chsystypes.h"
+ 1487               		.file 6 "../../../os/rt/include/chschd.h"
+ 1488               		.file 7 "../../../os/rt/include/chsem.h"
+ 1489               		.file 8 "../../../os/rt/include/chmtx.h"
+ 1490               		.file 9 "../../../os/hal/include/hal_ext.h"
+ 1491               		.file 10 "../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.h"
+ 1492               		.file 11 "../../../os/rt/include/chsys.h"
+ 1493               		.file 12 "../../../os/hal/osal/rt/osal.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 hal_ext_lld.c
+     /tmp/cc7mlMZb.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc7mlMZb.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc7mlMZb.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc7mlMZb.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/cc7mlMZb.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc7mlMZb.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc7mlMZb.s:14     .text.ext_lld_set_intx_edges:0000000000000000 ext_lld_set_intx_edges
+     /tmp/cc7mlMZb.s:361    .text.__vector_1:0000000000000000 __vector_1
+                            *COM*:0000000000000003 EXTD1
+     /tmp/cc7mlMZb.s:481    .text.__vector_2:0000000000000000 __vector_2
+     /tmp/cc7mlMZb.s:601    .text.__vector_3:0000000000000000 __vector_3
+     /tmp/cc7mlMZb.s:721    .text.__vector_4:0000000000000000 __vector_4
+     /tmp/cc7mlMZb.s:841    .text.__vector_5:0000000000000000 __vector_5
+     /tmp/cc7mlMZb.s:961    .text.__vector_6:0000000000000000 __vector_6
+     /tmp/cc7mlMZb.s:1081   .text.ext_lld_channel_enable:0000000000000000 ext_lld_channel_enable
+     /tmp/cc7mlMZb.s:1280   .text.ext_lld_channel_disable:0000000000000000 ext_lld_channel_disable
+     /tmp/cc7mlMZb.s:1342   .text.ext_lld_init:0000000000000000 ext_lld_init
+     /tmp/cc7mlMZb.s:1361   .text.ext_lld_start:0000000000000000 ext_lld_start
+     /tmp/cc7mlMZb.s:1446   .text.ext_lld_stop:0000000000000000 ext_lld_stop
+
+UNDEFINED SYMBOLS
+__avr_in_isr
+chSchIsPreemptionRequired
+chSchDoReschedule
+extObjectInit
+__do_clear_bss

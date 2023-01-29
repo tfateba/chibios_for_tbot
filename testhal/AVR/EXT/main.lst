@@ -1,0 +1,393 @@
+   1               		.file	"main.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               		.section	.text.extcb,"ax",@progbits
+  13               	extcb:
+  14               	.LFB143:
+  15               		.file 1 "main.c"
+   1:main.c        **** /*
+   2:main.c        ****     ChibiOS - Copyright (C) 2016 Theodore Ateba
+   3:main.c        **** 
+   4:main.c        ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:main.c        ****     you may not use this file except in compliance with the License.
+   6:main.c        ****     You may obtain a copy of the License at
+   7:main.c        **** 
+   8:main.c        ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:main.c        **** 
+  10:main.c        ****     Unless required by applicable law or agreed to in writing, software
+  11:main.c        ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:main.c        ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:main.c        ****     See the License for the specific language governing permissions and
+  14:main.c        ****     limitations under the License.
+  15:main.c        **** */
+  16:main.c        **** 
+  17:main.c        **** #include "ch.h"
+  18:main.c        **** #include "hal.h"
+  19:main.c        **** #include "chprintf.h"
+  20:main.c        **** 
+  21:main.c        **** /**
+  22:main.c        ****  * @brief Global variables.
+  23:main.c        ****  */
+  24:main.c        **** BaseSequentialStream* chp = (BaseSequentialStream*) &SD1;
+  25:main.c        **** static int isrCpt = 0; /**< Interrupt counter. */
+  26:main.c        **** static int index = 0;
+  27:main.c        **** 
+  28:main.c        **** /**
+  29:main.c        ****  * @brief  This is the External Interruption 4 callback.
+  30:main.c        ****  *         The onboard LED is toggled every time an interruption is
+  31:main.c        ****  *         detected. A varible is also incremented.
+  32:main.c        ****  */
+  33:main.c        **** static void extcb(EXTDriver *extp, expchannel_t channel) {
+  16               		.loc 1 33 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+  34:main.c        ****   (void)extp;
+  35:main.c        ****   (void)channel;
+  36:main.c        **** 
+  37:main.c        ****   chSysLockFromISR();
+  38:main.c        ****   palTogglePad(IOPORT2, PORTB_LED1);
+  23               		.loc 1 38 0
+  24 0000 85B1      		in r24,0x5
+  25               	.LVL1:
+  26 0002 8058      		subi r24,lo8(-(-128))
+  27 0004 85B9      		out 0x5,r24
+  39:main.c        ****   isrCpt++;
+  28               		.loc 1 39 0
+  29 0006 8091 0000 		lds r24,isrCpt
+  30 000a 9091 0000 		lds r25,isrCpt+1
+  31 000e 0196      		adiw r24,1
+  32 0010 9093 0000 		sts isrCpt+1,r25
+  33 0014 8093 0000 		sts isrCpt,r24
+  34 0018 0895      		ret
+  35               		.cfi_endproc
+  36               	.LFE143:
+  38               		.section	.rodata.str1.1,"aMS",@progbits,1
+  39               	.LC0:
+  40 0000 0A0D 2045 		.string	"\n\r EXT hal test started..."
+  40      5854 2068 
+  40      616C 2074 
+  40      6573 7420 
+  40      7374 6172 
+  41               	.LC1:
+  42 001b 0A0D 2069 		.string	"\n\r index = %d, ISR Counter = %d"
+  42      6E64 6578 
+  42      203D 2025 
+  42      642C 2049 
+  42      5352 2043 
+  43               		.section	.text.startup.main,"ax",@progbits
+  44               	.global	main
+  46               	main:
+  47               	.LFB144:
+  40:main.c        ****   chSysUnlockFromISR();
+  41:main.c        **** }
+  42:main.c        **** 
+  43:main.c        **** /**
+  44:main.c        ****  * @brief  EXT Driver configurations.
+  45:main.c        ****  */
+  46:main.c        **** static const EXTConfig extcfg = {
+  47:main.c        ****   {
+  48:main.c        ****     {EXT_CH_MODE_BOTH_EDGES , extcb},  /* INT0 Config. */
+  49:main.c        ****     {EXT_CH_MODE_BOTH_EDGES , extcb},  /* INT1 Config. */
+  50:main.c        ****     {EXT_CH_MODE_BOTH_EDGES , extcb},  /* INT2 Config. */
+  51:main.c        ****     {EXT_CH_MODE_BOTH_EDGES , extcb},  /* INT3 Config. */
+  52:main.c        ****     {EXT_CH_MODE_BOTH_EDGES , extcb},  /* INT4 Config. */
+  53:main.c        ****     {EXT_CH_MODE_BOTH_EDGES , extcb},  /* INT5 Config. */
+  54:main.c        ****   }
+  55:main.c        **** };
+  56:main.c        **** 
+  57:main.c        **** /**
+  58:main.c        ****  * Application entry point.
+  59:main.c        ****  */
+  60:main.c        **** int main(void) {
+  48               		.loc 1 60 0
+  49               		.cfi_startproc
+  50               	/* prologue: function */
+  51               	/* frame size = 0 */
+  52               	/* stack size = 0 */
+  53               	.L__stack_usage = 0
+  61:main.c        ****   /*
+  62:main.c        ****    * System initializations.
+  63:main.c        ****    * - HAL initialization, this also initializes the configured device drivers
+  64:main.c        ****    *   and performs the board-specific initializations.
+  65:main.c        ****    * - Kernel initialization, the main() function becomes a thread and the
+  66:main.c        ****    *   RTOS is active.
+  67:main.c        ****    */
+  68:main.c        ****   halInit();
+  54               		.loc 1 68 0
+  55 0000 0E94 0000 		call halInit
+  69:main.c        ****   chSysInit();
+  56               		.loc 1 69 0
+  57 0004 0E94 0000 		call chSysInit
+  70:main.c        **** 
+  71:main.c        ****   /*
+  72:main.c        ****    * External interrupt on the Pin D2 of the Arduino Mega2560.
+  73:main.c        ****    */
+  74:main.c        ****   palSetPadMode(IOPORT5, PD0, PAL_MODE_INPUT); // INT0
+  58               		.loc 1 74 0
+  59 0008 42E0      		ldi r20,lo8(2)
+  60 000a 61E0      		ldi r22,lo8(1)
+  61 000c 8CE2      		ldi r24,lo8(44)
+  62 000e 90E0      		ldi r25,0
+  63 0010 0E94 0000 		call _pal_lld_setgroupmode
+  75:main.c        ****   palSetPadMode(IOPORT5, PD1, PAL_MODE_INPUT); // INT1
+  64               		.loc 1 75 0
+  65 0014 42E0      		ldi r20,lo8(2)
+  66 0016 62E0      		ldi r22,lo8(2)
+  67 0018 8CE2      		ldi r24,lo8(44)
+  68 001a 90E0      		ldi r25,0
+  69 001c 0E94 0000 		call _pal_lld_setgroupmode
+  76:main.c        ****   palSetPadMode(IOPORT5, PD2, PAL_MODE_INPUT); // INT2
+  70               		.loc 1 76 0
+  71 0020 42E0      		ldi r20,lo8(2)
+  72 0022 64E0      		ldi r22,lo8(4)
+  73 0024 8CE2      		ldi r24,lo8(44)
+  74 0026 90E0      		ldi r25,0
+  75 0028 0E94 0000 		call _pal_lld_setgroupmode
+  77:main.c        ****   palSetPadMode(IOPORT5, PD3, PAL_MODE_INPUT); // INT3
+  76               		.loc 1 77 0
+  77 002c 42E0      		ldi r20,lo8(2)
+  78 002e 68E0      		ldi r22,lo8(8)
+  79 0030 8CE2      		ldi r24,lo8(44)
+  80 0032 90E0      		ldi r25,0
+  81 0034 0E94 0000 		call _pal_lld_setgroupmode
+  78:main.c        ****   palSetPadMode(IOPORT5, PE4, PAL_MODE_INPUT); // INT4
+  82               		.loc 1 78 0
+  83 0038 42E0      		ldi r20,lo8(2)
+  84 003a 60E1      		ldi r22,lo8(16)
+  85 003c 8CE2      		ldi r24,lo8(44)
+  86 003e 90E0      		ldi r25,0
+  87 0040 0E94 0000 		call _pal_lld_setgroupmode
+  79:main.c        ****   palSetPadMode(IOPORT5, PE5, PAL_MODE_INPUT); // INT5
+  88               		.loc 1 79 0
+  89 0044 42E0      		ldi r20,lo8(2)
+  90 0046 60E2      		ldi r22,lo8(32)
+  91 0048 8CE2      		ldi r24,lo8(44)
+  92 004a 90E0      		ldi r25,0
+  93 004c 0E94 0000 		call _pal_lld_setgroupmode
+  80:main.c        **** 
+  81:main.c        ****   /*
+  82:main.c        ****    * Start the serial driver.
+  83:main.c        ****    */
+  84:main.c        ****   sdStart(&SD1, NULL);
+  94               		.loc 1 84 0
+  95 0050 60E0      		ldi r22,0
+  96 0052 70E0      		ldi r23,0
+  97 0054 80E0      		ldi r24,lo8(SD1)
+  98 0056 90E0      		ldi r25,hi8(SD1)
+  99 0058 0E94 0000 		call sdStart
+  85:main.c        **** 
+  86:main.c        ****   /*
+  87:main.c        ****    * Active the EXT driver 1 and select INT channel 4.
+  88:main.c        ****    */
+  89:main.c        ****   extStart(&EXTD1, &extcfg);
+ 100               		.loc 1 89 0
+ 101 005c 60E0      		ldi r22,lo8(extcfg)
+ 102 005e 70E0      		ldi r23,hi8(extcfg)
+ 103 0060 80E0      		ldi r24,lo8(EXTD1)
+ 104 0062 90E0      		ldi r25,hi8(EXTD1)
+ 105 0064 0E94 0000 		call extStart
+  90:main.c        ****   extChannelEnable(&EXTD1, INT4);
+ 106               		.loc 1 90 0
+ 107 0068 64E0      		ldi r22,lo8(4)
+ 108 006a 70E0      		ldi r23,0
+ 109 006c 80E0      		ldi r24,lo8(EXTD1)
+ 110 006e 90E0      		ldi r25,hi8(EXTD1)
+ 111 0070 0E94 0000 		call extChannelEnable
+  91:main.c        **** 
+  92:main.c        ****   palClearPad(IOPORT2, PORTB_LED1);
+ 112               		.loc 1 92 0
+ 113 0074 2F98      		cbi 0x5,7
+  93:main.c        ****   chprintf(chp, "\n\r EXT hal test started...");
+ 114               		.loc 1 93 0
+ 115 0076 80E0      		ldi r24,lo8(.LC0)
+ 116 0078 90E0      		ldi r25,hi8(.LC0)
+ 117 007a 9F93      		push r25
+ 118               	.LCFI0:
+ 119               		.cfi_def_cfa_offset 4
+ 120 007c 8F93      		push r24
+ 121               	.LCFI1:
+ 122               		.cfi_def_cfa_offset 5
+ 123 007e 8091 0000 		lds r24,chp+1
+ 124 0082 8F93      		push r24
+ 125               	.LCFI2:
+ 126               		.cfi_def_cfa_offset 6
+ 127 0084 8091 0000 		lds r24,chp
+ 128 0088 8F93      		push r24
+ 129               	.LCFI3:
+ 130               		.cfi_def_cfa_offset 7
+ 131 008a 0E94 0000 		call chprintf
+ 132 008e 0F90      		pop __tmp_reg__
+ 133 0090 0F90      		pop __tmp_reg__
+ 134 0092 0F90      		pop __tmp_reg__
+ 135 0094 0F90      		pop __tmp_reg__
+ 136               	.LCFI4:
+ 137               		.cfi_def_cfa_offset 3
+  94:main.c        **** 
+  95:main.c        ****   /*
+  96:main.c        ****    * Normal main() thread activity, in this demo it print IRQ counter every
+  97:main.c        ****    * seconde.
+  98:main.c        ****    */
+  99:main.c        ****   while (TRUE) {
+ 100:main.c        ****     chThdSleepMilliseconds(1000);
+ 101:main.c        ****     chprintf(chp, "\n\r index = %d, ISR Counter = %d", index, isrCpt);
+ 138               		.loc 1 101 0
+ 139 0096 C0E0      		ldi r28,lo8(.LC1)
+ 140 0098 D0E0      		ldi r29,hi8(.LC1)
+ 141               	.L3:
+ 100:main.c        ****     chprintf(chp, "\n\r index = %d, ISR Counter = %d", index, isrCpt);
+ 142               		.loc 1 100 0 discriminator 1
+ 143 009a 88E0      		ldi r24,lo8(8)
+ 144 009c 9DE3      		ldi r25,lo8(61)
+ 145 009e 0E94 0000 		call chThdSleep
+ 146               		.loc 1 101 0 discriminator 1
+ 147 00a2 8091 0000 		lds r24,isrCpt+1
+ 148 00a6 8F93      		push r24
+ 149               	.LCFI5:
+ 150               		.cfi_def_cfa_offset 4
+ 151 00a8 8091 0000 		lds r24,isrCpt
+ 152 00ac 8F93      		push r24
+ 153               	.LCFI6:
+ 154               		.cfi_def_cfa_offset 5
+ 155 00ae 8091 0000 		lds r24,index+1
+ 156 00b2 8F93      		push r24
+ 157               	.LCFI7:
+ 158               		.cfi_def_cfa_offset 6
+ 159 00b4 8091 0000 		lds r24,index
+ 160 00b8 8F93      		push r24
+ 161               	.LCFI8:
+ 162               		.cfi_def_cfa_offset 7
+ 163 00ba DF93      		push r29
+ 164               	.LCFI9:
+ 165               		.cfi_def_cfa_offset 8
+ 166 00bc CF93      		push r28
+ 167               	.LCFI10:
+ 168               		.cfi_def_cfa_offset 9
+ 169 00be 8091 0000 		lds r24,chp+1
+ 170 00c2 8F93      		push r24
+ 171               	.LCFI11:
+ 172               		.cfi_def_cfa_offset 10
+ 173 00c4 8091 0000 		lds r24,chp
+ 174 00c8 8F93      		push r24
+ 175               	.LCFI12:
+ 176               		.cfi_def_cfa_offset 11
+ 177 00ca 0E94 0000 		call chprintf
+ 102:main.c        ****     index++;
+ 178               		.loc 1 102 0 discriminator 1
+ 179 00ce 8091 0000 		lds r24,index
+ 180 00d2 9091 0000 		lds r25,index+1
+ 181 00d6 0196      		adiw r24,1
+ 182 00d8 9093 0000 		sts index+1,r25
+ 183 00dc 8093 0000 		sts index,r24
+ 184 00e0 8DB7      		in r24,__SP_L__
+ 185 00e2 9EB7      		in r25,__SP_H__
+ 186 00e4 0896      		adiw r24,8
+ 187 00e6 0FB6      		in __tmp_reg__,__SREG__
+ 188 00e8 F894      		cli
+ 189 00ea 9EBF      		out __SP_H__,r25
+ 190 00ec 0FBE      		out __SREG__,__tmp_reg__
+ 191 00ee 8DBF      		out __SP_L__,r24
+ 192               	.LCFI13:
+ 193               		.cfi_def_cfa_offset 3
+ 194 00f0 00C0      		rjmp .L3
+ 195               		.cfi_endproc
+ 196               	.LFE144:
+ 198               		.section	.rodata.extcfg,"a",@progbits
+ 201               	extcfg:
+ 202 0000 03        		.byte	3
+ 203 0001 00        		.byte	0
+ 204 0002 00        		.byte	0
+ 205 0003 00        		.byte	0
+ 206 0004 0000      		.word	gs(extcb)
+ 207 0006 03        		.byte	3
+ 208 0007 00        		.byte	0
+ 209 0008 00        		.byte	0
+ 210 0009 00        		.byte	0
+ 211 000a 0000      		.word	gs(extcb)
+ 212 000c 03        		.byte	3
+ 213 000d 00        		.byte	0
+ 214 000e 00        		.byte	0
+ 215 000f 00        		.byte	0
+ 216 0010 0000      		.word	gs(extcb)
+ 217 0012 03        		.byte	3
+ 218 0013 00        		.byte	0
+ 219 0014 00        		.byte	0
+ 220 0015 00        		.byte	0
+ 221 0016 0000      		.word	gs(extcb)
+ 222 0018 03        		.byte	3
+ 223 0019 00        		.byte	0
+ 224 001a 00        		.byte	0
+ 225 001b 00        		.byte	0
+ 226 001c 0000      		.word	gs(extcb)
+ 227 001e 03        		.byte	3
+ 228 001f 00        		.byte	0
+ 229 0020 00        		.byte	0
+ 230 0021 00        		.byte	0
+ 231 0022 0000      		.word	gs(extcb)
+ 232               		.section	.bss.index,"aw",@nobits
+ 235               	index:
+ 236 0000 0000      		.zero	2
+ 237               		.section	.bss.isrCpt,"aw",@nobits
+ 240               	isrCpt:
+ 241 0000 0000      		.zero	2
+ 242               	.global	chp
+ 243               		.section	.data.chp,"aw",@progbits
+ 246               	chp:
+ 247 0000 0000      		.word	SD1
+ 248               		.text
+ 249               	.Letext0:
+ 250               		.file 2 "/usr/lib/gcc/avr/5.4.0/include/stddef.h"
+ 251               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 252               		.file 4 "../../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 253               		.file 5 "../../../os/rt/include/chsystypes.h"
+ 254               		.file 6 "../../../os/rt/include/chschd.h"
+ 255               		.file 7 "../../../os/common/ports/AVR/chcore.h"
+ 256               		.file 8 "../../../os/rt/include/chsem.h"
+ 257               		.file 9 "../../../os/rt/include/chmtx.h"
+ 258               		.file 10 "../../../os/rt/include/chevents.h"
+ 259               		.file 11 "../../../os/hal/include/hal_streams.h"
+ 260               		.file 12 "../../../os/hal/include/hal_queues.h"
+ 261               		.file 13 "../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.h"
+ 262               		.file 14 "../../../os/hal/include/hal_ext.h"
+ 263               		.file 15 "../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.h"
+ 264               		.file 16 "../../../os/hal/include/hal_serial.h"
+ 265               		.file 17 "../../../os/rt/include/chsys.h"
+ 266               		.file 18 "../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/ccxb0QhI.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccxb0QhI.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccxb0QhI.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccxb0QhI.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/ccxb0QhI.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccxb0QhI.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccxb0QhI.s:13     .text.extcb:0000000000000000 extcb
+     /tmp/ccxb0QhI.s:240    .bss.isrCpt:0000000000000000 isrCpt
+     /tmp/ccxb0QhI.s:46     .text.startup.main:0000000000000000 main
+     /tmp/ccxb0QhI.s:201    .rodata.extcfg:0000000000000000 extcfg
+     /tmp/ccxb0QhI.s:246    .data.chp:0000000000000000 chp
+     /tmp/ccxb0QhI.s:235    .bss.index:0000000000000000 index
+
+UNDEFINED SYMBOLS
+halInit
+chSysInit
+_pal_lld_setgroupmode
+SD1
+sdStart
+EXTD1
+extStart
+extChannelEnable
+chprintf
+chThdSleep
+__do_copy_data
+__do_clear_bss

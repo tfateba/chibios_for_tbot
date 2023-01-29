@@ -1,0 +1,2452 @@
+   1               		.file	"chevents.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               		.section	.text.chEvtRegisterMaskWithFlags,"ax",@progbits
+  12               	.global	chEvtRegisterMaskWithFlags
+  14               	chEvtRegisterMaskWithFlags:
+  15               	.LFB113:
+  16               		.file 1 "../../../os/rt/src/chevents.c"
+   1:../../../os/rt/src/chevents.c **** /*
+   2:../../../os/rt/src/chevents.c ****     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio.
+   3:../../../os/rt/src/chevents.c **** 
+   4:../../../os/rt/src/chevents.c ****     This file is part of ChibiOS.
+   5:../../../os/rt/src/chevents.c **** 
+   6:../../../os/rt/src/chevents.c ****     ChibiOS is free software; you can redistribute it and/or modify
+   7:../../../os/rt/src/chevents.c ****     it under the terms of the GNU General Public License as published by
+   8:../../../os/rt/src/chevents.c ****     the Free Software Foundation; either version 3 of the License, or
+   9:../../../os/rt/src/chevents.c ****     (at your option) any later version.
+  10:../../../os/rt/src/chevents.c **** 
+  11:../../../os/rt/src/chevents.c ****     ChibiOS is distributed in the hope that it will be useful,
+  12:../../../os/rt/src/chevents.c ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:../../../os/rt/src/chevents.c ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:../../../os/rt/src/chevents.c ****     GNU General Public License for more details.
+  15:../../../os/rt/src/chevents.c **** 
+  16:../../../os/rt/src/chevents.c ****     You should have received a copy of the GNU General Public License
+  17:../../../os/rt/src/chevents.c ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  18:../../../os/rt/src/chevents.c **** */
+  19:../../../os/rt/src/chevents.c **** /*
+  20:../../../os/rt/src/chevents.c ****    Concepts and parts of this file have been contributed by Scott (skute).
+  21:../../../os/rt/src/chevents.c ****  */
+  22:../../../os/rt/src/chevents.c **** 
+  23:../../../os/rt/src/chevents.c **** /**
+  24:../../../os/rt/src/chevents.c ****  * @file    chevents.c
+  25:../../../os/rt/src/chevents.c ****  * @brief   Events code.
+  26:../../../os/rt/src/chevents.c ****  *
+  27:../../../os/rt/src/chevents.c ****  * @addtogroup events
+  28:../../../os/rt/src/chevents.c ****  * @details Event Flags, Event Sources and Event Listeners.
+  29:../../../os/rt/src/chevents.c ****  *          <h2>Operation mode</h2>
+  30:../../../os/rt/src/chevents.c ****  *          Each thread has a mask of pending events inside its
+  31:../../../os/rt/src/chevents.c ****  *          @p thread_t structure.
+  32:../../../os/rt/src/chevents.c ****  *          Operations defined for events:
+  33:../../../os/rt/src/chevents.c ****  *          - <b>Wait</b>, the invoking thread goes to sleep until a certain
+  34:../../../os/rt/src/chevents.c ****  *            AND/OR combination of events become pending.
+  35:../../../os/rt/src/chevents.c ****  *          - <b>Clear</b>, a mask of events is cleared from the pending
+  36:../../../os/rt/src/chevents.c ****  *            events, the cleared events mask is returned (only the
+  37:../../../os/rt/src/chevents.c ****  *            events that were actually pending and then cleared).
+  38:../../../os/rt/src/chevents.c ****  *          - <b>Signal</b>, an events mask is directly ORed to the mask of the
+  39:../../../os/rt/src/chevents.c ****  *            signaled thread.
+  40:../../../os/rt/src/chevents.c ****  *          - <b>Broadcast</b>, each thread registered on an Event Source is
+  41:../../../os/rt/src/chevents.c ****  *            signaled with the events specified in its Event Listener.
+  42:../../../os/rt/src/chevents.c ****  *          - <b>Dispatch</b>, an events mask is scanned and for each bit set
+  43:../../../os/rt/src/chevents.c ****  *            to one an associated handler function is invoked. Bit masks are
+  44:../../../os/rt/src/chevents.c ****  *            scanned from bit zero upward.
+  45:../../../os/rt/src/chevents.c ****  *          .
+  46:../../../os/rt/src/chevents.c ****  *          An Event Source is a special object that can be "broadcasted" by
+  47:../../../os/rt/src/chevents.c ****  *          a thread or an interrupt service routine. Broadcasting an Event
+  48:../../../os/rt/src/chevents.c ****  *          Source has the effect that all the threads registered on the
+  49:../../../os/rt/src/chevents.c ****  *          Event Source will be signaled with an events mask.<br>
+  50:../../../os/rt/src/chevents.c ****  *          An unlimited number of Event Sources can exists in a system and
+  51:../../../os/rt/src/chevents.c ****  *          each thread can be listening on an unlimited number of
+  52:../../../os/rt/src/chevents.c ****  *          them.
+  53:../../../os/rt/src/chevents.c ****  * @pre     In order to use the Events APIs the @p CH_CFG_USE_EVENTS option must be
+  54:../../../os/rt/src/chevents.c ****  *          enabled in @p chconf.h.
+  55:../../../os/rt/src/chevents.c ****  * @post    Enabling events requires 1-4 (depending on the architecture)
+  56:../../../os/rt/src/chevents.c ****  *          extra bytes in the @p thread_t structure.
+  57:../../../os/rt/src/chevents.c ****  * @{
+  58:../../../os/rt/src/chevents.c ****  */
+  59:../../../os/rt/src/chevents.c **** 
+  60:../../../os/rt/src/chevents.c **** #include "ch.h"
+  61:../../../os/rt/src/chevents.c **** 
+  62:../../../os/rt/src/chevents.c **** #if (CH_CFG_USE_EVENTS == TRUE) || defined(__DOXYGEN__)
+  63:../../../os/rt/src/chevents.c **** 
+  64:../../../os/rt/src/chevents.c **** /*===========================================================================*/
+  65:../../../os/rt/src/chevents.c **** /* Module local definitions.                                                 */
+  66:../../../os/rt/src/chevents.c **** /*===========================================================================*/
+  67:../../../os/rt/src/chevents.c **** 
+  68:../../../os/rt/src/chevents.c **** /*===========================================================================*/
+  69:../../../os/rt/src/chevents.c **** /* Module exported variables.                                                */
+  70:../../../os/rt/src/chevents.c **** /*===========================================================================*/
+  71:../../../os/rt/src/chevents.c **** 
+  72:../../../os/rt/src/chevents.c **** /*===========================================================================*/
+  73:../../../os/rt/src/chevents.c **** /* Module local types.                                                       */
+  74:../../../os/rt/src/chevents.c **** /*===========================================================================*/
+  75:../../../os/rt/src/chevents.c **** 
+  76:../../../os/rt/src/chevents.c **** /*===========================================================================*/
+  77:../../../os/rt/src/chevents.c **** /* Module local variables.                                                   */
+  78:../../../os/rt/src/chevents.c **** /*===========================================================================*/
+  79:../../../os/rt/src/chevents.c **** 
+  80:../../../os/rt/src/chevents.c **** /*===========================================================================*/
+  81:../../../os/rt/src/chevents.c **** /* Module local functions.                                                   */
+  82:../../../os/rt/src/chevents.c **** /*===========================================================================*/
+  83:../../../os/rt/src/chevents.c **** 
+  84:../../../os/rt/src/chevents.c **** /*===========================================================================*/
+  85:../../../os/rt/src/chevents.c **** /* Module exported functions.                                                */
+  86:../../../os/rt/src/chevents.c **** /*===========================================================================*/
+  87:../../../os/rt/src/chevents.c **** 
+  88:../../../os/rt/src/chevents.c **** /**
+  89:../../../os/rt/src/chevents.c ****  * @brief   Registers an Event Listener on an Event Source.
+  90:../../../os/rt/src/chevents.c ****  * @details Once a thread has registered as listener on an event source it
+  91:../../../os/rt/src/chevents.c ****  *          will be notified of all events broadcasted there.
+  92:../../../os/rt/src/chevents.c ****  * @note    Multiple Event Listeners can specify the same bits to be ORed to
+  93:../../../os/rt/src/chevents.c ****  *          different threads.
+  94:../../../os/rt/src/chevents.c ****  *
+  95:../../../os/rt/src/chevents.c ****  * @param[in] esp       pointer to the  @p event_source_t structure
+  96:../../../os/rt/src/chevents.c ****  * @param[in] elp       pointer to the @p event_listener_t structure
+  97:../../../os/rt/src/chevents.c ****  * @param[in] events    events to be ORed to the thread when
+  98:../../../os/rt/src/chevents.c ****  *                      the event source is broadcasted
+  99:../../../os/rt/src/chevents.c ****  * @param[in] wflags    mask of flags the listening thread is interested in
+ 100:../../../os/rt/src/chevents.c ****  *
+ 101:../../../os/rt/src/chevents.c ****  * @api
+ 102:../../../os/rt/src/chevents.c ****  */
+ 103:../../../os/rt/src/chevents.c **** void chEvtRegisterMaskWithFlags(event_source_t *esp,
+ 104:../../../os/rt/src/chevents.c ****                                 event_listener_t *elp,
+ 105:../../../os/rt/src/chevents.c ****                                 eventmask_t events,
+ 106:../../../os/rt/src/chevents.c ****                                 eventflags_t wflags) {
+  17               		.loc 1 106 0
+  18               		.cfi_startproc
+  19               	.LVL0:
+  20               	/* prologue: function */
+  21               	/* frame size = 0 */
+  22               	/* stack size = 0 */
+  23               	.L__stack_usage = 0
+  24 0000 FB01      		movw r30,r22
+  25               	.LBB134:
+  26               	.LBB135:
+  27               	.LBB136:
+  28               		.file 2 "../../../os/common/ports/AVR/chcore.h"
+   1:../../../os/common/ports/AVR/chcore.h **** /*
+   2:../../../os/common/ports/AVR/chcore.h ****     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio.
+   3:../../../os/common/ports/AVR/chcore.h **** 
+   4:../../../os/common/ports/AVR/chcore.h ****     This file is part of ChibiOS.
+   5:../../../os/common/ports/AVR/chcore.h **** 
+   6:../../../os/common/ports/AVR/chcore.h ****     ChibiOS is free software; you can redistribute it and/or modify
+   7:../../../os/common/ports/AVR/chcore.h ****     it under the terms of the GNU General Public License as published by
+   8:../../../os/common/ports/AVR/chcore.h ****     the Free Software Foundation; either version 3 of the License, or
+   9:../../../os/common/ports/AVR/chcore.h ****     (at your option) any later version.
+  10:../../../os/common/ports/AVR/chcore.h **** 
+  11:../../../os/common/ports/AVR/chcore.h ****     ChibiOS is distributed in the hope that it will be useful,
+  12:../../../os/common/ports/AVR/chcore.h ****     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  13:../../../os/common/ports/AVR/chcore.h ****     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  14:../../../os/common/ports/AVR/chcore.h ****     GNU General Public License for more details.
+  15:../../../os/common/ports/AVR/chcore.h **** 
+  16:../../../os/common/ports/AVR/chcore.h ****     You should have received a copy of the GNU General Public License
+  17:../../../os/common/ports/AVR/chcore.h ****     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  18:../../../os/common/ports/AVR/chcore.h **** */
+  19:../../../os/common/ports/AVR/chcore.h **** 
+  20:../../../os/common/ports/AVR/chcore.h **** /**
+  21:../../../os/common/ports/AVR/chcore.h ****  * @file    templates/chcore.h
+  22:../../../os/common/ports/AVR/chcore.h ****  * @brief   Port related template macros and structures.
+  23:../../../os/common/ports/AVR/chcore.h ****  * @details This file is a template of the system driver macros provided by
+  24:../../../os/common/ports/AVR/chcore.h ****  *          a port.
+  25:../../../os/common/ports/AVR/chcore.h ****  *
+  26:../../../os/common/ports/AVR/chcore.h ****  * @addtogroup core
+  27:../../../os/common/ports/AVR/chcore.h ****  * @{
+  28:../../../os/common/ports/AVR/chcore.h ****  */
+  29:../../../os/common/ports/AVR/chcore.h **** 
+  30:../../../os/common/ports/AVR/chcore.h **** #ifndef CHCORE_H
+  31:../../../os/common/ports/AVR/chcore.h **** #define CHCORE_H
+  32:../../../os/common/ports/AVR/chcore.h **** 
+  33:../../../os/common/ports/AVR/chcore.h **** #include <avr/io.h>
+  34:../../../os/common/ports/AVR/chcore.h **** #include <avr/interrupt.h>
+  35:../../../os/common/ports/AVR/chcore.h **** 
+  36:../../../os/common/ports/AVR/chcore.h **** extern bool __avr_in_isr;
+  37:../../../os/common/ports/AVR/chcore.h **** 
+  38:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+  39:../../../os/common/ports/AVR/chcore.h **** /* Module constants.                                                         */
+  40:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+  41:../../../os/common/ports/AVR/chcore.h **** 
+  42:../../../os/common/ports/AVR/chcore.h **** /**
+  43:../../../os/common/ports/AVR/chcore.h ****  * @name    Port Capabilities and Constants
+  44:../../../os/common/ports/AVR/chcore.h ****  * @{
+  45:../../../os/common/ports/AVR/chcore.h ****  */
+  46:../../../os/common/ports/AVR/chcore.h **** /**
+  47:../../../os/common/ports/AVR/chcore.h ****  * @brief   This port supports a realtime counter.
+  48:../../../os/common/ports/AVR/chcore.h ****  */
+  49:../../../os/common/ports/AVR/chcore.h **** #define PORT_SUPPORTS_RT                FALSE
+  50:../../../os/common/ports/AVR/chcore.h **** 
+  51:../../../os/common/ports/AVR/chcore.h **** /**
+  52:../../../os/common/ports/AVR/chcore.h ****  * @brief   Natural alignment constant.
+  53:../../../os/common/ports/AVR/chcore.h ****  * @note    It is the minimum alignment for pointer-size variables.
+  54:../../../os/common/ports/AVR/chcore.h ****  */
+  55:../../../os/common/ports/AVR/chcore.h **** #define PORT_NATURAL_ALIGN              1U
+  56:../../../os/common/ports/AVR/chcore.h **** 
+  57:../../../os/common/ports/AVR/chcore.h **** /**
+  58:../../../os/common/ports/AVR/chcore.h ****  * @brief   Stack alignment constant.
+  59:../../../os/common/ports/AVR/chcore.h ****  * @note    It is the alignement required for the stack pointer.
+  60:../../../os/common/ports/AVR/chcore.h ****  */
+  61:../../../os/common/ports/AVR/chcore.h **** #define PORT_STACK_ALIGN                1U
+  62:../../../os/common/ports/AVR/chcore.h **** 
+  63:../../../os/common/ports/AVR/chcore.h **** /**
+  64:../../../os/common/ports/AVR/chcore.h ****  * @brief   Working Areas alignment constant.
+  65:../../../os/common/ports/AVR/chcore.h ****  * @note    It is the alignment to be enforced for thread working areas.
+  66:../../../os/common/ports/AVR/chcore.h ****  */
+  67:../../../os/common/ports/AVR/chcore.h **** #define PORT_WORKING_AREA_ALIGN         1U
+  68:../../../os/common/ports/AVR/chcore.h **** /** @} */
+  69:../../../os/common/ports/AVR/chcore.h **** 
+  70:../../../os/common/ports/AVR/chcore.h **** /**
+  71:../../../os/common/ports/AVR/chcore.h ****  * @name    Architecture and Compiler
+  72:../../../os/common/ports/AVR/chcore.h ****  * @{
+  73:../../../os/common/ports/AVR/chcore.h ****  */
+  74:../../../os/common/ports/AVR/chcore.h **** /**
+  75:../../../os/common/ports/AVR/chcore.h ****  * @brief   Macro defining an AVR architecture.
+  76:../../../os/common/ports/AVR/chcore.h ****  */
+  77:../../../os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_AVR
+  78:../../../os/common/ports/AVR/chcore.h **** 
+  79:../../../os/common/ports/AVR/chcore.h **** /**
+  80:../../../os/common/ports/AVR/chcore.h ****  * @brief   Macro defining the specific AVR architecture.
+  81:../../../os/common/ports/AVR/chcore.h ****  */
+  82:../../../os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_AVR_MEGAAVR
+  83:../../../os/common/ports/AVR/chcore.h **** 
+  84:../../../os/common/ports/AVR/chcore.h **** /**
+  85:../../../os/common/ports/AVR/chcore.h ****  * @brief   Name of the implemented architecture.
+  86:../../../os/common/ports/AVR/chcore.h ****  */
+  87:../../../os/common/ports/AVR/chcore.h **** #define PORT_ARCHITECTURE_NAME          "MegaAVR"
+  88:../../../os/common/ports/AVR/chcore.h **** 
+  89:../../../os/common/ports/AVR/chcore.h **** /**
+  90:../../../os/common/ports/AVR/chcore.h ****  * @brief   Compiler name and version.
+  91:../../../os/common/ports/AVR/chcore.h ****  */
+  92:../../../os/common/ports/AVR/chcore.h **** #if defined(__GNUC__) || defined(__DOXYGEN__)
+  93:../../../os/common/ports/AVR/chcore.h **** #define PORT_COMPILER_NAME              "GCC " __VERSION__
+  94:../../../os/common/ports/AVR/chcore.h **** 
+  95:../../../os/common/ports/AVR/chcore.h **** #else
+  96:../../../os/common/ports/AVR/chcore.h **** #error "unsupported compiler"
+  97:../../../os/common/ports/AVR/chcore.h **** #endif
+  98:../../../os/common/ports/AVR/chcore.h **** 
+  99:../../../os/common/ports/AVR/chcore.h **** /**
+ 100:../../../os/common/ports/AVR/chcore.h ****  * @brief   Port-specific information string.
+ 101:../../../os/common/ports/AVR/chcore.h ****  */
+ 102:../../../os/common/ports/AVR/chcore.h **** #define PORT_INFO                       "None"
+ 103:../../../os/common/ports/AVR/chcore.h **** /** @} */
+ 104:../../../os/common/ports/AVR/chcore.h **** 
+ 105:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 106:../../../os/common/ports/AVR/chcore.h **** /* Module pre-compile time settings.                                         */
+ 107:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 108:../../../os/common/ports/AVR/chcore.h **** 
+ 109:../../../os/common/ports/AVR/chcore.h **** /**
+ 110:../../../os/common/ports/AVR/chcore.h ****  * @brief   Stack size for the system idle thread.
+ 111:../../../os/common/ports/AVR/chcore.h ****  * @details This size depends on the idle thread implementation, usually
+ 112:../../../os/common/ports/AVR/chcore.h ****  *          the idle thread should take no more space than those reserved
+ 113:../../../os/common/ports/AVR/chcore.h ****  *          by @p PORT_INT_REQUIRED_STACK.
+ 114:../../../os/common/ports/AVR/chcore.h ****  */
+ 115:../../../os/common/ports/AVR/chcore.h **** #if !defined(PORT_IDLE_THREAD_STACK_SIZE) || defined(__DOXYGEN__)
+ 116:../../../os/common/ports/AVR/chcore.h **** #define PORT_IDLE_THREAD_STACK_SIZE     8
+ 117:../../../os/common/ports/AVR/chcore.h **** #endif
+ 118:../../../os/common/ports/AVR/chcore.h **** 
+ 119:../../../os/common/ports/AVR/chcore.h **** /**
+ 120:../../../os/common/ports/AVR/chcore.h ****  * @brief   Per-thread stack overhead for interrupts servicing.
+ 121:../../../os/common/ports/AVR/chcore.h ****  * @details This constant is used in the calculation of the correct working
+ 122:../../../os/common/ports/AVR/chcore.h ****  *          area size.
+ 123:../../../os/common/ports/AVR/chcore.h ****  */
+ 124:../../../os/common/ports/AVR/chcore.h **** #if !defined(PORT_INT_REQUIRED_STACK) || defined(__DOXYGEN__)
+ 125:../../../os/common/ports/AVR/chcore.h **** #define PORT_INT_REQUIRED_STACK         32
+ 126:../../../os/common/ports/AVR/chcore.h **** #endif
+ 127:../../../os/common/ports/AVR/chcore.h **** 
+ 128:../../../os/common/ports/AVR/chcore.h **** /**
+ 129:../../../os/common/ports/AVR/chcore.h ****  * @brief   Enables an alternative timer implementation.
+ 130:../../../os/common/ports/AVR/chcore.h ****  * @details Usually the port uses a timer interface defined in the file
+ 131:../../../os/common/ports/AVR/chcore.h ****  *          @p chcore_timer.h, if this option is enabled then the file
+ 132:../../../os/common/ports/AVR/chcore.h ****  *          @p chcore_timer_alt.h is included instead.
+ 133:../../../os/common/ports/AVR/chcore.h ****  */
+ 134:../../../os/common/ports/AVR/chcore.h **** #if !defined(PORT_USE_ALT_TIMER) || defined(__DOXYGEN__)
+ 135:../../../os/common/ports/AVR/chcore.h **** #define PORT_USE_ALT_TIMER              FALSE
+ 136:../../../os/common/ports/AVR/chcore.h **** #endif
+ 137:../../../os/common/ports/AVR/chcore.h **** 
+ 138:../../../os/common/ports/AVR/chcore.h **** /**
+ 139:../../../os/common/ports/AVR/chcore.h ****  * @brief   Enables a "wait for interrupt" instruction in the idle loop.
+ 140:../../../os/common/ports/AVR/chcore.h ****  */
+ 141:../../../os/common/ports/AVR/chcore.h **** #if !defined(PORT_AVR_WFI_SLEEP_IDLE) || defined(__DOXYGEN__)
+ 142:../../../os/common/ports/AVR/chcore.h **** #define PORT_AVR_WFI_SLEEP_IDLE      FALSE
+ 143:../../../os/common/ports/AVR/chcore.h **** #endif
+ 144:../../../os/common/ports/AVR/chcore.h **** 
+ 145:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 146:../../../os/common/ports/AVR/chcore.h **** /* Derived constants and error checks.                                       */
+ 147:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 148:../../../os/common/ports/AVR/chcore.h **** 
+ 149:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 150:../../../os/common/ports/AVR/chcore.h **** /* Module data structures and types.                                         */
+ 151:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 152:../../../os/common/ports/AVR/chcore.h **** 
+ 153:../../../os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
+ 154:../../../os/common/ports/AVR/chcore.h ****    asm module.*/
+ 155:../../../os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
+ 156:../../../os/common/ports/AVR/chcore.h **** 
+ 157:../../../os/common/ports/AVR/chcore.h **** /**
+ 158:../../../os/common/ports/AVR/chcore.h ****  * @brief   Type of stack and memory alignment enforcement.
+ 159:../../../os/common/ports/AVR/chcore.h ****  * @note    In this architecture the stack alignment is enforced to 8 bits.
+ 160:../../../os/common/ports/AVR/chcore.h ****  */
+ 161:../../../os/common/ports/AVR/chcore.h **** typedef uint8_t stkalign_t;
+ 162:../../../os/common/ports/AVR/chcore.h **** 
+ 163:../../../os/common/ports/AVR/chcore.h **** /**
+ 164:../../../os/common/ports/AVR/chcore.h ****  * @brief   Interrupt saved context.
+ 165:../../../os/common/ports/AVR/chcore.h ****  * @details This structure represents the stack frame saved during a
+ 166:../../../os/common/ports/AVR/chcore.h ****  *          preemption-capable interrupt handler.
+ 167:../../../os/common/ports/AVR/chcore.h ****  * @note    R2 and R13 are not saved because those are assumed to be immutable
+ 168:../../../os/common/ports/AVR/chcore.h ****  *          during the system life cycle.
+ 169:../../../os/common/ports/AVR/chcore.h ****  */
+ 170:../../../os/common/ports/AVR/chcore.h **** struct port_extctx {
+ 171:../../../os/common/ports/AVR/chcore.h ****   uint8_t       _next;
+ 172:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r31;
+ 173:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r30;
+ 174:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r27;
+ 175:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r26;
+ 176:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r25;
+ 177:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r24;
+ 178:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r23;
+ 179:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r22;
+ 180:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r21;
+ 181:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r20;
+ 182:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r19;
+ 183:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r18;
+ 184:../../../os/common/ports/AVR/chcore.h ****   uint8_t       sr;
+ 185:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r1;
+ 186:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r0;
+ 187:../../../os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__)
+ 188:../../../os/common/ports/AVR/chcore.h ****   uint8_t       pcx;
+ 189:../../../os/common/ports/AVR/chcore.h **** #endif
+ 190:../../../os/common/ports/AVR/chcore.h ****   uint16_t      pc;
+ 191:../../../os/common/ports/AVR/chcore.h **** };
+ 192:../../../os/common/ports/AVR/chcore.h **** 
+ 193:../../../os/common/ports/AVR/chcore.h **** /**
+ 194:../../../os/common/ports/AVR/chcore.h ****  * @brief   System saved context.
+ 195:../../../os/common/ports/AVR/chcore.h ****  * @details This structure represents the inner stack frame during a context
+ 196:../../../os/common/ports/AVR/chcore.h ****  *          switching.
+ 197:../../../os/common/ports/AVR/chcore.h ****  * @note    R2 and R13 are not saved because those are assumed to be immutable
+ 198:../../../os/common/ports/AVR/chcore.h ****  *          during the system life cycle.
+ 199:../../../os/common/ports/AVR/chcore.h ****  * @note    LR is stored in the caller context so it is not present in this
+ 200:../../../os/common/ports/AVR/chcore.h ****  *          structure.
+ 201:../../../os/common/ports/AVR/chcore.h ****  */
+ 202:../../../os/common/ports/AVR/chcore.h **** struct port_intctx {
+ 203:../../../os/common/ports/AVR/chcore.h ****   uint8_t       _next;
+ 204:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r29;
+ 205:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r28;
+ 206:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r17;
+ 207:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r16;
+ 208:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r15;
+ 209:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r14;
+ 210:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r13;
+ 211:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r12;
+ 212:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r11;
+ 213:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r10;
+ 214:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r9;
+ 215:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r8;
+ 216:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r7;
+ 217:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r6;
+ 218:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r5;
+ 219:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r4;
+ 220:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r3;
+ 221:../../../os/common/ports/AVR/chcore.h ****   uint8_t       r2;
+ 222:../../../os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__)
+ 223:../../../os/common/ports/AVR/chcore.h ****   uint8_t       pcx;
+ 224:../../../os/common/ports/AVR/chcore.h **** #endif
+ 225:../../../os/common/ports/AVR/chcore.h ****   uint8_t       pcl;
+ 226:../../../os/common/ports/AVR/chcore.h ****   uint8_t       pch;
+ 227:../../../os/common/ports/AVR/chcore.h **** };
+ 228:../../../os/common/ports/AVR/chcore.h **** 
+ 229:../../../os/common/ports/AVR/chcore.h **** /**
+ 230:../../../os/common/ports/AVR/chcore.h ****  * @brief   Platform dependent part of the @p thread_t structure.
+ 231:../../../os/common/ports/AVR/chcore.h ****  * @details This structure usually contains just the saved stack pointer
+ 232:../../../os/common/ports/AVR/chcore.h ****  *          defined as a pointer to a @p port_intctx structure.
+ 233:../../../os/common/ports/AVR/chcore.h ****  */
+ 234:../../../os/common/ports/AVR/chcore.h **** struct port_context {
+ 235:../../../os/common/ports/AVR/chcore.h ****   struct port_intctx *sp;
+ 236:../../../os/common/ports/AVR/chcore.h **** };
+ 237:../../../os/common/ports/AVR/chcore.h **** 
+ 238:../../../os/common/ports/AVR/chcore.h **** #endif /* !defined(_FROM_ASM_) */
+ 239:../../../os/common/ports/AVR/chcore.h **** 
+ 240:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 241:../../../os/common/ports/AVR/chcore.h **** /* Module macros.                                                            */
+ 242:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 243:../../../os/common/ports/AVR/chcore.h **** 
+ 244:../../../os/common/ports/AVR/chcore.h **** /**
+ 245:../../../os/common/ports/AVR/chcore.h ****  * @brief   Platform dependent part of the @p chThdCreateI() API.
+ 246:../../../os/common/ports/AVR/chcore.h ****  * @details This code usually setup the context switching frame represented
+ 247:../../../os/common/ports/AVR/chcore.h ****  *          by an @p port_intctx structure.
+ 248:../../../os/common/ports/AVR/chcore.h ****  */
+ 249:../../../os/common/ports/AVR/chcore.h **** #if defined(__AVR_3_BYTE_PC__) || defined(__DOXYGEN__)
+ 250:../../../os/common/ports/AVR/chcore.h **** #define PORT_SETUP_CONTEXT(tp, wbase, wtop, pf, arg) {                      \
+ 251:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp = (struct port_intctx *)((uint8_t *)(wtop) -                   \
+ 252:../../../os/common/ports/AVR/chcore.h ****                                       sizeof(struct port_intctx));          \
+ 253:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r2  = (uint8_t)(0xff & (uint16_t)pf);                         \
+ 254:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r3  = (uint8_t)((uint16_t)(pf) >> 8);                         \
+ 255:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r4  = (uint8_t)(0xff & (uint16_t)arg);                        \
+ 256:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r5  = (uint8_t)((uint16_t)(arg) >> 8);                        \
+ 257:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcx = (uint8_t)0;                                             \
+ 258:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcl = (uint16_t)_port_thread_start >> 8;                      \
+ 259:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pch = (uint8_t)(0xff & (uint16_t)_port_thread_start);         \
+ 260:../../../os/common/ports/AVR/chcore.h **** }
+ 261:../../../os/common/ports/AVR/chcore.h **** #else /* !__AVR_3_BYTE_PC__ */
+ 262:../../../os/common/ports/AVR/chcore.h **** #define PORT_SETUP_CONTEXT(tp, wbase, wtop, pf, arg) {                      \
+ 263:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp = (struct port_intctx *)((uint8_t *)(wtop) -                   \
+ 264:../../../os/common/ports/AVR/chcore.h ****                                       sizeof(struct port_intctx));          \
+ 265:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r2  = (uint8_t)(0xff & (uint16_t)pf);                         \
+ 266:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r3  = (uint8_t)((uint16_t)(pf) >> 8);                         \
+ 267:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r4  = (uint8_t)(0xff & (uint16_t)arg);                        \
+ 268:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->r5  = (uint8_t)((uint16_t)(arg) >> 8);                        \
+ 269:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pcl = (uint16_t)_port_thread_start >> 8;                      \
+ 270:../../../os/common/ports/AVR/chcore.h ****   tp->ctx.sp->pch = (uint8_t)(0xff & (uint16_t)_port_thread_start);         \
+ 271:../../../os/common/ports/AVR/chcore.h **** }
+ 272:../../../os/common/ports/AVR/chcore.h **** #endif /* !__AVR_3_BYTE_PC__ */
+ 273:../../../os/common/ports/AVR/chcore.h **** 
+ 274:../../../os/common/ports/AVR/chcore.h **** /**
+ 275:../../../os/common/ports/AVR/chcore.h ****  * @brief   Computes the thread working area global size.
+ 276:../../../os/common/ports/AVR/chcore.h ****  * @note    There is no need to perform alignments in this macro.
+ 277:../../../os/common/ports/AVR/chcore.h ****  */
+ 278:../../../os/common/ports/AVR/chcore.h **** #define PORT_WA_SIZE(n) ((sizeof(struct port_intctx) - 1) +                \
+ 279:../../../os/common/ports/AVR/chcore.h ****                          (sizeof(struct port_extctx) - 1) +                \
+ 280:../../../os/common/ports/AVR/chcore.h ****                          ((size_t)(n)) + ((size_t)(PORT_INT_REQUIRED_STACK)))
+ 281:../../../os/common/ports/AVR/chcore.h **** 
+ 282:../../../os/common/ports/AVR/chcore.h **** /**
+ 283:../../../os/common/ports/AVR/chcore.h ****  * @brief   Static working area allocation.
+ 284:../../../os/common/ports/AVR/chcore.h ****  * @details This macro is used to allocate a static thread working area
+ 285:../../../os/common/ports/AVR/chcore.h ****  *          aligned as both position and size.
+ 286:../../../os/common/ports/AVR/chcore.h ****  *
+ 287:../../../os/common/ports/AVR/chcore.h ****  * @param[in] s         the name to be assigned to the stack array
+ 288:../../../os/common/ports/AVR/chcore.h ****  * @param[in] n         the stack size to be assigned to the thread
+ 289:../../../os/common/ports/AVR/chcore.h ****  */
+ 290:../../../os/common/ports/AVR/chcore.h **** #define PORT_WORKING_AREA(s, n)                                             \
+ 291:../../../os/common/ports/AVR/chcore.h ****   stkalign_t s[THD_WORKING_AREA_SIZE(n) / sizeof (stkalign_t)]
+ 292:../../../os/common/ports/AVR/chcore.h **** 
+ 293:../../../os/common/ports/AVR/chcore.h **** /**
+ 294:../../../os/common/ports/AVR/chcore.h ****  * @brief   Priority level verification macro.
+ 295:../../../os/common/ports/AVR/chcore.h ****  */
+ 296:../../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_IS_VALID_PRIORITY(n) false
+ 297:../../../os/common/ports/AVR/chcore.h **** 
+ 298:../../../os/common/ports/AVR/chcore.h **** /**
+ 299:../../../os/common/ports/AVR/chcore.h ****  * @brief   Priority level verification macro.
+ 300:../../../os/common/ports/AVR/chcore.h ****  */
+ 301:../../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_IS_VALID_KERNEL_PRIORITY(n) false
+ 302:../../../os/common/ports/AVR/chcore.h **** 
+ 303:../../../os/common/ports/AVR/chcore.h **** /**
+ 304:../../../os/common/ports/AVR/chcore.h ****  * @brief   IRQ prologue code.
+ 305:../../../os/common/ports/AVR/chcore.h ****  * @details This macro must be inserted at the start of all IRQ handlers
+ 306:../../../os/common/ports/AVR/chcore.h ****  *          enabled to invoke system APIs.
+ 307:../../../os/common/ports/AVR/chcore.h ****  * @note    This code tricks the compiler to save all the specified registers
+ 308:../../../os/common/ports/AVR/chcore.h ****  *          by "touching" them.
+ 309:../../../os/common/ports/AVR/chcore.h ****  */
+ 310:../../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_PROLOGUE() {                                               \
+ 311:../../../os/common/ports/AVR/chcore.h ****   asm ("" : : : "r18", "r19", "r20", "r21", "r22", "r23", "r24",            \
+ 312:../../../os/common/ports/AVR/chcore.h ****                 "r25", "r26", "r27", "r30", "r31");                         \
+ 313:../../../os/common/ports/AVR/chcore.h ****   __avr_in_isr = true;                                                      \
+ 314:../../../os/common/ports/AVR/chcore.h **** }
+ 315:../../../os/common/ports/AVR/chcore.h **** 
+ 316:../../../os/common/ports/AVR/chcore.h **** /**
+ 317:../../../os/common/ports/AVR/chcore.h ****  * @brief   IRQ epilogue code.
+ 318:../../../os/common/ports/AVR/chcore.h ****  * @details This macro must be inserted at the end of all IRQ handlers
+ 319:../../../os/common/ports/AVR/chcore.h ****  *          enabled to invoke system APIs.
+ 320:../../../os/common/ports/AVR/chcore.h ****  */
+ 321:../../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_EPILOGUE() {                                               \
+ 322:../../../os/common/ports/AVR/chcore.h ****   __avr_in_isr = false;                                                     \
+ 323:../../../os/common/ports/AVR/chcore.h ****   _dbg_check_lock();                                                        \
+ 324:../../../os/common/ports/AVR/chcore.h ****   if (chSchIsPreemptionRequired())                                          \
+ 325:../../../os/common/ports/AVR/chcore.h ****     chSchDoReschedule();                                                    \
+ 326:../../../os/common/ports/AVR/chcore.h ****   _dbg_check_unlock();                                                      \
+ 327:../../../os/common/ports/AVR/chcore.h **** }
+ 328:../../../os/common/ports/AVR/chcore.h **** 
+ 329:../../../os/common/ports/AVR/chcore.h **** /**
+ 330:../../../os/common/ports/AVR/chcore.h ****  * @brief   IRQ handler function declaration.
+ 331:../../../os/common/ports/AVR/chcore.h ****  * @note    @p id can be a function name or a vector number depending on the
+ 332:../../../os/common/ports/AVR/chcore.h ****  *          port implementation.
+ 333:../../../os/common/ports/AVR/chcore.h ****  */
+ 334:../../../os/common/ports/AVR/chcore.h **** #define PORT_IRQ_HANDLER(id) ISR(id)
+ 335:../../../os/common/ports/AVR/chcore.h **** 
+ 336:../../../os/common/ports/AVR/chcore.h **** /**
+ 337:../../../os/common/ports/AVR/chcore.h ****  * @brief   Fast IRQ handler function declaration.
+ 338:../../../os/common/ports/AVR/chcore.h ****  * @note    @p id can be a function name or a vector number depending on the
+ 339:../../../os/common/ports/AVR/chcore.h ****  *          port implementation.
+ 340:../../../os/common/ports/AVR/chcore.h ****  */
+ 341:../../../os/common/ports/AVR/chcore.h **** #define PORT_FAST_IRQ_HANDLER(id) ISR(id)
+ 342:../../../os/common/ports/AVR/chcore.h **** 
+ 343:../../../os/common/ports/AVR/chcore.h **** /**
+ 344:../../../os/common/ports/AVR/chcore.h ****  * @brief   Performs a context switch between two threads.
+ 345:../../../os/common/ports/AVR/chcore.h ****  * @details This is the most critical code in any port, this function
+ 346:../../../os/common/ports/AVR/chcore.h ****  *          is responsible for the context switch between 2 threads.
+ 347:../../../os/common/ports/AVR/chcore.h ****  * @note    The implementation of this code affects <b>directly</b> the context
+ 348:../../../os/common/ports/AVR/chcore.h ****  *          switch performance so optimize here as much as you can.
+ 349:../../../os/common/ports/AVR/chcore.h ****  *
+ 350:../../../os/common/ports/AVR/chcore.h ****  * @param[in] ntp       the thread to be switched in
+ 351:../../../os/common/ports/AVR/chcore.h ****  * @param[in] otp       the thread to be switched out
+ 352:../../../os/common/ports/AVR/chcore.h ****  */
+ 353:../../../os/common/ports/AVR/chcore.h **** #define port_switch(ntp, otp) {                                             \
+ 354:../../../os/common/ports/AVR/chcore.h ****   _port_switch(ntp, otp);                                                   \
+ 355:../../../os/common/ports/AVR/chcore.h ****   asm volatile ("" : : : "memory");                                         \
+ 356:../../../os/common/ports/AVR/chcore.h **** }
+ 357:../../../os/common/ports/AVR/chcore.h **** 
+ 358:../../../os/common/ports/AVR/chcore.h **** 
+ 359:../../../os/common/ports/AVR/chcore.h **** /**
+ 360:../../../os/common/ports/AVR/chcore.h ****  * @brief   Port-related initialization code.
+ 361:../../../os/common/ports/AVR/chcore.h ****  * @note    This function is empty in this port.
+ 362:../../../os/common/ports/AVR/chcore.h ****  */
+ 363:../../../os/common/ports/AVR/chcore.h **** #define port_init() {                                                       \
+ 364:../../../os/common/ports/AVR/chcore.h ****   __avr_in_isr = true;                                                      \
+ 365:../../../os/common/ports/AVR/chcore.h **** }
+ 366:../../../os/common/ports/AVR/chcore.h **** 
+ 367:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 368:../../../os/common/ports/AVR/chcore.h **** /* External declarations.                                                    */
+ 369:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 370:../../../os/common/ports/AVR/chcore.h **** 
+ 371:../../../os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
+ 372:../../../os/common/ports/AVR/chcore.h ****    asm module.*/
+ 373:../../../os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
+ 374:../../../os/common/ports/AVR/chcore.h **** 
+ 375:../../../os/common/ports/AVR/chcore.h **** #ifdef __cplusplus
+ 376:../../../os/common/ports/AVR/chcore.h **** extern "C" {
+ 377:../../../os/common/ports/AVR/chcore.h **** #endif
+ 378:../../../os/common/ports/AVR/chcore.h ****   void _port_switch(thread_t *ntp, thread_t *otp);
+ 379:../../../os/common/ports/AVR/chcore.h ****   void _port_thread_start(void);
+ 380:../../../os/common/ports/AVR/chcore.h **** #ifdef __cplusplus
+ 381:../../../os/common/ports/AVR/chcore.h **** }
+ 382:../../../os/common/ports/AVR/chcore.h **** #endif
+ 383:../../../os/common/ports/AVR/chcore.h **** 
+ 384:../../../os/common/ports/AVR/chcore.h **** #endif /* !defined(_FROM_ASM_) */
+ 385:../../../os/common/ports/AVR/chcore.h **** 
+ 386:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 387:../../../os/common/ports/AVR/chcore.h **** /* Module inline functions.                                                  */
+ 388:../../../os/common/ports/AVR/chcore.h **** /*===========================================================================*/
+ 389:../../../os/common/ports/AVR/chcore.h **** 
+ 390:../../../os/common/ports/AVR/chcore.h **** /* The following code is not processed when the file is included from an
+ 391:../../../os/common/ports/AVR/chcore.h ****    asm module.*/
+ 392:../../../os/common/ports/AVR/chcore.h **** #if !defined(_FROM_ASM_)
+ 393:../../../os/common/ports/AVR/chcore.h **** 
+ 394:../../../os/common/ports/AVR/chcore.h **** /**
+ 395:../../../os/common/ports/AVR/chcore.h ****  * @brief   Returns a word encoding the current interrupts status.
+ 396:../../../os/common/ports/AVR/chcore.h ****  *
+ 397:../../../os/common/ports/AVR/chcore.h ****  * @return              The interrupts status.
+ 398:../../../os/common/ports/AVR/chcore.h ****  */
+ 399:../../../os/common/ports/AVR/chcore.h **** static inline syssts_t port_get_irq_status(void) {
+ 400:../../../os/common/ports/AVR/chcore.h **** 
+ 401:../../../os/common/ports/AVR/chcore.h ****   return SREG;
+ 402:../../../os/common/ports/AVR/chcore.h **** }
+ 403:../../../os/common/ports/AVR/chcore.h **** 
+ 404:../../../os/common/ports/AVR/chcore.h **** /**
+ 405:../../../os/common/ports/AVR/chcore.h ****  * @brief   Checks the interrupt status.
+ 406:../../../os/common/ports/AVR/chcore.h ****  *
+ 407:../../../os/common/ports/AVR/chcore.h ****  * @param[in] sts       the interrupt status word
+ 408:../../../os/common/ports/AVR/chcore.h ****  *
+ 409:../../../os/common/ports/AVR/chcore.h ****  * @return              The interrupt status.
+ 410:../../../os/common/ports/AVR/chcore.h ****  * @retval false        the word specified a disabled interrupts status.
+ 411:../../../os/common/ports/AVR/chcore.h ****  * @retval true         the word specified an enabled interrupts status.
+ 412:../../../os/common/ports/AVR/chcore.h ****  */
+ 413:../../../os/common/ports/AVR/chcore.h **** static inline bool port_irq_enabled(syssts_t sts) {
+ 414:../../../os/common/ports/AVR/chcore.h **** 
+ 415:../../../os/common/ports/AVR/chcore.h ****   return (bool)((sts & 0x80) != 0);
+ 416:../../../os/common/ports/AVR/chcore.h **** }
+ 417:../../../os/common/ports/AVR/chcore.h **** 
+ 418:../../../os/common/ports/AVR/chcore.h **** /**
+ 419:../../../os/common/ports/AVR/chcore.h ****  * @brief   Determines the current execution context.
+ 420:../../../os/common/ports/AVR/chcore.h ****  *
+ 421:../../../os/common/ports/AVR/chcore.h ****  * @return              The execution context.
+ 422:../../../os/common/ports/AVR/chcore.h ****  * @retval false        not running in ISR mode.
+ 423:../../../os/common/ports/AVR/chcore.h ****  * @retval true         running in ISR mode.
+ 424:../../../os/common/ports/AVR/chcore.h ****  */
+ 425:../../../os/common/ports/AVR/chcore.h **** static inline bool port_is_isr_context(void) {
+ 426:../../../os/common/ports/AVR/chcore.h **** 
+ 427:../../../os/common/ports/AVR/chcore.h ****   return __avr_in_isr;
+ 428:../../../os/common/ports/AVR/chcore.h **** }
+ 429:../../../os/common/ports/AVR/chcore.h **** 
+ 430:../../../os/common/ports/AVR/chcore.h **** /**
+ 431:../../../os/common/ports/AVR/chcore.h ****  * @brief   Kernel-lock action.
+ 432:../../../os/common/ports/AVR/chcore.h ****  * @details Usually this function just disables interrupts but may perform more
+ 433:../../../os/common/ports/AVR/chcore.h ****  *          actions.
+ 434:../../../os/common/ports/AVR/chcore.h ****  */
+ 435:../../../os/common/ports/AVR/chcore.h **** static inline void port_lock(void) {
+ 436:../../../os/common/ports/AVR/chcore.h **** 
+ 437:../../../os/common/ports/AVR/chcore.h ****   asm volatile ("cli" : : : "memory");
+  29               		.loc 2 437 0
+  30               	/* #APP */
+  31               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+  32 0002 F894      		cli
+  33               	 ;  0 "" 2
+  34               	/* #NOAPP */
+  35               	.LBE136:
+  36               	.LBE135:
+  37               	.LBE134:
+ 107:../../../os/rt/src/chevents.c **** 
+ 108:../../../os/rt/src/chevents.c ****   chDbgCheck((esp != NULL) && (elp != NULL));
+ 109:../../../os/rt/src/chevents.c **** 
+ 110:../../../os/rt/src/chevents.c ****   chSysLock();
+ 111:../../../os/rt/src/chevents.c ****   elp->next     = esp->next;
+  38               		.loc 1 111 0
+  39 0004 DC01      		movw r26,r24
+  40 0006 6D91      		ld r22,X+
+  41 0008 7C91      		ld r23,X
+  42 000a 1197      		sbiw r26,1
+  43               	.LVL1:
+  44 000c 7183      		std Z+1,r23
+  45 000e 6083      		st Z,r22
+ 112:../../../os/rt/src/chevents.c ****   esp->next     = elp;
+  46               		.loc 1 112 0
+  47 0010 ED93      		st X+,r30
+  48 0012 FC93      		st X,r31
+ 113:../../../os/rt/src/chevents.c ****   elp->listener = currp;
+  49               		.loc 1 113 0
+  50 0014 8091 0000 		lds r24,ch+11
+  51 0018 9091 0000 		lds r25,ch+11+1
+  52               	.LVL2:
+  53 001c 9383      		std Z+3,r25
+  54 001e 8283      		std Z+2,r24
+ 114:../../../os/rt/src/chevents.c ****   elp->events   = events;
+  55               		.loc 1 114 0
+  56 0020 4483      		std Z+4,r20
+ 115:../../../os/rt/src/chevents.c ****   elp->flags    = (eventflags_t)0;
+  57               		.loc 1 115 0
+  58 0022 1582      		std Z+5,__zero_reg__
+ 116:../../../os/rt/src/chevents.c ****   elp->wflags   = wflags;
+  59               		.loc 1 116 0
+  60 0024 2683      		std Z+6,r18
+  61               	.LBB137:
+  62               	.LBB138:
+  63               	.LBB139:
+  64               	.LBB140:
+ 438:../../../os/common/ports/AVR/chcore.h **** }
+ 439:../../../os/common/ports/AVR/chcore.h **** 
+ 440:../../../os/common/ports/AVR/chcore.h **** /**
+ 441:../../../os/common/ports/AVR/chcore.h ****  * @brief   Kernel-unlock action.
+ 442:../../../os/common/ports/AVR/chcore.h ****  * @details Usually this function just enables interrupts but may perform more
+ 443:../../../os/common/ports/AVR/chcore.h ****  *          actions.
+ 444:../../../os/common/ports/AVR/chcore.h ****  */
+ 445:../../../os/common/ports/AVR/chcore.h **** static inline void port_unlock(void) {
+ 446:../../../os/common/ports/AVR/chcore.h **** 
+ 447:../../../os/common/ports/AVR/chcore.h ****   asm volatile ("sei" : : : "memory");
+  65               		.loc 2 447 0
+  66               	/* #APP */
+  67               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+  68 0026 7894      		sei
+  69               	 ;  0 "" 2
+  70               	/* #NOAPP */
+  71 0028 0895      		ret
+  72               	.LBE140:
+  73               	.LBE139:
+  74               	.LBE138:
+  75               	.LBE137:
+  76               		.cfi_endproc
+  77               	.LFE113:
+  79               		.section	.text.chEvtUnregister,"ax",@progbits
+  80               	.global	chEvtUnregister
+  82               	chEvtUnregister:
+  83               	.LFB114:
+ 117:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 118:../../../os/rt/src/chevents.c **** }
+ 119:../../../os/rt/src/chevents.c **** 
+ 120:../../../os/rt/src/chevents.c **** /**
+ 121:../../../os/rt/src/chevents.c ****  * @brief   Unregisters an Event Listener from its Event Source.
+ 122:../../../os/rt/src/chevents.c ****  * @note    If the event listener is not registered on the specified event
+ 123:../../../os/rt/src/chevents.c ****  *          source then the function does nothing.
+ 124:../../../os/rt/src/chevents.c ****  * @note    For optimal performance it is better to perform the unregister
+ 125:../../../os/rt/src/chevents.c ****  *          operations in inverse order of the register operations (elements
+ 126:../../../os/rt/src/chevents.c ****  *          are found on top of the list).
+ 127:../../../os/rt/src/chevents.c ****  *
+ 128:../../../os/rt/src/chevents.c ****  * @param[in] esp       pointer to the  @p event_source_t structure
+ 129:../../../os/rt/src/chevents.c ****  * @param[in] elp       pointer to the @p event_listener_t structure
+ 130:../../../os/rt/src/chevents.c ****  *
+ 131:../../../os/rt/src/chevents.c ****  * @api
+ 132:../../../os/rt/src/chevents.c ****  */
+ 133:../../../os/rt/src/chevents.c **** void chEvtUnregister(event_source_t *esp, event_listener_t *elp) {
+  84               		.loc 1 133 0
+  85               		.cfi_startproc
+  86               	.LVL3:
+  87               	/* prologue: function */
+  88               	/* frame size = 0 */
+  89               	/* stack size = 0 */
+  90               	.L__stack_usage = 0
+  91               	.LBB141:
+  92               	.LBB142:
+  93               	.LBB143:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+  94               		.loc 2 437 0
+  95               	/* #APP */
+  96               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+  97 0000 F894      		cli
+  98               	 ;  0 "" 2
+  99               	/* #NOAPP */
+ 100               	.LBE143:
+ 101               	.LBE142:
+ 102               	.LBE141:
+ 134:../../../os/rt/src/chevents.c ****   event_listener_t *p;
+ 135:../../../os/rt/src/chevents.c **** 
+ 136:../../../os/rt/src/chevents.c ****   chDbgCheck((esp != NULL) && (elp != NULL));
+ 137:../../../os/rt/src/chevents.c **** 
+ 138:../../../os/rt/src/chevents.c ****   /*lint -save -e9087 -e740 [11.3, 1.3] Cast required by list handling.*/
+ 139:../../../os/rt/src/chevents.c ****   p = (event_listener_t *)esp;
+ 103               		.loc 1 139 0
+ 104 0002 FC01      		movw r30,r24
+ 105 0004 00C0      		rjmp .L3
+ 106               	.LVL4:
+ 107               	.L5:
+ 140:../../../os/rt/src/chevents.c ****   /*lint -restore*/
+ 141:../../../os/rt/src/chevents.c ****   chSysLock();
+ 142:../../../os/rt/src/chevents.c ****   /*lint -save -e9087 -e740 [11.3, 1.3] Cast required by list handling.*/
+ 143:../../../os/rt/src/chevents.c ****   while (p->next != (event_listener_t *)esp) {
+ 144:../../../os/rt/src/chevents.c ****   /*lint -restore*/
+ 145:../../../os/rt/src/chevents.c ****     if (p->next == elp) {
+ 108               		.loc 1 145 0
+ 109 0006 2617      		cp r18,r22
+ 110 0008 3707      		cpc r19,r23
+ 111 000a 01F0      		breq .L8
+ 112 000c F901      		movw r30,r18
+ 113               	.LVL5:
+ 114               	.L3:
+ 143:../../../os/rt/src/chevents.c ****   /*lint -restore*/
+ 115               		.loc 1 143 0
+ 116 000e 2081      		ld r18,Z
+ 117 0010 3181      		ldd r19,Z+1
+ 118 0012 8217      		cp r24,r18
+ 119 0014 9307      		cpc r25,r19
+ 120 0016 01F4      		brne .L5
+ 121               	.LBB144:
+ 122               	.LBB145:
+ 123               	.LBB146:
+ 124               	.LBB147:
+ 125               		.loc 2 447 0
+ 126               	/* #APP */
+ 127               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 128 0018 7894      		sei
+ 129               	 ;  0 "" 2
+ 130               	/* #NOAPP */
+ 131 001a 0895      		ret
+ 132               	.L8:
+ 133               	.LBE147:
+ 134               	.LBE146:
+ 135               	.LBE145:
+ 136               	.LBE144:
+ 146:../../../os/rt/src/chevents.c ****       p->next = elp->next;
+ 137               		.loc 1 146 0
+ 138 001c DB01      		movw r26,r22
+ 139 001e 8D91      		ld r24,X+
+ 140 0020 9C91      		ld r25,X
+ 141               	.LVL6:
+ 142 0022 9183      		std Z+1,r25
+ 143 0024 8083      		st Z,r24
+ 144               	.LBB151:
+ 145               	.LBB150:
+ 146               	.LBB149:
+ 147               	.LBB148:
+ 148               		.loc 2 447 0
+ 149               	/* #APP */
+ 150               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 151 0026 7894      		sei
+ 152               	 ;  0 "" 2
+ 153               	/* #NOAPP */
+ 154 0028 0895      		ret
+ 155               	.LBE148:
+ 156               	.LBE149:
+ 157               	.LBE150:
+ 158               	.LBE151:
+ 159               		.cfi_endproc
+ 160               	.LFE114:
+ 162               		.section	.text.chEvtGetAndClearEvents,"ax",@progbits
+ 163               	.global	chEvtGetAndClearEvents
+ 165               	chEvtGetAndClearEvents:
+ 166               	.LFB115:
+ 147:../../../os/rt/src/chevents.c ****       break;
+ 148:../../../os/rt/src/chevents.c ****     }
+ 149:../../../os/rt/src/chevents.c ****     p = p->next;
+ 150:../../../os/rt/src/chevents.c ****   }
+ 151:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 152:../../../os/rt/src/chevents.c **** }
+ 153:../../../os/rt/src/chevents.c **** 
+ 154:../../../os/rt/src/chevents.c **** /**
+ 155:../../../os/rt/src/chevents.c ****  * @brief   Clears the pending events specified in the events mask.
+ 156:../../../os/rt/src/chevents.c ****  *
+ 157:../../../os/rt/src/chevents.c ****  * @param[in] events    the events to be cleared
+ 158:../../../os/rt/src/chevents.c ****  * @return              The mask of pending events that were cleared.
+ 159:../../../os/rt/src/chevents.c ****  *
+ 160:../../../os/rt/src/chevents.c ****  * @api
+ 161:../../../os/rt/src/chevents.c ****  */
+ 162:../../../os/rt/src/chevents.c **** eventmask_t chEvtGetAndClearEvents(eventmask_t events) {
+ 167               		.loc 1 162 0
+ 168               		.cfi_startproc
+ 169               	.LVL7:
+ 170               	/* prologue: function */
+ 171               	/* frame size = 0 */
+ 172               	/* stack size = 0 */
+ 173               	.L__stack_usage = 0
+ 174               	.LBB152:
+ 175               	.LBB153:
+ 176               	.LBB154:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+ 177               		.loc 2 437 0
+ 178               	/* #APP */
+ 179               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+ 180 0000 F894      		cli
+ 181               	 ;  0 "" 2
+ 182               	/* #NOAPP */
+ 183               	.LBE154:
+ 184               	.LBE153:
+ 185               	.LBE152:
+ 163:../../../os/rt/src/chevents.c ****   eventmask_t m;
+ 164:../../../os/rt/src/chevents.c **** 
+ 165:../../../os/rt/src/chevents.c ****   chSysLock();
+ 166:../../../os/rt/src/chevents.c ****   m = currp->epending & events;
+ 186               		.loc 1 166 0
+ 187 0002 E091 0000 		lds r30,ch+11
+ 188 0006 F091 0000 		lds r31,ch+11+1
+ 189 000a 208D      		ldd r18,Z+24
+ 190               	.LVL8:
+ 167:../../../os/rt/src/chevents.c ****   currp->epending &= ~events;
+ 191               		.loc 1 167 0
+ 192 000c 982F      		mov r25,r24
+ 193 000e 9095      		com r25
+ 194 0010 9223      		and r25,r18
+ 195 0012 908F      		std Z+24,r25
+ 196               	.LBB155:
+ 197               	.LBB156:
+ 198               	.LBB157:
+ 199               	.LBB158:
+ 200               		.loc 2 447 0
+ 201               	/* #APP */
+ 202               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 203 0014 7894      		sei
+ 204               	 ;  0 "" 2
+ 205               	/* #NOAPP */
+ 206               	.LBE158:
+ 207               	.LBE157:
+ 208               	.LBE156:
+ 209               	.LBE155:
+ 168:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 169:../../../os/rt/src/chevents.c **** 
+ 170:../../../os/rt/src/chevents.c ****   return m;
+ 171:../../../os/rt/src/chevents.c **** }
+ 210               		.loc 1 171 0
+ 211 0016 8223      		and r24,r18
+ 212               	.LVL9:
+ 213 0018 0895      		ret
+ 214               		.cfi_endproc
+ 215               	.LFE115:
+ 217               		.section	.text.chEvtAddEvents,"ax",@progbits
+ 218               	.global	chEvtAddEvents
+ 220               	chEvtAddEvents:
+ 221               	.LFB116:
+ 172:../../../os/rt/src/chevents.c **** 
+ 173:../../../os/rt/src/chevents.c **** /**
+ 174:../../../os/rt/src/chevents.c ****  * @brief   Adds (OR) a set of events to the current thread, this is
+ 175:../../../os/rt/src/chevents.c ****  *          @b much faster than using @p chEvtBroadcast() or @p chEvtSignal().
+ 176:../../../os/rt/src/chevents.c ****  *
+ 177:../../../os/rt/src/chevents.c ****  * @param[in] events    the events to be added
+ 178:../../../os/rt/src/chevents.c ****  * @return              The mask of currently pending events.
+ 179:../../../os/rt/src/chevents.c ****  *
+ 180:../../../os/rt/src/chevents.c ****  * @api
+ 181:../../../os/rt/src/chevents.c ****  */
+ 182:../../../os/rt/src/chevents.c **** eventmask_t chEvtAddEvents(eventmask_t events) {
+ 222               		.loc 1 182 0
+ 223               		.cfi_startproc
+ 224               	.LVL10:
+ 225               	/* prologue: function */
+ 226               	/* frame size = 0 */
+ 227               	/* stack size = 0 */
+ 228               	.L__stack_usage = 0
+ 229               	.LBB159:
+ 230               	.LBB160:
+ 231               	.LBB161:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+ 232               		.loc 2 437 0
+ 233               	/* #APP */
+ 234               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+ 235 0000 F894      		cli
+ 236               	 ;  0 "" 2
+ 237               	/* #NOAPP */
+ 238               	.LBE161:
+ 239               	.LBE160:
+ 240               	.LBE159:
+ 183:../../../os/rt/src/chevents.c **** 
+ 184:../../../os/rt/src/chevents.c ****   chSysLock();
+ 185:../../../os/rt/src/chevents.c ****   currp->epending |= events;
+ 241               		.loc 1 185 0
+ 242 0002 E091 0000 		lds r30,ch+11
+ 243 0006 F091 0000 		lds r31,ch+11+1
+ 244 000a 908D      		ldd r25,Z+24
+ 245 000c 892B      		or r24,r25
+ 246               	.LVL11:
+ 247 000e 808F      		std Z+24,r24
+ 248               	.LVL12:
+ 249               	.LBB162:
+ 250               	.LBB163:
+ 251               	.LBB164:
+ 252               	.LBB165:
+ 253               		.loc 2 447 0
+ 254               	/* #APP */
+ 255               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 256 0010 7894      		sei
+ 257               	 ;  0 "" 2
+ 258               	/* #NOAPP */
+ 259               	.LBE165:
+ 260               	.LBE164:
+ 261               	.LBE163:
+ 262               	.LBE162:
+ 186:../../../os/rt/src/chevents.c ****   events = currp->epending;
+ 187:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 188:../../../os/rt/src/chevents.c **** 
+ 189:../../../os/rt/src/chevents.c ****   return events;
+ 190:../../../os/rt/src/chevents.c **** }
+ 263               		.loc 1 190 0
+ 264 0012 0895      		ret
+ 265               		.cfi_endproc
+ 266               	.LFE116:
+ 268               		.section	.text.chEvtGetAndClearFlags,"ax",@progbits
+ 269               	.global	chEvtGetAndClearFlags
+ 271               	chEvtGetAndClearFlags:
+ 272               	.LFB118:
+ 191:../../../os/rt/src/chevents.c **** 
+ 192:../../../os/rt/src/chevents.c **** /**
+ 193:../../../os/rt/src/chevents.c ****  * @brief   Signals all the Event Listeners registered on the specified Event
+ 194:../../../os/rt/src/chevents.c ****  *          Source.
+ 195:../../../os/rt/src/chevents.c ****  * @details This function variants ORs the specified event flags to all the
+ 196:../../../os/rt/src/chevents.c ****  *          threads registered on the @p event_source_t in addition to the
+ 197:../../../os/rt/src/chevents.c ****  *          event flags specified by the threads themselves in the
+ 198:../../../os/rt/src/chevents.c ****  *          @p event_listener_t objects.
+ 199:../../../os/rt/src/chevents.c ****  * @post    This function does not reschedule so a call to a rescheduling
+ 200:../../../os/rt/src/chevents.c ****  *          function must be performed before unlocking the kernel. Note that
+ 201:../../../os/rt/src/chevents.c ****  *          interrupt handlers always reschedule on exit so an explicit
+ 202:../../../os/rt/src/chevents.c ****  *          reschedule must not be performed in ISRs.
+ 203:../../../os/rt/src/chevents.c ****  *
+ 204:../../../os/rt/src/chevents.c ****  * @param[in] esp       pointer to the @p event_source_t structure
+ 205:../../../os/rt/src/chevents.c ****  * @param[in] flags     the flags set to be added to the listener flags mask
+ 206:../../../os/rt/src/chevents.c ****  *
+ 207:../../../os/rt/src/chevents.c ****  * @iclass
+ 208:../../../os/rt/src/chevents.c ****  */
+ 209:../../../os/rt/src/chevents.c **** void chEvtBroadcastFlagsI(event_source_t *esp, eventflags_t flags) {
+ 210:../../../os/rt/src/chevents.c ****   event_listener_t *elp;
+ 211:../../../os/rt/src/chevents.c **** 
+ 212:../../../os/rt/src/chevents.c ****   chDbgCheckClassI();
+ 213:../../../os/rt/src/chevents.c ****   chDbgCheck(esp != NULL);
+ 214:../../../os/rt/src/chevents.c **** 
+ 215:../../../os/rt/src/chevents.c ****   elp = esp->next;
+ 216:../../../os/rt/src/chevents.c ****   /*lint -save -e9087 -e740 [11.3, 1.3] Cast required by list handling.*/
+ 217:../../../os/rt/src/chevents.c ****   while (elp != (event_listener_t *)esp) {
+ 218:../../../os/rt/src/chevents.c ****   /*lint -restore*/
+ 219:../../../os/rt/src/chevents.c ****     elp->flags |= flags;
+ 220:../../../os/rt/src/chevents.c ****     /* When flags == 0 the thread will always be signaled because the
+ 221:../../../os/rt/src/chevents.c ****        source does not emit any flag.*/
+ 222:../../../os/rt/src/chevents.c ****     if ((flags == (eventflags_t)0) ||
+ 223:../../../os/rt/src/chevents.c ****         ((elp->flags & elp->wflags) != (eventflags_t)0)) {
+ 224:../../../os/rt/src/chevents.c ****       chEvtSignalI(elp->listener, elp->events);
+ 225:../../../os/rt/src/chevents.c ****     }
+ 226:../../../os/rt/src/chevents.c ****     elp = elp->next;
+ 227:../../../os/rt/src/chevents.c ****   }
+ 228:../../../os/rt/src/chevents.c **** }
+ 229:../../../os/rt/src/chevents.c **** 
+ 230:../../../os/rt/src/chevents.c **** /**
+ 231:../../../os/rt/src/chevents.c ****  * @brief   Returns the flags associated to an @p event_listener_t.
+ 232:../../../os/rt/src/chevents.c ****  * @details The flags are returned and the @p event_listener_t flags mask is
+ 233:../../../os/rt/src/chevents.c ****  *          cleared.
+ 234:../../../os/rt/src/chevents.c ****  *
+ 235:../../../os/rt/src/chevents.c ****  * @param[in] elp       pointer to the @p event_listener_t structure
+ 236:../../../os/rt/src/chevents.c ****  * @return              The flags added to the listener by the associated
+ 237:../../../os/rt/src/chevents.c ****  *                      event source.
+ 238:../../../os/rt/src/chevents.c ****  *
+ 239:../../../os/rt/src/chevents.c ****  * @api
+ 240:../../../os/rt/src/chevents.c ****  */
+ 241:../../../os/rt/src/chevents.c **** eventflags_t chEvtGetAndClearFlags(event_listener_t *elp) {
+ 273               		.loc 1 241 0
+ 274               		.cfi_startproc
+ 275               	.LVL13:
+ 276               	/* prologue: function */
+ 277               	/* frame size = 0 */
+ 278               	/* stack size = 0 */
+ 279               	.L__stack_usage = 0
+ 280 0000 FC01      		movw r30,r24
+ 281               	.LBB166:
+ 282               	.LBB167:
+ 283               	.LBB168:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+ 284               		.loc 2 437 0
+ 285               	/* #APP */
+ 286               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+ 287 0002 F894      		cli
+ 288               	 ;  0 "" 2
+ 289               	/* #NOAPP */
+ 290               	.LBE168:
+ 291               	.LBE167:
+ 292               	.LBE166:
+ 242:../../../os/rt/src/chevents.c ****   eventflags_t flags;
+ 243:../../../os/rt/src/chevents.c **** 
+ 244:../../../os/rt/src/chevents.c ****   chSysLock();
+ 245:../../../os/rt/src/chevents.c ****   flags = elp->flags;
+ 293               		.loc 1 245 0
+ 294 0004 8581      		ldd r24,Z+5
+ 295               	.LVL14:
+ 246:../../../os/rt/src/chevents.c ****   elp->flags = (eventflags_t)0;
+ 296               		.loc 1 246 0
+ 297 0006 1582      		std Z+5,__zero_reg__
+ 298               	.LBB169:
+ 299               	.LBB170:
+ 300               	.LBB171:
+ 301               	.LBB172:
+ 302               		.loc 2 447 0
+ 303               	/* #APP */
+ 304               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 305 0008 7894      		sei
+ 306               	 ;  0 "" 2
+ 307               	/* #NOAPP */
+ 308               	.LBE172:
+ 309               	.LBE171:
+ 310               	.LBE170:
+ 311               	.LBE169:
+ 247:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 248:../../../os/rt/src/chevents.c **** 
+ 249:../../../os/rt/src/chevents.c ****   return flags;
+ 250:../../../os/rt/src/chevents.c **** }
+ 312               		.loc 1 250 0
+ 313 000a 0895      		ret
+ 314               		.cfi_endproc
+ 315               	.LFE118:
+ 317               		.section	.text.chEvtSignalI,"ax",@progbits
+ 318               	.global	chEvtSignalI
+ 320               	chEvtSignalI:
+ 321               	.LFB120:
+ 251:../../../os/rt/src/chevents.c **** 
+ 252:../../../os/rt/src/chevents.c **** /**
+ 253:../../../os/rt/src/chevents.c ****  * @brief   Adds a set of event flags directly to the specified @p thread_t.
+ 254:../../../os/rt/src/chevents.c ****  *
+ 255:../../../os/rt/src/chevents.c ****  * @param[in] tp        the thread to be signaled
+ 256:../../../os/rt/src/chevents.c ****  * @param[in] events    the events set to be ORed
+ 257:../../../os/rt/src/chevents.c ****  *
+ 258:../../../os/rt/src/chevents.c ****  * @api
+ 259:../../../os/rt/src/chevents.c ****  */
+ 260:../../../os/rt/src/chevents.c **** void chEvtSignal(thread_t *tp, eventmask_t events) {
+ 261:../../../os/rt/src/chevents.c **** 
+ 262:../../../os/rt/src/chevents.c ****   chDbgCheck(tp != NULL);
+ 263:../../../os/rt/src/chevents.c **** 
+ 264:../../../os/rt/src/chevents.c ****   chSysLock();
+ 265:../../../os/rt/src/chevents.c ****   chEvtSignalI(tp, events);
+ 266:../../../os/rt/src/chevents.c ****   chSchRescheduleS();
+ 267:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 268:../../../os/rt/src/chevents.c **** }
+ 269:../../../os/rt/src/chevents.c **** 
+ 270:../../../os/rt/src/chevents.c **** /**
+ 271:../../../os/rt/src/chevents.c ****  * @brief   Adds a set of event flags directly to the specified @p thread_t.
+ 272:../../../os/rt/src/chevents.c ****  * @post    This function does not reschedule so a call to a rescheduling
+ 273:../../../os/rt/src/chevents.c ****  *          function must be performed before unlocking the kernel. Note that
+ 274:../../../os/rt/src/chevents.c ****  *          interrupt handlers always reschedule on exit so an explicit
+ 275:../../../os/rt/src/chevents.c ****  *          reschedule must not be performed in ISRs.
+ 276:../../../os/rt/src/chevents.c ****  *
+ 277:../../../os/rt/src/chevents.c ****  * @param[in] tp        the thread to be signaled
+ 278:../../../os/rt/src/chevents.c ****  * @param[in] events    the events set to be ORed
+ 279:../../../os/rt/src/chevents.c ****  *
+ 280:../../../os/rt/src/chevents.c ****  * @iclass
+ 281:../../../os/rt/src/chevents.c ****  */
+ 282:../../../os/rt/src/chevents.c **** void chEvtSignalI(thread_t *tp, eventmask_t events) {
+ 322               		.loc 1 282 0
+ 323               		.cfi_startproc
+ 324               	.LVL15:
+ 325               	/* prologue: function */
+ 326               	/* frame size = 0 */
+ 327               	/* stack size = 0 */
+ 328               	.L__stack_usage = 0
+ 329 0000 FC01      		movw r30,r24
+ 283:../../../os/rt/src/chevents.c **** 
+ 284:../../../os/rt/src/chevents.c ****   chDbgCheckClassI();
+ 285:../../../os/rt/src/chevents.c ****   chDbgCheck(tp != NULL);
+ 286:../../../os/rt/src/chevents.c **** 
+ 287:../../../os/rt/src/chevents.c ****   tp->epending |= events;
+ 330               		.loc 1 287 0
+ 331 0002 908D      		ldd r25,Z+24
+ 332 0004 692B      		or r22,r25
+ 333               	.LVL16:
+ 334 0006 608F      		std Z+24,r22
+ 288:../../../os/rt/src/chevents.c ****   /* Test on the AND/OR conditions wait states.*/
+ 289:../../../os/rt/src/chevents.c ****   if (((tp->state == CH_STATE_WTOREVT) &&
+ 335               		.loc 1 289 0
+ 336 0008 8585      		ldd r24,Z+13
+ 337               	.LVL17:
+ 338 000a 8A30      		cpi r24,lo8(10)
+ 339 000c 01F0      		breq .L16
+ 290:../../../os/rt/src/chevents.c ****        ((tp->epending & tp->u.ewmask) != (eventmask_t)0)) ||
+ 340               		.loc 1 290 0
+ 341 000e 8B30      		cpi r24,lo8(11)
+ 342 0010 01F0      		breq .L17
+ 343               	.L12:
+ 344 0012 0895      		ret
+ 345               	.L17:
+ 291:../../../os/rt/src/chevents.c ****       ((tp->state == CH_STATE_WTANDEVT) &&
+ 292:../../../os/rt/src/chevents.c ****        ((tp->epending & tp->u.ewmask) == tp->u.ewmask))) {
+ 346               		.loc 1 292 0
+ 347 0014 8089      		ldd r24,Z+16
+ 291:../../../os/rt/src/chevents.c ****       ((tp->state == CH_STATE_WTANDEVT) &&
+ 348               		.loc 1 291 0
+ 349 0016 6823      		and r22,r24
+ 350 0018 8613      		cpse r24,r22
+ 351 001a 00C0      		rjmp .L12
+ 352               	.L14:
+ 293:../../../os/rt/src/chevents.c ****     tp->u.rdymsg = MSG_OK;
+ 353               		.loc 1 293 0
+ 354 001c 118A      		std Z+17,__zero_reg__
+ 355 001e 108A      		std Z+16,__zero_reg__
+ 294:../../../os/rt/src/chevents.c ****     (void) chSchReadyI(tp);
+ 356               		.loc 1 294 0
+ 357 0020 CF01      		movw r24,r30
+ 358 0022 0C94 0000 		jmp chSchReadyI
+ 359               	.LVL18:
+ 360               	.L16:
+ 289:../../../os/rt/src/chevents.c ****        ((tp->epending & tp->u.ewmask) != (eventmask_t)0)) ||
+ 361               		.loc 1 289 0 discriminator 1
+ 362 0026 8089      		ldd r24,Z+16
+ 363 0028 6823      		and r22,r24
+ 364 002a 01F4      		brne .L14
+ 365 002c 0895      		ret
+ 366               		.cfi_endproc
+ 367               	.LFE120:
+ 369               		.section	.text.chEvtBroadcastFlagsI,"ax",@progbits
+ 370               	.global	chEvtBroadcastFlagsI
+ 372               	chEvtBroadcastFlagsI:
+ 373               	.LFB117:
+ 209:../../../os/rt/src/chevents.c ****   event_listener_t *elp;
+ 374               		.loc 1 209 0
+ 375               		.cfi_startproc
+ 376               	.LVL19:
+ 377 0000 EF92      		push r14
+ 378               	.LCFI0:
+ 379               		.cfi_def_cfa_offset 4
+ 380               		.cfi_offset 14, -3
+ 381 0002 FF92      		push r15
+ 382               	.LCFI1:
+ 383               		.cfi_def_cfa_offset 5
+ 384               		.cfi_offset 15, -4
+ 385 0004 1F93      		push r17
+ 386               	.LCFI2:
+ 387               		.cfi_def_cfa_offset 6
+ 388               		.cfi_offset 17, -5
+ 389 0006 CF93      		push r28
+ 390               	.LCFI3:
+ 391               		.cfi_def_cfa_offset 7
+ 392               		.cfi_offset 28, -6
+ 393 0008 DF93      		push r29
+ 394               	.LCFI4:
+ 395               		.cfi_def_cfa_offset 8
+ 396               		.cfi_offset 29, -7
+ 397               	/* prologue: function */
+ 398               	/* frame size = 0 */
+ 399               	/* stack size = 5 */
+ 400               	.L__stack_usage = 5
+ 401 000a 7C01      		movw r14,r24
+ 402 000c 162F      		mov r17,r22
+ 215:../../../os/rt/src/chevents.c ****   /*lint -save -e9087 -e740 [11.3, 1.3] Cast required by list handling.*/
+ 403               		.loc 1 215 0
+ 404 000e FC01      		movw r30,r24
+ 405 0010 C081      		ld r28,Z
+ 406 0012 D181      		ldd r29,Z+1
+ 407               	.LVL20:
+ 217:../../../os/rt/src/chevents.c ****   /*lint -restore*/
+ 408               		.loc 1 217 0
+ 409 0014 8C17      		cp r24,r28
+ 410 0016 9D07      		cpc r25,r29
+ 411 0018 01F0      		breq .L18
+ 412               	.LVL21:
+ 413               	.L28:
+ 219:../../../os/rt/src/chevents.c ****     /* When flags == 0 the thread will always be signaled because the
+ 414               		.loc 1 219 0
+ 415 001a 8D81      		ldd r24,Y+5
+ 416 001c 812B      		or r24,r17
+ 417 001e 8D83      		std Y+5,r24
+ 222:../../../os/rt/src/chevents.c ****         ((elp->flags & elp->wflags) != (eventflags_t)0)) {
+ 418               		.loc 1 222 0
+ 419 0020 1123      		tst r17
+ 420 0022 01F0      		breq .L20
+ 222:../../../os/rt/src/chevents.c ****         ((elp->flags & elp->wflags) != (eventflags_t)0)) {
+ 421               		.loc 1 222 0 is_stmt 0 discriminator 1
+ 422 0024 9E81      		ldd r25,Y+6
+ 423 0026 8923      		and r24,r25
+ 424 0028 01F0      		breq .L21
+ 425               	.L20:
+ 224:../../../os/rt/src/chevents.c ****     }
+ 426               		.loc 1 224 0 is_stmt 1
+ 427 002a 6C81      		ldd r22,Y+4
+ 428 002c 8A81      		ldd r24,Y+2
+ 429 002e 9B81      		ldd r25,Y+3
+ 430 0030 0E94 0000 		call chEvtSignalI
+ 431               	.LVL22:
+ 432               	.L21:
+ 226:../../../os/rt/src/chevents.c ****   }
+ 433               		.loc 1 226 0
+ 434 0034 0990      		ld __tmp_reg__,Y+
+ 435 0036 D881      		ld r29,Y
+ 436 0038 C02D      		mov r28,__tmp_reg__
+ 437               	.LVL23:
+ 217:../../../os/rt/src/chevents.c ****   /*lint -restore*/
+ 438               		.loc 1 217 0
+ 439 003a EC16      		cp r14,r28
+ 440 003c FD06      		cpc r15,r29
+ 441 003e 01F4      		brne .L28
+ 442               	.L18:
+ 443               	/* epilogue start */
+ 228:../../../os/rt/src/chevents.c **** 
+ 444               		.loc 1 228 0
+ 445 0040 DF91      		pop r29
+ 446 0042 CF91      		pop r28
+ 447               	.LVL24:
+ 448 0044 1F91      		pop r17
+ 449               	.LVL25:
+ 450 0046 FF90      		pop r15
+ 451 0048 EF90      		pop r14
+ 452               	.LVL26:
+ 453 004a 0895      		ret
+ 454               		.cfi_endproc
+ 455               	.LFE117:
+ 457               		.section	.text.chEvtSignal,"ax",@progbits
+ 458               	.global	chEvtSignal
+ 460               	chEvtSignal:
+ 461               	.LFB119:
+ 260:../../../os/rt/src/chevents.c **** 
+ 462               		.loc 1 260 0
+ 463               		.cfi_startproc
+ 464               	.LVL27:
+ 465               	/* prologue: function */
+ 466               	/* frame size = 0 */
+ 467               	/* stack size = 0 */
+ 468               	.L__stack_usage = 0
+ 469               	.LBB173:
+ 470               	.LBB174:
+ 471               	.LBB175:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+ 472               		.loc 2 437 0
+ 473               	/* #APP */
+ 474               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+ 475 0000 F894      		cli
+ 476               	 ;  0 "" 2
+ 477               	/* #NOAPP */
+ 478               	.LBE175:
+ 479               	.LBE174:
+ 480               	.LBE173:
+ 265:../../../os/rt/src/chevents.c ****   chSchRescheduleS();
+ 481               		.loc 1 265 0
+ 482 0002 0E94 0000 		call chEvtSignalI
+ 483               	.LVL28:
+ 266:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 484               		.loc 1 266 0
+ 485 0006 0E94 0000 		call chSchRescheduleS
+ 486               	.LVL29:
+ 487               	.LBB176:
+ 488               	.LBB177:
+ 489               	.LBB178:
+ 490               	.LBB179:
+ 491               		.loc 2 447 0
+ 492               	/* #APP */
+ 493               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 494 000a 7894      		sei
+ 495               	 ;  0 "" 2
+ 496               	/* #NOAPP */
+ 497 000c 0895      		ret
+ 498               	.LBE179:
+ 499               	.LBE178:
+ 500               	.LBE177:
+ 501               	.LBE176:
+ 502               		.cfi_endproc
+ 503               	.LFE119:
+ 505               		.section	.text.chEvtBroadcastFlags,"ax",@progbits
+ 506               	.global	chEvtBroadcastFlags
+ 508               	chEvtBroadcastFlags:
+ 509               	.LFB121:
+ 295:../../../os/rt/src/chevents.c ****   }
+ 296:../../../os/rt/src/chevents.c **** }
+ 297:../../../os/rt/src/chevents.c **** 
+ 298:../../../os/rt/src/chevents.c **** /**
+ 299:../../../os/rt/src/chevents.c ****  * @brief   Signals all the Event Listeners registered on the specified Event
+ 300:../../../os/rt/src/chevents.c ****  *          Source.
+ 301:../../../os/rt/src/chevents.c ****  * @details This function variants ORs the specified event flags to all the
+ 302:../../../os/rt/src/chevents.c ****  *          threads registered on the @p event_source_t in addition to the
+ 303:../../../os/rt/src/chevents.c ****  *          event flags specified by the threads themselves in the
+ 304:../../../os/rt/src/chevents.c ****  *          @p event_listener_t objects.
+ 305:../../../os/rt/src/chevents.c ****  *
+ 306:../../../os/rt/src/chevents.c ****  * @param[in] esp       pointer to the @p event_source_t structure
+ 307:../../../os/rt/src/chevents.c ****  * @param[in] flags     the flags set to be added to the listener flags mask
+ 308:../../../os/rt/src/chevents.c ****  *
+ 309:../../../os/rt/src/chevents.c ****  * @api
+ 310:../../../os/rt/src/chevents.c ****  */
+ 311:../../../os/rt/src/chevents.c **** void chEvtBroadcastFlags(event_source_t *esp, eventflags_t flags) {
+ 510               		.loc 1 311 0
+ 511               		.cfi_startproc
+ 512               	.LVL30:
+ 513               	/* prologue: function */
+ 514               	/* frame size = 0 */
+ 515               	/* stack size = 0 */
+ 516               	.L__stack_usage = 0
+ 517               	.LBB180:
+ 518               	.LBB181:
+ 519               	.LBB182:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+ 520               		.loc 2 437 0
+ 521               	/* #APP */
+ 522               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+ 523 0000 F894      		cli
+ 524               	 ;  0 "" 2
+ 525               	/* #NOAPP */
+ 526               	.LBE182:
+ 527               	.LBE181:
+ 528               	.LBE180:
+ 312:../../../os/rt/src/chevents.c **** 
+ 313:../../../os/rt/src/chevents.c ****   chSysLock();
+ 314:../../../os/rt/src/chevents.c ****   chEvtBroadcastFlagsI(esp, flags);
+ 529               		.loc 1 314 0
+ 530 0002 0E94 0000 		call chEvtBroadcastFlagsI
+ 531               	.LVL31:
+ 315:../../../os/rt/src/chevents.c ****   chSchRescheduleS();
+ 532               		.loc 1 315 0
+ 533 0006 0E94 0000 		call chSchRescheduleS
+ 534               	.LVL32:
+ 535               	.LBB183:
+ 536               	.LBB184:
+ 537               	.LBB185:
+ 538               	.LBB186:
+ 539               		.loc 2 447 0
+ 540               	/* #APP */
+ 541               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 542 000a 7894      		sei
+ 543               	 ;  0 "" 2
+ 544               	/* #NOAPP */
+ 545 000c 0895      		ret
+ 546               	.LBE186:
+ 547               	.LBE185:
+ 548               	.LBE184:
+ 549               	.LBE183:
+ 550               		.cfi_endproc
+ 551               	.LFE121:
+ 553               		.section	.text.chEvtGetAndClearFlagsI,"ax",@progbits
+ 554               	.global	chEvtGetAndClearFlagsI
+ 556               	chEvtGetAndClearFlagsI:
+ 557               	.LFB122:
+ 316:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 317:../../../os/rt/src/chevents.c **** }
+ 318:../../../os/rt/src/chevents.c **** 
+ 319:../../../os/rt/src/chevents.c **** /**
+ 320:../../../os/rt/src/chevents.c ****  * @brief   Returns the flags associated to an @p event_listener_t.
+ 321:../../../os/rt/src/chevents.c ****  * @details The flags are returned and the @p event_listener_t flags mask is
+ 322:../../../os/rt/src/chevents.c ****  *          cleared.
+ 323:../../../os/rt/src/chevents.c ****  *
+ 324:../../../os/rt/src/chevents.c ****  * @param[in] elp       pointer to the @p event_listener_t structure
+ 325:../../../os/rt/src/chevents.c ****  * @return              The flags added to the listener by the associated
+ 326:../../../os/rt/src/chevents.c ****  *                      event source.
+ 327:../../../os/rt/src/chevents.c ****  *
+ 328:../../../os/rt/src/chevents.c ****  * @iclass
+ 329:../../../os/rt/src/chevents.c ****  */
+ 330:../../../os/rt/src/chevents.c **** eventflags_t chEvtGetAndClearFlagsI(event_listener_t *elp) {
+ 558               		.loc 1 330 0
+ 559               		.cfi_startproc
+ 560               	.LVL33:
+ 561               	/* prologue: function */
+ 562               	/* frame size = 0 */
+ 563               	/* stack size = 0 */
+ 564               	.L__stack_usage = 0
+ 565 0000 FC01      		movw r30,r24
+ 331:../../../os/rt/src/chevents.c ****   eventflags_t flags;
+ 332:../../../os/rt/src/chevents.c **** 
+ 333:../../../os/rt/src/chevents.c ****   flags = elp->flags;
+ 566               		.loc 1 333 0
+ 567 0002 8581      		ldd r24,Z+5
+ 568               	.LVL34:
+ 334:../../../os/rt/src/chevents.c ****   elp->flags = (eventflags_t)0;
+ 569               		.loc 1 334 0
+ 570 0004 1582      		std Z+5,__zero_reg__
+ 335:../../../os/rt/src/chevents.c **** 
+ 336:../../../os/rt/src/chevents.c ****   return flags;
+ 337:../../../os/rt/src/chevents.c **** }
+ 571               		.loc 1 337 0
+ 572 0006 0895      		ret
+ 573               		.cfi_endproc
+ 574               	.LFE122:
+ 576               		.section	.text.chEvtDispatch,"ax",@progbits
+ 577               	.global	chEvtDispatch
+ 579               	chEvtDispatch:
+ 580               	.LFB123:
+ 338:../../../os/rt/src/chevents.c **** 
+ 339:../../../os/rt/src/chevents.c **** /**
+ 340:../../../os/rt/src/chevents.c ****  * @brief   Invokes the event handlers associated to an event flags mask.
+ 341:../../../os/rt/src/chevents.c ****  *
+ 342:../../../os/rt/src/chevents.c ****  * @param[in] events    mask of events to be dispatched
+ 343:../../../os/rt/src/chevents.c ****  * @param[in] handlers  an array of @p evhandler_t. The array must have size
+ 344:../../../os/rt/src/chevents.c ****  *                      equal to the number of bits in eventmask_t.
+ 345:../../../os/rt/src/chevents.c ****  *
+ 346:../../../os/rt/src/chevents.c ****  * @api
+ 347:../../../os/rt/src/chevents.c ****  */
+ 348:../../../os/rt/src/chevents.c **** void chEvtDispatch(const evhandler_t *handlers, eventmask_t events) {
+ 581               		.loc 1 348 0
+ 582               		.cfi_startproc
+ 583               	.LVL35:
+ 584 0000 BF92      		push r11
+ 585               	.LCFI5:
+ 586               		.cfi_def_cfa_offset 4
+ 587               		.cfi_offset 11, -3
+ 588 0002 CF92      		push r12
+ 589               	.LCFI6:
+ 590               		.cfi_def_cfa_offset 5
+ 591               		.cfi_offset 12, -4
+ 592 0004 DF92      		push r13
+ 593               	.LCFI7:
+ 594               		.cfi_def_cfa_offset 6
+ 595               		.cfi_offset 13, -5
+ 596 0006 EF92      		push r14
+ 597               	.LCFI8:
+ 598               		.cfi_def_cfa_offset 7
+ 599               		.cfi_offset 14, -6
+ 600 0008 FF92      		push r15
+ 601               	.LCFI9:
+ 602               		.cfi_def_cfa_offset 8
+ 603               		.cfi_offset 15, -7
+ 604 000a 0F93      		push r16
+ 605               	.LCFI10:
+ 606               		.cfi_def_cfa_offset 9
+ 607               		.cfi_offset 16, -8
+ 608 000c 1F93      		push r17
+ 609               	.LCFI11:
+ 610               		.cfi_def_cfa_offset 10
+ 611               		.cfi_offset 17, -9
+ 612 000e CF93      		push r28
+ 613               	.LCFI12:
+ 614               		.cfi_def_cfa_offset 11
+ 615               		.cfi_offset 28, -10
+ 616 0010 DF93      		push r29
+ 617               	.LCFI13:
+ 618               		.cfi_def_cfa_offset 12
+ 619               		.cfi_offset 29, -11
+ 620               	/* prologue: function */
+ 621               	/* frame size = 0 */
+ 622               	/* stack size = 9 */
+ 623               	.L__stack_usage = 9
+ 624 0012 B62E      		mov r11,r22
+ 625               	.LVL36:
+ 349:../../../os/rt/src/chevents.c ****   eventid_t eid;
+ 350:../../../os/rt/src/chevents.c **** 
+ 351:../../../os/rt/src/chevents.c ****   chDbgCheck(handlers != NULL);
+ 352:../../../os/rt/src/chevents.c **** 
+ 353:../../../os/rt/src/chevents.c ****   eid = (eventid_t)0;
+ 354:../../../os/rt/src/chevents.c ****   while (events != (eventmask_t)0) {
+ 626               		.loc 1 354 0
+ 627 0014 6623      		tst r22
+ 628 0016 01F0      		breq .L35
+ 629 0018 EC01      		movw r28,r24
+ 630 001a C12C      		mov r12,__zero_reg__
+ 631 001c D12C      		mov r13,__zero_reg__
+ 632 001e 7601      		movw r14,r12
+ 633 0020 462F      		mov r20,r22
+ 634 0022 50E0      		ldi r21,0
+ 355:../../../os/rt/src/chevents.c ****     if ((events & EVENT_MASK(eid)) != (eventmask_t)0) {
+ 356:../../../os/rt/src/chevents.c ****       chDbgAssert(handlers[eid] != NULL, "null handler");
+ 357:../../../os/rt/src/chevents.c ****       events &= ~EVENT_MASK(eid);
+ 635               		.loc 1 357 0
+ 636 0024 01E0      		ldi r16,lo8(1)
+ 637 0026 10E0      		ldi r17,0
+ 638               	.LVL37:
+ 639               	.L37:
+ 355:../../../os/rt/src/chevents.c ****     if ((events & EVENT_MASK(eid)) != (eventmask_t)0) {
+ 640               		.loc 1 355 0
+ 641 0028 9A01      		movw r18,r20
+ 642 002a 0C2C      		mov r0,r12
+ 643 002c 00C0      		rjmp 2f
+ 644               		1:
+ 645 002e 3595      		asr r19
+ 646 0030 2795      		ror r18
+ 647               		2:
+ 648 0032 0A94      		dec r0
+ 649 0034 02F4      		brpl 1b
+ 650 0036 20FD      		sbrc r18,0
+ 651 0038 00C0      		rjmp .L42
+ 358:../../../os/rt/src/chevents.c ****       handlers[eid](eid);
+ 359:../../../os/rt/src/chevents.c ****     }
+ 360:../../../os/rt/src/chevents.c ****     eid++;
+ 652               		.loc 1 360 0
+ 653 003a 8FEF      		ldi r24,-1
+ 654 003c C81A      		sub r12,r24
+ 655 003e D80A      		sbc r13,r24
+ 656 0040 E80A      		sbc r14,r24
+ 657 0042 F80A      		sbc r15,r24
+ 658               	.LVL38:
+ 659 0044 2296      		adiw r28,2
+ 660 0046 00C0      		rjmp .L37
+ 661               	.L42:
+ 357:../../../os/rt/src/chevents.c ****       handlers[eid](eid);
+ 662               		.loc 1 357 0
+ 663 0048 9801      		movw r18,r16
+ 664 004a 0C2C      		mov r0,r12
+ 665 004c 00C0      		rjmp 2f
+ 666               		1:
+ 667 004e 220F      		lsl r18
+ 668 0050 331F      		rol r19
+ 669               		2:
+ 670 0052 0A94      		dec r0
+ 671 0054 02F4      		brpl 1b
+ 672 0056 C901      		movw r24,r18
+ 673 0058 8095      		com r24
+ 674 005a B822      		and r11,r24
+ 675               	.LVL39:
+ 358:../../../os/rt/src/chevents.c ****       handlers[eid](eid);
+ 676               		.loc 1 358 0
+ 677 005c E991      		ld r30,Y+
+ 678 005e F991      		ld r31,Y+
+ 679 0060 C701      		movw r24,r14
+ 680 0062 B601      		movw r22,r12
+ 681 0064 1995      		eicall
+ 682               	.LVL40:
+ 683               		.loc 1 360 0
+ 684 0066 3FEF      		ldi r19,-1
+ 685 0068 C31A      		sub r12,r19
+ 686 006a D30A      		sbc r13,r19
+ 687 006c E30A      		sbc r14,r19
+ 688 006e F30A      		sbc r15,r19
+ 689               	.LVL41:
+ 354:../../../os/rt/src/chevents.c ****     if ((events & EVENT_MASK(eid)) != (eventmask_t)0) {
+ 690               		.loc 1 354 0
+ 691 0070 BB20      		tst r11
+ 692 0072 01F0      		breq .L35
+ 693 0074 4B2D      		mov r20,r11
+ 694 0076 50E0      		ldi r21,0
+ 695 0078 00C0      		rjmp .L37
+ 696               	.LVL42:
+ 697               	.L35:
+ 698               	/* epilogue start */
+ 361:../../../os/rt/src/chevents.c ****   }
+ 362:../../../os/rt/src/chevents.c **** }
+ 699               		.loc 1 362 0
+ 700 007a DF91      		pop r29
+ 701 007c CF91      		pop r28
+ 702 007e 1F91      		pop r17
+ 703 0080 0F91      		pop r16
+ 704 0082 FF90      		pop r15
+ 705 0084 EF90      		pop r14
+ 706 0086 DF90      		pop r13
+ 707 0088 CF90      		pop r12
+ 708 008a BF90      		pop r11
+ 709               	.LVL43:
+ 710 008c 0895      		ret
+ 711               		.cfi_endproc
+ 712               	.LFE123:
+ 714               		.section	.text.chEvtWaitOne,"ax",@progbits
+ 715               	.global	chEvtWaitOne
+ 717               	chEvtWaitOne:
+ 718               	.LFB124:
+ 363:../../../os/rt/src/chevents.c **** 
+ 364:../../../os/rt/src/chevents.c **** #if (CH_CFG_OPTIMIZE_SPEED == TRUE) ||                                      \
+ 365:../../../os/rt/src/chevents.c ****     (CH_CFG_USE_EVENTS_TIMEOUT == FALSE) ||                                 \
+ 366:../../../os/rt/src/chevents.c ****     defined(__DOXYGEN__)
+ 367:../../../os/rt/src/chevents.c **** /**
+ 368:../../../os/rt/src/chevents.c ****  * @brief   Waits for exactly one of the specified events.
+ 369:../../../os/rt/src/chevents.c ****  * @details The function waits for one event among those specified in
+ 370:../../../os/rt/src/chevents.c ****  *          @p events to become pending then the event is cleared and returned.
+ 371:../../../os/rt/src/chevents.c ****  * @note    One and only one event is served in the function, the one with the
+ 372:../../../os/rt/src/chevents.c ****  *          lowest event id. The function is meant to be invoked into a loop in
+ 373:../../../os/rt/src/chevents.c ****  *          order to serve all the pending events.<br>
+ 374:../../../os/rt/src/chevents.c ****  *          This means that Event Listeners with a lower event identifier have
+ 375:../../../os/rt/src/chevents.c ****  *          an higher priority.
+ 376:../../../os/rt/src/chevents.c ****  *
+ 377:../../../os/rt/src/chevents.c ****  * @param[in] events    events that the function should wait
+ 378:../../../os/rt/src/chevents.c ****  *                      for, @p ALL_EVENTS enables all the events
+ 379:../../../os/rt/src/chevents.c ****  * @return              The mask of the lowest event id served and cleared.
+ 380:../../../os/rt/src/chevents.c ****  *
+ 381:../../../os/rt/src/chevents.c ****  * @api
+ 382:../../../os/rt/src/chevents.c ****  */
+ 383:../../../os/rt/src/chevents.c **** eventmask_t chEvtWaitOne(eventmask_t events) {
+ 719               		.loc 1 383 0
+ 720               		.cfi_startproc
+ 721               	.LVL44:
+ 722 0000 1F93      		push r17
+ 723               	.LCFI14:
+ 724               		.cfi_def_cfa_offset 4
+ 725               		.cfi_offset 17, -3
+ 726 0002 CF93      		push r28
+ 727               	.LCFI15:
+ 728               		.cfi_def_cfa_offset 5
+ 729               		.cfi_offset 28, -4
+ 730 0004 DF93      		push r29
+ 731               	.LCFI16:
+ 732               		.cfi_def_cfa_offset 6
+ 733               		.cfi_offset 29, -5
+ 734               	/* prologue: function */
+ 735               	/* frame size = 0 */
+ 736               	/* stack size = 3 */
+ 737               	.L__stack_usage = 3
+ 384:../../../os/rt/src/chevents.c ****   thread_t *ctp = currp;
+ 738               		.loc 1 384 0
+ 739 0006 C091 0000 		lds r28,ch+11
+ 740 000a D091 0000 		lds r29,ch+11+1
+ 741               	.LVL45:
+ 742               	.LBB187:
+ 743               	.LBB188:
+ 744               	.LBB189:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+ 745               		.loc 2 437 0
+ 746               	/* #APP */
+ 747               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+ 748 000e F894      		cli
+ 749               	 ;  0 "" 2
+ 750               	/* #NOAPP */
+ 751               	.LBE189:
+ 752               	.LBE188:
+ 753               	.LBE187:
+ 385:../../../os/rt/src/chevents.c ****   eventmask_t m;
+ 386:../../../os/rt/src/chevents.c **** 
+ 387:../../../os/rt/src/chevents.c ****   chSysLock();
+ 388:../../../os/rt/src/chevents.c ****   m = ctp->epending & events;
+ 754               		.loc 1 388 0
+ 755 0010 288D      		ldd r18,Y+24
+ 756 0012 922F      		mov r25,r18
+ 757 0014 9823      		and r25,r24
+ 758               	.LVL46:
+ 389:../../../os/rt/src/chevents.c ****   if (m == (eventmask_t)0) {
+ 759               		.loc 1 389 0
+ 760 0016 01F4      		brne .L44
+ 761 0018 182F      		mov r17,r24
+ 390:../../../os/rt/src/chevents.c ****     ctp->u.ewmask = events;
+ 762               		.loc 1 390 0
+ 763 001a 888B      		std Y+16,r24
+ 391:../../../os/rt/src/chevents.c ****     chSchGoSleepS(CH_STATE_WTOREVT);
+ 764               		.loc 1 391 0
+ 765 001c 8AE0      		ldi r24,lo8(10)
+ 766               	.LVL47:
+ 767 001e 0E94 0000 		call chSchGoSleepS
+ 768               	.LVL48:
+ 392:../../../os/rt/src/chevents.c ****     m = ctp->epending & events;
+ 769               		.loc 1 392 0
+ 770 0022 288D      		ldd r18,Y+24
+ 771 0024 912F      		mov r25,r17
+ 772 0026 9223      		and r25,r18
+ 773               	.LVL49:
+ 774               	.L44:
+ 393:../../../os/rt/src/chevents.c ****   }
+ 394:../../../os/rt/src/chevents.c ****   m ^= m & (m - (eventmask_t)1);
+ 775               		.loc 1 394 0
+ 776 0028 892F      		mov r24,r25
+ 777 002a 8195      		neg r24
+ 778 002c 8923      		and r24,r25
+ 779               	.LVL50:
+ 395:../../../os/rt/src/chevents.c ****   ctp->epending &= ~m;
+ 780               		.loc 1 395 0
+ 781 002e 982F      		mov r25,r24
+ 782 0030 9095      		com r25
+ 783 0032 2923      		and r18,r25
+ 784 0034 288F      		std Y+24,r18
+ 785               	.LBB190:
+ 786               	.LBB191:
+ 787               	.LBB192:
+ 788               	.LBB193:
+ 789               		.loc 2 447 0
+ 790               	/* #APP */
+ 791               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 792 0036 7894      		sei
+ 793               	 ;  0 "" 2
+ 794               	/* epilogue start */
+ 795               	/* #NOAPP */
+ 796               	.LBE193:
+ 797               	.LBE192:
+ 798               	.LBE191:
+ 799               	.LBE190:
+ 396:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 397:../../../os/rt/src/chevents.c **** 
+ 398:../../../os/rt/src/chevents.c ****   return m;
+ 399:../../../os/rt/src/chevents.c **** }
+ 800               		.loc 1 399 0
+ 801 0038 DF91      		pop r29
+ 802 003a CF91      		pop r28
+ 803               	.LVL51:
+ 804 003c 1F91      		pop r17
+ 805 003e 0895      		ret
+ 806               		.cfi_endproc
+ 807               	.LFE124:
+ 809               		.section	.text.chEvtWaitAny,"ax",@progbits
+ 810               	.global	chEvtWaitAny
+ 812               	chEvtWaitAny:
+ 813               	.LFB125:
+ 400:../../../os/rt/src/chevents.c **** 
+ 401:../../../os/rt/src/chevents.c **** /**
+ 402:../../../os/rt/src/chevents.c ****  * @brief   Waits for any of the specified events.
+ 403:../../../os/rt/src/chevents.c ****  * @details The function waits for any event among those specified in
+ 404:../../../os/rt/src/chevents.c ****  *          @p events to become pending then the events are cleared and
+ 405:../../../os/rt/src/chevents.c ****  *          returned.
+ 406:../../../os/rt/src/chevents.c ****  *
+ 407:../../../os/rt/src/chevents.c ****  * @param[in] events    events that the function should wait
+ 408:../../../os/rt/src/chevents.c ****  *                      for, @p ALL_EVENTS enables all the events
+ 409:../../../os/rt/src/chevents.c ****  * @return              The mask of the served and cleared events.
+ 410:../../../os/rt/src/chevents.c ****  *
+ 411:../../../os/rt/src/chevents.c ****  * @api
+ 412:../../../os/rt/src/chevents.c ****  */
+ 413:../../../os/rt/src/chevents.c **** eventmask_t chEvtWaitAny(eventmask_t events) {
+ 814               		.loc 1 413 0
+ 815               		.cfi_startproc
+ 816               	.LVL52:
+ 817 0000 1F93      		push r17
+ 818               	.LCFI17:
+ 819               		.cfi_def_cfa_offset 4
+ 820               		.cfi_offset 17, -3
+ 821 0002 CF93      		push r28
+ 822               	.LCFI18:
+ 823               		.cfi_def_cfa_offset 5
+ 824               		.cfi_offset 28, -4
+ 825 0004 DF93      		push r29
+ 826               	.LCFI19:
+ 827               		.cfi_def_cfa_offset 6
+ 828               		.cfi_offset 29, -5
+ 829               	/* prologue: function */
+ 830               	/* frame size = 0 */
+ 831               	/* stack size = 3 */
+ 832               	.L__stack_usage = 3
+ 833 0006 282F      		mov r18,r24
+ 414:../../../os/rt/src/chevents.c ****   thread_t *ctp = currp;
+ 834               		.loc 1 414 0
+ 835 0008 C091 0000 		lds r28,ch+11
+ 836 000c D091 0000 		lds r29,ch+11+1
+ 837               	.LVL53:
+ 838               	.LBB194:
+ 839               	.LBB195:
+ 840               	.LBB196:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+ 841               		.loc 2 437 0
+ 842               	/* #APP */
+ 843               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+ 844 0010 F894      		cli
+ 845               	 ;  0 "" 2
+ 846               	/* #NOAPP */
+ 847               	.LBE196:
+ 848               	.LBE195:
+ 849               	.LBE194:
+ 415:../../../os/rt/src/chevents.c ****   eventmask_t m;
+ 416:../../../os/rt/src/chevents.c **** 
+ 417:../../../os/rt/src/chevents.c ****   chSysLock();
+ 418:../../../os/rt/src/chevents.c ****   m = ctp->epending & events;
+ 850               		.loc 1 418 0
+ 851 0012 988D      		ldd r25,Y+24
+ 852 0014 892F      		mov r24,r25
+ 853               	.LVL54:
+ 854 0016 8223      		and r24,r18
+ 855               	.LVL55:
+ 419:../../../os/rt/src/chevents.c ****   if (m == (eventmask_t)0) {
+ 856               		.loc 1 419 0
+ 857 0018 01F4      		brne .L46
+ 858 001a 122F      		mov r17,r18
+ 420:../../../os/rt/src/chevents.c ****     ctp->u.ewmask = events;
+ 859               		.loc 1 420 0
+ 860 001c 288B      		std Y+16,r18
+ 421:../../../os/rt/src/chevents.c ****     chSchGoSleepS(CH_STATE_WTOREVT);
+ 861               		.loc 1 421 0
+ 862 001e 8AE0      		ldi r24,lo8(10)
+ 863               	.LVL56:
+ 864 0020 0E94 0000 		call chSchGoSleepS
+ 865               	.LVL57:
+ 422:../../../os/rt/src/chevents.c ****     m = ctp->epending & events;
+ 866               		.loc 1 422 0
+ 867 0024 988D      		ldd r25,Y+24
+ 868 0026 812F      		mov r24,r17
+ 869 0028 8923      		and r24,r25
+ 870               	.LVL58:
+ 871               	.L46:
+ 423:../../../os/rt/src/chevents.c ****   }
+ 424:../../../os/rt/src/chevents.c ****   ctp->epending &= ~m;
+ 872               		.loc 1 424 0
+ 873 002a 282F      		mov r18,r24
+ 874 002c 2095      		com r18
+ 875 002e 9223      		and r25,r18
+ 876 0030 988F      		std Y+24,r25
+ 877               	.LBB197:
+ 878               	.LBB198:
+ 879               	.LBB199:
+ 880               	.LBB200:
+ 881               		.loc 2 447 0
+ 882               	/* #APP */
+ 883               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 884 0032 7894      		sei
+ 885               	 ;  0 "" 2
+ 886               	/* epilogue start */
+ 887               	/* #NOAPP */
+ 888               	.LBE200:
+ 889               	.LBE199:
+ 890               	.LBE198:
+ 891               	.LBE197:
+ 425:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 426:../../../os/rt/src/chevents.c **** 
+ 427:../../../os/rt/src/chevents.c ****   return m;
+ 428:../../../os/rt/src/chevents.c **** }
+ 892               		.loc 1 428 0
+ 893 0034 DF91      		pop r29
+ 894 0036 CF91      		pop r28
+ 895               	.LVL59:
+ 896 0038 1F91      		pop r17
+ 897 003a 0895      		ret
+ 898               		.cfi_endproc
+ 899               	.LFE125:
+ 901               		.section	.text.chEvtWaitAll,"ax",@progbits
+ 902               	.global	chEvtWaitAll
+ 904               	chEvtWaitAll:
+ 905               	.LFB126:
+ 429:../../../os/rt/src/chevents.c **** 
+ 430:../../../os/rt/src/chevents.c **** /**
+ 431:../../../os/rt/src/chevents.c ****  * @brief   Waits for all the specified events.
+ 432:../../../os/rt/src/chevents.c ****  * @details The function waits for all the events specified in @p events to
+ 433:../../../os/rt/src/chevents.c ****  *          become pending then the events are cleared and returned.
+ 434:../../../os/rt/src/chevents.c ****  *
+ 435:../../../os/rt/src/chevents.c ****  * @param[in] events    events that the function should wait
+ 436:../../../os/rt/src/chevents.c ****  *                      for, @p ALL_EVENTS requires all the events
+ 437:../../../os/rt/src/chevents.c ****  * @return              The mask of the served and cleared events.
+ 438:../../../os/rt/src/chevents.c ****  *
+ 439:../../../os/rt/src/chevents.c ****  * @api
+ 440:../../../os/rt/src/chevents.c ****  */
+ 441:../../../os/rt/src/chevents.c **** eventmask_t chEvtWaitAll(eventmask_t events) {
+ 906               		.loc 1 441 0
+ 907               		.cfi_startproc
+ 908               	.LVL60:
+ 909 0000 0F93      		push r16
+ 910               	.LCFI20:
+ 911               		.cfi_def_cfa_offset 4
+ 912               		.cfi_offset 16, -3
+ 913 0002 1F93      		push r17
+ 914               	.LCFI21:
+ 915               		.cfi_def_cfa_offset 5
+ 916               		.cfi_offset 17, -4
+ 917 0004 CF93      		push r28
+ 918               	.LCFI22:
+ 919               		.cfi_def_cfa_offset 6
+ 920               		.cfi_offset 28, -5
+ 921               	/* prologue: function */
+ 922               	/* frame size = 0 */
+ 923               	/* stack size = 3 */
+ 924               	.L__stack_usage = 3
+ 925 0006 C82F      		mov r28,r24
+ 442:../../../os/rt/src/chevents.c ****   thread_t *ctp = currp;
+ 926               		.loc 1 442 0
+ 927 0008 0091 0000 		lds r16,ch+11
+ 928 000c 1091 0000 		lds r17,ch+11+1
+ 929               	.LVL61:
+ 930               	.LBB201:
+ 931               	.LBB202:
+ 932               	.LBB203:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+ 933               		.loc 2 437 0
+ 934               	/* #APP */
+ 935               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+ 936 0010 F894      		cli
+ 937               	 ;  0 "" 2
+ 938               	/* #NOAPP */
+ 939               	.LBE203:
+ 940               	.LBE202:
+ 941               	.LBE201:
+ 443:../../../os/rt/src/chevents.c **** 
+ 444:../../../os/rt/src/chevents.c ****   chSysLock();
+ 445:../../../os/rt/src/chevents.c ****   if ((ctp->epending & events) != events) {
+ 942               		.loc 1 445 0
+ 943 0012 F801      		movw r30,r16
+ 944 0014 808D      		ldd r24,Z+24
+ 945               	.LVL62:
+ 946 0016 982F      		mov r25,r24
+ 947 0018 9C23      		and r25,r28
+ 948 001a C917      		cp r28,r25
+ 949 001c 01F0      		breq .L48
+ 446:../../../os/rt/src/chevents.c ****     ctp->u.ewmask = events;
+ 950               		.loc 1 446 0
+ 951 001e C08B      		std Z+16,r28
+ 447:../../../os/rt/src/chevents.c ****     chSchGoSleepS(CH_STATE_WTANDEVT);
+ 952               		.loc 1 447 0
+ 953 0020 8BE0      		ldi r24,lo8(11)
+ 954 0022 0E94 0000 		call chSchGoSleepS
+ 955               	.LVL63:
+ 956 0026 F801      		movw r30,r16
+ 957 0028 808D      		ldd r24,Z+24
+ 958               	.L48:
+ 448:../../../os/rt/src/chevents.c ****   }
+ 449:../../../os/rt/src/chevents.c ****   ctp->epending &= ~events;
+ 959               		.loc 1 449 0
+ 960 002a 9C2F      		mov r25,r28
+ 961 002c 9095      		com r25
+ 962 002e 8923      		and r24,r25
+ 963 0030 F801      		movw r30,r16
+ 964 0032 808F      		std Z+24,r24
+ 965               	.LBB204:
+ 966               	.LBB205:
+ 967               	.LBB206:
+ 968               	.LBB207:
+ 969               		.loc 2 447 0
+ 970               	/* #APP */
+ 971               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 972 0034 7894      		sei
+ 973               	 ;  0 "" 2
+ 974               	/* #NOAPP */
+ 975               	.LBE207:
+ 976               	.LBE206:
+ 977               	.LBE205:
+ 978               	.LBE204:
+ 450:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 451:../../../os/rt/src/chevents.c **** 
+ 452:../../../os/rt/src/chevents.c ****   return events;
+ 453:../../../os/rt/src/chevents.c **** }
+ 979               		.loc 1 453 0
+ 980 0036 8C2F      		mov r24,r28
+ 981               	/* epilogue start */
+ 982 0038 CF91      		pop r28
+ 983               	.LVL64:
+ 984 003a 1F91      		pop r17
+ 985 003c 0F91      		pop r16
+ 986               	.LVL65:
+ 987 003e 0895      		ret
+ 988               		.cfi_endproc
+ 989               	.LFE126:
+ 991               		.section	.text.chEvtWaitOneTimeout,"ax",@progbits
+ 992               	.global	chEvtWaitOneTimeout
+ 994               	chEvtWaitOneTimeout:
+ 995               	.LFB127:
+ 454:../../../os/rt/src/chevents.c **** #endif /* CH_CFG_OPTIMIZE_SPEED || !CH_CFG_USE_EVENTS_TIMEOUT */
+ 455:../../../os/rt/src/chevents.c **** 
+ 456:../../../os/rt/src/chevents.c **** #if (CH_CFG_USE_EVENTS_TIMEOUT == TRUE) || defined(__DOXYGEN__)
+ 457:../../../os/rt/src/chevents.c **** /**
+ 458:../../../os/rt/src/chevents.c ****  * @brief   Waits for exactly one of the specified events.
+ 459:../../../os/rt/src/chevents.c ****  * @details The function waits for one event among those specified in
+ 460:../../../os/rt/src/chevents.c ****  *          @p events to become pending then the event is cleared and returned.
+ 461:../../../os/rt/src/chevents.c ****  * @note    One and only one event is served in the function, the one with the
+ 462:../../../os/rt/src/chevents.c ****  *          lowest event id. The function is meant to be invoked into a loop
+ 463:../../../os/rt/src/chevents.c ****  *          in order to serve all the pending events.<br>
+ 464:../../../os/rt/src/chevents.c ****  *          This means that Event Listeners with a lower event identifier have
+ 465:../../../os/rt/src/chevents.c ****  *          an higher priority.
+ 466:../../../os/rt/src/chevents.c ****  *
+ 467:../../../os/rt/src/chevents.c ****  * @param[in] events    events that the function should wait
+ 468:../../../os/rt/src/chevents.c ****  *                      for, @p ALL_EVENTS enables all the events
+ 469:../../../os/rt/src/chevents.c ****  * @param[in] time      the number of ticks before the operation timeouts,
+ 470:../../../os/rt/src/chevents.c ****  *                      the following special values are allowed:
+ 471:../../../os/rt/src/chevents.c ****  *                      - @a TIME_IMMEDIATE immediate timeout.
+ 472:../../../os/rt/src/chevents.c ****  *                      - @a TIME_INFINITE no timeout.
+ 473:../../../os/rt/src/chevents.c ****  *                      .
+ 474:../../../os/rt/src/chevents.c ****  * @return              The mask of the lowest event id served and cleared.
+ 475:../../../os/rt/src/chevents.c ****  * @retval 0            if the operation has timed out.
+ 476:../../../os/rt/src/chevents.c ****  *
+ 477:../../../os/rt/src/chevents.c ****  * @api
+ 478:../../../os/rt/src/chevents.c ****  */
+ 479:../../../os/rt/src/chevents.c **** eventmask_t chEvtWaitOneTimeout(eventmask_t events, systime_t time) {
+ 996               		.loc 1 479 0
+ 997               		.cfi_startproc
+ 998               	.LVL66:
+ 999 0000 1F93      		push r17
+ 1000               	.LCFI23:
+ 1001               		.cfi_def_cfa_offset 4
+ 1002               		.cfi_offset 17, -3
+ 1003 0002 CF93      		push r28
+ 1004               	.LCFI24:
+ 1005               		.cfi_def_cfa_offset 5
+ 1006               		.cfi_offset 28, -4
+ 1007 0004 DF93      		push r29
+ 1008               	.LCFI25:
+ 1009               		.cfi_def_cfa_offset 6
+ 1010               		.cfi_offset 29, -5
+ 1011               	/* prologue: function */
+ 1012               	/* frame size = 0 */
+ 1013               	/* stack size = 3 */
+ 1014               	.L__stack_usage = 3
+ 480:../../../os/rt/src/chevents.c ****   thread_t *ctp = currp;
+ 1015               		.loc 1 480 0
+ 1016 0006 C091 0000 		lds r28,ch+11
+ 1017 000a D091 0000 		lds r29,ch+11+1
+ 1018               	.LVL67:
+ 1019               	.LBB208:
+ 1020               	.LBB209:
+ 1021               	.LBB210:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+ 1022               		.loc 2 437 0
+ 1023               	/* #APP */
+ 1024               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+ 1025 000e F894      		cli
+ 1026               	 ;  0 "" 2
+ 1027               	/* #NOAPP */
+ 1028               	.LBE210:
+ 1029               	.LBE209:
+ 1030               	.LBE208:
+ 481:../../../os/rt/src/chevents.c ****   eventmask_t m;
+ 482:../../../os/rt/src/chevents.c **** 
+ 483:../../../os/rt/src/chevents.c ****   chSysLock();
+ 484:../../../os/rt/src/chevents.c ****   m = ctp->epending & events;
+ 1031               		.loc 1 484 0
+ 1032 0010 288D      		ldd r18,Y+24
+ 1033 0012 922F      		mov r25,r18
+ 1034 0014 9823      		and r25,r24
+ 1035               	.LVL68:
+ 485:../../../os/rt/src/chevents.c ****   if (m == (eventmask_t)0) {
+ 1036               		.loc 1 485 0
+ 1037 0016 01F4      		brne .L50
+ 486:../../../os/rt/src/chevents.c ****     if (TIME_IMMEDIATE == time) {
+ 1038               		.loc 1 486 0
+ 1039 0018 6115      		cp r22,__zero_reg__
+ 1040 001a 7105      		cpc r23,__zero_reg__
+ 1041 001c 01F4      		brne .L55
+ 1042               	.LVL69:
+ 1043               	.L54:
+ 1044               	.LBB211:
+ 1045               	.LBB212:
+ 1046               	.LBB213:
+ 1047               	.LBB214:
+ 1048               		.loc 2 447 0
+ 1049               	/* #APP */
+ 1050               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 1051 001e 7894      		sei
+ 1052               	 ;  0 "" 2
+ 1053               	/* #NOAPP */
+ 1054               	.LBE214:
+ 1055               	.LBE213:
+ 1056               	.LBE212:
+ 1057               	.LBE211:
+ 487:../../../os/rt/src/chevents.c ****       chSysUnlock();
+ 488:../../../os/rt/src/chevents.c ****       return (eventmask_t)0;
+ 489:../../../os/rt/src/chevents.c ****     }
+ 490:../../../os/rt/src/chevents.c ****     ctp->u.ewmask = events;
+ 491:../../../os/rt/src/chevents.c ****     if (chSchGoSleepTimeoutS(CH_STATE_WTOREVT, time) < MSG_OK) {
+ 492:../../../os/rt/src/chevents.c ****       chSysUnlock();
+ 493:../../../os/rt/src/chevents.c ****       return (eventmask_t)0;
+ 1058               		.loc 1 493 0
+ 1059 0020 80E0      		ldi r24,0
+ 1060               	/* epilogue start */
+ 494:../../../os/rt/src/chevents.c ****     }
+ 495:../../../os/rt/src/chevents.c ****     m = ctp->epending & events;
+ 496:../../../os/rt/src/chevents.c ****   }
+ 497:../../../os/rt/src/chevents.c ****   m ^= m & (m - (eventmask_t)1);
+ 498:../../../os/rt/src/chevents.c ****   ctp->epending &= ~m;
+ 499:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 500:../../../os/rt/src/chevents.c **** 
+ 501:../../../os/rt/src/chevents.c ****   return m;
+ 502:../../../os/rt/src/chevents.c **** }
+ 1061               		.loc 1 502 0
+ 1062 0022 DF91      		pop r29
+ 1063 0024 CF91      		pop r28
+ 1064               	.LVL70:
+ 1065 0026 1F91      		pop r17
+ 1066 0028 0895      		ret
+ 1067               	.LVL71:
+ 1068               	.L55:
+ 1069 002a 182F      		mov r17,r24
+ 490:../../../os/rt/src/chevents.c ****     if (chSchGoSleepTimeoutS(CH_STATE_WTOREVT, time) < MSG_OK) {
+ 1070               		.loc 1 490 0
+ 1071 002c 888B      		std Y+16,r24
+ 491:../../../os/rt/src/chevents.c ****       chSysUnlock();
+ 1072               		.loc 1 491 0
+ 1073 002e 8AE0      		ldi r24,lo8(10)
+ 1074               	.LVL72:
+ 1075 0030 0E94 0000 		call chSchGoSleepTimeoutS
+ 1076               	.LVL73:
+ 1077 0034 97FD      		sbrc r25,7
+ 1078 0036 00C0      		rjmp .L54
+ 495:../../../os/rt/src/chevents.c ****   }
+ 1079               		.loc 1 495 0
+ 1080 0038 288D      		ldd r18,Y+24
+ 1081 003a 912F      		mov r25,r17
+ 1082 003c 9223      		and r25,r18
+ 1083               	.LVL74:
+ 1084               	.L50:
+ 497:../../../os/rt/src/chevents.c ****   ctp->epending &= ~m;
+ 1085               		.loc 1 497 0
+ 1086 003e 892F      		mov r24,r25
+ 1087 0040 8195      		neg r24
+ 1088 0042 8923      		and r24,r25
+ 1089               	.LVL75:
+ 498:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 1090               		.loc 1 498 0
+ 1091 0044 982F      		mov r25,r24
+ 1092 0046 9095      		com r25
+ 1093 0048 2923      		and r18,r25
+ 1094 004a 288F      		std Y+24,r18
+ 1095               	.LBB215:
+ 1096               	.LBB216:
+ 1097               	.LBB217:
+ 1098               	.LBB218:
+ 1099               		.loc 2 447 0
+ 1100               	/* #APP */
+ 1101               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 1102 004c 7894      		sei
+ 1103               	 ;  0 "" 2
+ 1104               	/* epilogue start */
+ 1105               	/* #NOAPP */
+ 1106               	.LBE218:
+ 1107               	.LBE217:
+ 1108               	.LBE216:
+ 1109               	.LBE215:
+ 1110               		.loc 1 502 0
+ 1111 004e DF91      		pop r29
+ 1112 0050 CF91      		pop r28
+ 1113               	.LVL76:
+ 1114 0052 1F91      		pop r17
+ 1115 0054 0895      		ret
+ 1116               		.cfi_endproc
+ 1117               	.LFE127:
+ 1119               		.section	.text.chEvtWaitAnyTimeout,"ax",@progbits
+ 1120               	.global	chEvtWaitAnyTimeout
+ 1122               	chEvtWaitAnyTimeout:
+ 1123               	.LFB128:
+ 503:../../../os/rt/src/chevents.c **** 
+ 504:../../../os/rt/src/chevents.c **** /**
+ 505:../../../os/rt/src/chevents.c ****  * @brief   Waits for any of the specified events.
+ 506:../../../os/rt/src/chevents.c ****  * @details The function waits for any event among those specified in
+ 507:../../../os/rt/src/chevents.c ****  *          @p events to become pending then the events are cleared and
+ 508:../../../os/rt/src/chevents.c ****  *          returned.
+ 509:../../../os/rt/src/chevents.c ****  *
+ 510:../../../os/rt/src/chevents.c ****  * @param[in] events    events that the function should wait
+ 511:../../../os/rt/src/chevents.c ****  *                      for, @p ALL_EVENTS enables all the events
+ 512:../../../os/rt/src/chevents.c ****  * @param[in] time      the number of ticks before the operation timeouts,
+ 513:../../../os/rt/src/chevents.c ****  *                      the following special values are allowed:
+ 514:../../../os/rt/src/chevents.c ****  *                      - @a TIME_IMMEDIATE immediate timeout.
+ 515:../../../os/rt/src/chevents.c ****  *                      - @a TIME_INFINITE no timeout.
+ 516:../../../os/rt/src/chevents.c ****  *                      .
+ 517:../../../os/rt/src/chevents.c ****  * @return              The mask of the served and cleared events.
+ 518:../../../os/rt/src/chevents.c ****  * @retval 0            if the operation has timed out.
+ 519:../../../os/rt/src/chevents.c ****  *
+ 520:../../../os/rt/src/chevents.c ****  * @api
+ 521:../../../os/rt/src/chevents.c ****  */
+ 522:../../../os/rt/src/chevents.c **** eventmask_t chEvtWaitAnyTimeout(eventmask_t events, systime_t time) {
+ 1124               		.loc 1 522 0
+ 1125               		.cfi_startproc
+ 1126               	.LVL77:
+ 1127 0000 1F93      		push r17
+ 1128               	.LCFI26:
+ 1129               		.cfi_def_cfa_offset 4
+ 1130               		.cfi_offset 17, -3
+ 1131 0002 CF93      		push r28
+ 1132               	.LCFI27:
+ 1133               		.cfi_def_cfa_offset 5
+ 1134               		.cfi_offset 28, -4
+ 1135 0004 DF93      		push r29
+ 1136               	.LCFI28:
+ 1137               		.cfi_def_cfa_offset 6
+ 1138               		.cfi_offset 29, -5
+ 1139               	/* prologue: function */
+ 1140               	/* frame size = 0 */
+ 1141               	/* stack size = 3 */
+ 1142               	.L__stack_usage = 3
+ 523:../../../os/rt/src/chevents.c ****   thread_t *ctp = currp;
+ 1143               		.loc 1 523 0
+ 1144 0006 C091 0000 		lds r28,ch+11
+ 1145 000a D091 0000 		lds r29,ch+11+1
+ 1146               	.LVL78:
+ 1147               	.LBB219:
+ 1148               	.LBB220:
+ 1149               	.LBB221:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+ 1150               		.loc 2 437 0
+ 1151               	/* #APP */
+ 1152               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+ 1153 000e F894      		cli
+ 1154               	 ;  0 "" 2
+ 1155               	/* #NOAPP */
+ 1156               	.LBE221:
+ 1157               	.LBE220:
+ 1158               	.LBE219:
+ 524:../../../os/rt/src/chevents.c ****   eventmask_t m;
+ 525:../../../os/rt/src/chevents.c **** 
+ 526:../../../os/rt/src/chevents.c ****   chSysLock();
+ 527:../../../os/rt/src/chevents.c ****   m = ctp->epending & events;
+ 1159               		.loc 1 527 0
+ 1160 0010 288D      		ldd r18,Y+24
+ 1161 0012 922F      		mov r25,r18
+ 1162 0014 9823      		and r25,r24
+ 1163               	.LVL79:
+ 528:../../../os/rt/src/chevents.c ****   if (m == (eventmask_t)0) {
+ 1164               		.loc 1 528 0
+ 1165 0016 01F4      		brne .L57
+ 529:../../../os/rt/src/chevents.c ****     if (TIME_IMMEDIATE == time) {
+ 1166               		.loc 1 529 0
+ 1167 0018 6115      		cp r22,__zero_reg__
+ 1168 001a 7105      		cpc r23,__zero_reg__
+ 1169 001c 01F4      		brne .L62
+ 1170               	.LVL80:
+ 1171               	.L61:
+ 1172               	.LBB222:
+ 1173               	.LBB223:
+ 1174               	.LBB224:
+ 1175               	.LBB225:
+ 1176               		.loc 2 447 0
+ 1177               	/* #APP */
+ 1178               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 1179 001e 7894      		sei
+ 1180               	 ;  0 "" 2
+ 1181               	/* #NOAPP */
+ 1182               	.LBE225:
+ 1183               	.LBE224:
+ 1184               	.LBE223:
+ 1185               	.LBE222:
+ 530:../../../os/rt/src/chevents.c ****       chSysUnlock();
+ 531:../../../os/rt/src/chevents.c ****       return (eventmask_t)0;
+ 532:../../../os/rt/src/chevents.c ****     }
+ 533:../../../os/rt/src/chevents.c ****     ctp->u.ewmask = events;
+ 534:../../../os/rt/src/chevents.c ****     if (chSchGoSleepTimeoutS(CH_STATE_WTOREVT, time) < MSG_OK) {
+ 535:../../../os/rt/src/chevents.c ****       chSysUnlock();
+ 536:../../../os/rt/src/chevents.c ****       return (eventmask_t)0;
+ 1186               		.loc 1 536 0
+ 1187 0020 80E0      		ldi r24,0
+ 1188               	/* epilogue start */
+ 537:../../../os/rt/src/chevents.c ****     }
+ 538:../../../os/rt/src/chevents.c ****     m = ctp->epending & events;
+ 539:../../../os/rt/src/chevents.c ****   }
+ 540:../../../os/rt/src/chevents.c ****   ctp->epending &= ~m;
+ 541:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 542:../../../os/rt/src/chevents.c **** 
+ 543:../../../os/rt/src/chevents.c ****   return m;
+ 544:../../../os/rt/src/chevents.c **** }
+ 1189               		.loc 1 544 0
+ 1190 0022 DF91      		pop r29
+ 1191 0024 CF91      		pop r28
+ 1192               	.LVL81:
+ 1193 0026 1F91      		pop r17
+ 1194 0028 0895      		ret
+ 1195               	.LVL82:
+ 1196               	.L62:
+ 1197 002a 182F      		mov r17,r24
+ 533:../../../os/rt/src/chevents.c ****     if (chSchGoSleepTimeoutS(CH_STATE_WTOREVT, time) < MSG_OK) {
+ 1198               		.loc 1 533 0
+ 1199 002c 888B      		std Y+16,r24
+ 534:../../../os/rt/src/chevents.c ****       chSysUnlock();
+ 1200               		.loc 1 534 0
+ 1201 002e 8AE0      		ldi r24,lo8(10)
+ 1202               	.LVL83:
+ 1203 0030 0E94 0000 		call chSchGoSleepTimeoutS
+ 1204               	.LVL84:
+ 1205 0034 97FD      		sbrc r25,7
+ 1206 0036 00C0      		rjmp .L61
+ 538:../../../os/rt/src/chevents.c ****   }
+ 1207               		.loc 1 538 0
+ 1208 0038 288D      		ldd r18,Y+24
+ 1209 003a 912F      		mov r25,r17
+ 1210 003c 9223      		and r25,r18
+ 1211               	.LVL85:
+ 1212               	.L57:
+ 540:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 1213               		.loc 1 540 0
+ 1214 003e 892F      		mov r24,r25
+ 1215 0040 8095      		com r24
+ 1216 0042 2823      		and r18,r24
+ 1217 0044 288F      		std Y+24,r18
+ 1218               	.LBB226:
+ 1219               	.LBB227:
+ 1220               	.LBB228:
+ 1221               	.LBB229:
+ 1222               		.loc 2 447 0
+ 1223               	/* #APP */
+ 1224               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 1225 0046 7894      		sei
+ 1226               	 ;  0 "" 2
+ 1227               	/* #NOAPP */
+ 1228               	.LBE229:
+ 1229               	.LBE228:
+ 1230               	.LBE227:
+ 1231               	.LBE226:
+ 543:../../../os/rt/src/chevents.c **** }
+ 1232               		.loc 1 543 0
+ 1233 0048 892F      		mov r24,r25
+ 1234               	/* epilogue start */
+ 1235               		.loc 1 544 0
+ 1236 004a DF91      		pop r29
+ 1237 004c CF91      		pop r28
+ 1238               	.LVL86:
+ 1239 004e 1F91      		pop r17
+ 1240 0050 0895      		ret
+ 1241               		.cfi_endproc
+ 1242               	.LFE128:
+ 1244               		.section	.text.chEvtWaitAllTimeout,"ax",@progbits
+ 1245               	.global	chEvtWaitAllTimeout
+ 1247               	chEvtWaitAllTimeout:
+ 1248               	.LFB129:
+ 545:../../../os/rt/src/chevents.c **** 
+ 546:../../../os/rt/src/chevents.c **** /**
+ 547:../../../os/rt/src/chevents.c ****  * @brief   Waits for all the specified events.
+ 548:../../../os/rt/src/chevents.c ****  * @details The function waits for all the events specified in @p events to
+ 549:../../../os/rt/src/chevents.c ****  *          become pending then the events are cleared and returned.
+ 550:../../../os/rt/src/chevents.c ****  *
+ 551:../../../os/rt/src/chevents.c ****  * @param[in] events    events that the function should wait
+ 552:../../../os/rt/src/chevents.c ****  *                      for, @p ALL_EVENTS requires all the events
+ 553:../../../os/rt/src/chevents.c ****  * @param[in] time      the number of ticks before the operation timeouts,
+ 554:../../../os/rt/src/chevents.c ****  *                      the following special values are allowed:
+ 555:../../../os/rt/src/chevents.c ****  *                      - @a TIME_IMMEDIATE immediate timeout.
+ 556:../../../os/rt/src/chevents.c ****  *                      - @a TIME_INFINITE no timeout.
+ 557:../../../os/rt/src/chevents.c ****  *                      .
+ 558:../../../os/rt/src/chevents.c ****  * @return              The mask of the served and cleared events.
+ 559:../../../os/rt/src/chevents.c ****  * @retval 0            if the operation has timed out.
+ 560:../../../os/rt/src/chevents.c ****  *
+ 561:../../../os/rt/src/chevents.c ****  * @api
+ 562:../../../os/rt/src/chevents.c ****  */
+ 563:../../../os/rt/src/chevents.c **** eventmask_t chEvtWaitAllTimeout(eventmask_t events, systime_t time) {
+ 1249               		.loc 1 563 0
+ 1250               		.cfi_startproc
+ 1251               	.LVL87:
+ 1252 0000 0F93      		push r16
+ 1253               	.LCFI29:
+ 1254               		.cfi_def_cfa_offset 4
+ 1255               		.cfi_offset 16, -3
+ 1256 0002 1F93      		push r17
+ 1257               	.LCFI30:
+ 1258               		.cfi_def_cfa_offset 5
+ 1259               		.cfi_offset 17, -4
+ 1260 0004 CF93      		push r28
+ 1261               	.LCFI31:
+ 1262               		.cfi_def_cfa_offset 6
+ 1263               		.cfi_offset 28, -5
+ 1264               	/* prologue: function */
+ 1265               	/* frame size = 0 */
+ 1266               	/* stack size = 3 */
+ 1267               	.L__stack_usage = 3
+ 1268 0006 C82F      		mov r28,r24
+ 564:../../../os/rt/src/chevents.c ****   thread_t *ctp = currp;
+ 1269               		.loc 1 564 0
+ 1270 0008 0091 0000 		lds r16,ch+11
+ 1271 000c 1091 0000 		lds r17,ch+11+1
+ 1272               	.LVL88:
+ 1273               	.LBB230:
+ 1274               	.LBB231:
+ 1275               	.LBB232:
+ 437:../../../os/common/ports/AVR/chcore.h **** }
+ 1276               		.loc 2 437 0
+ 1277               	/* #APP */
+ 1278               	 ;  437 "../../../os/common/ports/AVR/chcore.h" 1
+ 1279 0010 F894      		cli
+ 1280               	 ;  0 "" 2
+ 1281               	/* #NOAPP */
+ 1282               	.LBE232:
+ 1283               	.LBE231:
+ 1284               	.LBE230:
+ 565:../../../os/rt/src/chevents.c **** 
+ 566:../../../os/rt/src/chevents.c ****   chSysLock();
+ 567:../../../os/rt/src/chevents.c ****   if ((ctp->epending & events) != events) {
+ 1285               		.loc 1 567 0
+ 1286 0012 F801      		movw r30,r16
+ 1287 0014 808D      		ldd r24,Z+24
+ 1288               	.LVL89:
+ 1289 0016 982F      		mov r25,r24
+ 1290 0018 9C23      		and r25,r28
+ 1291 001a C917      		cp r28,r25
+ 1292 001c 01F0      		breq .L64
+ 568:../../../os/rt/src/chevents.c ****     if (TIME_IMMEDIATE == time) {
+ 1293               		.loc 1 568 0
+ 1294 001e 6115      		cp r22,__zero_reg__
+ 1295 0020 7105      		cpc r23,__zero_reg__
+ 1296 0022 01F4      		brne .L68
+ 1297               	.LVL90:
+ 1298               	.L67:
+ 1299               	.LBB233:
+ 1300               	.LBB234:
+ 1301               	.LBB235:
+ 1302               	.LBB236:
+ 1303               		.loc 2 447 0
+ 1304               	/* #APP */
+ 1305               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 1306 0024 7894      		sei
+ 1307               	 ;  0 "" 2
+ 1308               	/* #NOAPP */
+ 1309               	.LBE236:
+ 1310               	.LBE235:
+ 1311               	.LBE234:
+ 1312               	.LBE233:
+ 569:../../../os/rt/src/chevents.c ****       chSysUnlock();
+ 570:../../../os/rt/src/chevents.c ****       return (eventmask_t)0;
+ 571:../../../os/rt/src/chevents.c ****     }
+ 572:../../../os/rt/src/chevents.c ****     ctp->u.ewmask = events;
+ 573:../../../os/rt/src/chevents.c ****     if (chSchGoSleepTimeoutS(CH_STATE_WTANDEVT, time) < MSG_OK) {
+ 574:../../../os/rt/src/chevents.c ****       chSysUnlock();
+ 575:../../../os/rt/src/chevents.c ****       return (eventmask_t)0;
+ 1313               		.loc 1 575 0
+ 1314 0026 80E0      		ldi r24,0
+ 1315               	/* epilogue start */
+ 576:../../../os/rt/src/chevents.c ****     }
+ 577:../../../os/rt/src/chevents.c ****   }
+ 578:../../../os/rt/src/chevents.c ****   ctp->epending &= ~events;
+ 579:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 580:../../../os/rt/src/chevents.c **** 
+ 581:../../../os/rt/src/chevents.c ****   return events;
+ 582:../../../os/rt/src/chevents.c **** }
+ 1316               		.loc 1 582 0
+ 1317 0028 CF91      		pop r28
+ 1318               	.LVL91:
+ 1319 002a 1F91      		pop r17
+ 1320 002c 0F91      		pop r16
+ 1321               	.LVL92:
+ 1322 002e 0895      		ret
+ 1323               	.LVL93:
+ 1324               	.L68:
+ 572:../../../os/rt/src/chevents.c ****     if (chSchGoSleepTimeoutS(CH_STATE_WTANDEVT, time) < MSG_OK) {
+ 1325               		.loc 1 572 0
+ 1326 0030 F801      		movw r30,r16
+ 1327 0032 C08B      		std Z+16,r28
+ 573:../../../os/rt/src/chevents.c ****       chSysUnlock();
+ 1328               		.loc 1 573 0
+ 1329 0034 8BE0      		ldi r24,lo8(11)
+ 1330 0036 0E94 0000 		call chSchGoSleepTimeoutS
+ 1331               	.LVL94:
+ 1332 003a 97FD      		sbrc r25,7
+ 1333 003c 00C0      		rjmp .L67
+ 1334 003e F801      		movw r30,r16
+ 1335 0040 808D      		ldd r24,Z+24
+ 1336               	.L64:
+ 578:../../../os/rt/src/chevents.c ****   chSysUnlock();
+ 1337               		.loc 1 578 0
+ 1338 0042 9C2F      		mov r25,r28
+ 1339 0044 9095      		com r25
+ 1340 0046 8923      		and r24,r25
+ 1341 0048 F801      		movw r30,r16
+ 1342 004a 808F      		std Z+24,r24
+ 1343               	.LBB237:
+ 1344               	.LBB238:
+ 1345               	.LBB239:
+ 1346               	.LBB240:
+ 1347               		.loc 2 447 0
+ 1348               	/* #APP */
+ 1349               	 ;  447 "../../../os/common/ports/AVR/chcore.h" 1
+ 1350 004c 7894      		sei
+ 1351               	 ;  0 "" 2
+ 1352               	/* #NOAPP */
+ 1353               	.LBE240:
+ 1354               	.LBE239:
+ 1355               	.LBE238:
+ 1356               	.LBE237:
+ 581:../../../os/rt/src/chevents.c **** }
+ 1357               		.loc 1 581 0
+ 1358 004e 8C2F      		mov r24,r28
+ 1359               	/* epilogue start */
+ 1360               		.loc 1 582 0
+ 1361 0050 CF91      		pop r28
+ 1362               	.LVL95:
+ 1363 0052 1F91      		pop r17
+ 1364 0054 0F91      		pop r16
+ 1365               	.LVL96:
+ 1366 0056 0895      		ret
+ 1367               		.cfi_endproc
+ 1368               	.LFE129:
+ 1370               		.text
+ 1371               	.Letext0:
+ 1372               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 1373               		.file 4 "../../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 1374               		.file 5 "../../../os/rt/include/chsystypes.h"
+ 1375               		.file 6 "../../../os/rt/include/chschd.h"
+ 1376               		.file 7 "../../../os/rt/include/chsem.h"
+ 1377               		.file 8 "../../../os/rt/include/chmtx.h"
+ 1378               		.file 9 "../../../os/rt/include/chevents.h"
+ 1379               		.file 10 "../../../os/rt/include/chsys.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 chevents.c
+     /tmp/ccq5sgZp.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccq5sgZp.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccq5sgZp.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccq5sgZp.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/ccq5sgZp.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccq5sgZp.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccq5sgZp.s:14     .text.chEvtRegisterMaskWithFlags:0000000000000000 chEvtRegisterMaskWithFlags
+     /tmp/ccq5sgZp.s:82     .text.chEvtUnregister:0000000000000000 chEvtUnregister
+     /tmp/ccq5sgZp.s:165    .text.chEvtGetAndClearEvents:0000000000000000 chEvtGetAndClearEvents
+     /tmp/ccq5sgZp.s:220    .text.chEvtAddEvents:0000000000000000 chEvtAddEvents
+     /tmp/ccq5sgZp.s:271    .text.chEvtGetAndClearFlags:0000000000000000 chEvtGetAndClearFlags
+     /tmp/ccq5sgZp.s:320    .text.chEvtSignalI:0000000000000000 chEvtSignalI
+     /tmp/ccq5sgZp.s:372    .text.chEvtBroadcastFlagsI:0000000000000000 chEvtBroadcastFlagsI
+     /tmp/ccq5sgZp.s:460    .text.chEvtSignal:0000000000000000 chEvtSignal
+     /tmp/ccq5sgZp.s:508    .text.chEvtBroadcastFlags:0000000000000000 chEvtBroadcastFlags
+     /tmp/ccq5sgZp.s:556    .text.chEvtGetAndClearFlagsI:0000000000000000 chEvtGetAndClearFlagsI
+     /tmp/ccq5sgZp.s:579    .text.chEvtDispatch:0000000000000000 chEvtDispatch
+     /tmp/ccq5sgZp.s:717    .text.chEvtWaitOne:0000000000000000 chEvtWaitOne
+     /tmp/ccq5sgZp.s:812    .text.chEvtWaitAny:0000000000000000 chEvtWaitAny
+     /tmp/ccq5sgZp.s:904    .text.chEvtWaitAll:0000000000000000 chEvtWaitAll
+     /tmp/ccq5sgZp.s:994    .text.chEvtWaitOneTimeout:0000000000000000 chEvtWaitOneTimeout
+     /tmp/ccq5sgZp.s:1122   .text.chEvtWaitAnyTimeout:0000000000000000 chEvtWaitAnyTimeout
+     /tmp/ccq5sgZp.s:1247   .text.chEvtWaitAllTimeout:0000000000000000 chEvtWaitAllTimeout
+
+UNDEFINED SYMBOLS
+ch
+chSchReadyI
+chSchRescheduleS
+chSchGoSleepS
+chSchGoSleepTimeoutS

@@ -1,0 +1,2291 @@
+Archive member included to satisfy reference by file (symbol)
+
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o)
+                              (vfprintf)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o)
+                              (vfscanf)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3.o)
+                              ../../../os/hal/lib/streams/chprintf.o (__subsf3)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3.o) (__addsf3x)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(cmpsf2.o)
+                              ../../../os/hal/lib/streams/chprintf.o (__ltsf2)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixsfsi.o)
+                              ../../../os/hal/lib/streams/chprintf.o (__fixsfsi)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixunssfsi.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixsfsi.o) (__fixunssfsi)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(floatsisf.o)
+                              ../../../os/hal/lib/streams/chprintf.o (__floatunsisf)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_cmp.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(cmpsf2.o) (__fp_cmp)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_inf.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o) (__fp_inf)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_nan.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o) (__fp_nan)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_pscA.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o) (__fp_pscA)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_pscB.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o) (__fp_pscB)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_round.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3.o) (__fp_round)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_split3.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o) (__fp_split3)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_zero.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o) (__fp_zero)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3.o)
+                              ../../../os/hal/lib/streams/chprintf.o (__mulsf3)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3.o) (__mulsf3x)
+/usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_udivmodsi4.o)
+                              ../../../os/hal/lib/streams/chprintf.o (__udivmodsi4)
+/usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+                              ../../../os/hal/lib/streams/chprintf.o (__divmodsi4)
+/usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_negsi2.o)
+                              /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o) (__negsi2)
+/usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o (exit)
+/usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_tablejump2.o)
+                              ../../../os/hal/lib/streams/chprintf.o (__tablejump2__)
+/usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+                              ../../../os/rt/src/chsys.o (__do_copy_data)
+/usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+                              ../../../os/rt/src/chsys.o (__do_clear_bss)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(isspace.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o) (isspace)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(strchr_P.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o) (strchr_P)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(memcpy.o)
+                              ../../../os/hal/src/hal_buffers.o (memcpy)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(strcmp.o)
+                              ../../../os/rt/src/chregistry.o (strcmp)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fgetc.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o) (fgetc)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fputc.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o) (fputc)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ungetc.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o) (ungetc)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ultoa_invert.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o) (__ultoa_invert)
+/usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(cty_isfalse.o)
+                              /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(isspace.o) (__ctype_isfalse)
+
+Allocating common symbols
+Common symbol       size              file
+
+EXTD1               0x3               ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ch_idle_thread_wa   0x6b              ../../../os/rt/src/chsys.o
+__avr_in_isr        0x1               ../../../os/common/ports/AVR/chcore.o
+SD1                 0x49              ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ch                  0x33              ../../../os/rt/src/chschd.o
+
+Discarded input sections
+
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+ .text          0x0000000000000000        0x0 ../../../os/rt/src/chsys.o
+ .data          0x0000000000000000        0x0 ../../../os/rt/src/chsys.o
+ .bss           0x0000000000000000        0x0 ../../../os/rt/src/chsys.o
+ .text.chSysHalt
+                0x0000000000000000        0xc ../../../os/rt/src/chsys.o
+ .text.chSysIntegrityCheckI
+                0x0000000000000000      0x12a ../../../os/rt/src/chsys.o
+ .text.chSysGetStatusAndLockX
+                0x0000000000000000       0x12 ../../../os/rt/src/chsys.o
+ .text.chSysRestoreStatusX
+                0x0000000000000000       0x14 ../../../os/rt/src/chsys.o
+ .text          0x0000000000000000        0x0 ../../../os/rt/src/chdebug.o
+ .data          0x0000000000000000        0x0 ../../../os/rt/src/chdebug.o
+ .bss           0x0000000000000000        0x0 ../../../os/rt/src/chdebug.o
+ .debug_info    0x0000000000000000      0x686 ../../../os/rt/src/chdebug.o
+ .debug_abbrev  0x0000000000000000      0x104 ../../../os/rt/src/chdebug.o
+ .debug_aranges
+                0x0000000000000000       0x18 ../../../os/rt/src/chdebug.o
+ .debug_line    0x0000000000000000       0xe5 ../../../os/rt/src/chdebug.o
+ .debug_str     0x0000000000000000      0x425 ../../../os/rt/src/chdebug.o
+ .comment       0x0000000000000000       0x12 ../../../os/rt/src/chdebug.o
+ .text          0x0000000000000000        0x0 ../../../os/rt/src/chtrace.o
+ .data          0x0000000000000000        0x0 ../../../os/rt/src/chtrace.o
+ .bss           0x0000000000000000        0x0 ../../../os/rt/src/chtrace.o
+ .debug_info    0x0000000000000000      0x686 ../../../os/rt/src/chtrace.o
+ .debug_abbrev  0x0000000000000000      0x104 ../../../os/rt/src/chtrace.o
+ .debug_aranges
+                0x0000000000000000       0x18 ../../../os/rt/src/chtrace.o
+ .debug_line    0x0000000000000000       0xe5 ../../../os/rt/src/chtrace.o
+ .debug_str     0x0000000000000000      0x425 ../../../os/rt/src/chtrace.o
+ .comment       0x0000000000000000       0x12 ../../../os/rt/src/chtrace.o
+ .text          0x0000000000000000        0x0 ../../../os/rt/src/chvt.o
+ .data          0x0000000000000000        0x0 ../../../os/rt/src/chvt.o
+ .bss           0x0000000000000000        0x0 ../../../os/rt/src/chvt.o
+ .text          0x0000000000000000        0x0 ../../../os/rt/src/chschd.o
+ .data          0x0000000000000000        0x0 ../../../os/rt/src/chschd.o
+ .bss           0x0000000000000000        0x0 ../../../os/rt/src/chschd.o
+ .text.chSchReadyAheadI
+                0x0000000000000000       0x44 ../../../os/rt/src/chschd.o
+ .text.chSchDoRescheduleBehind
+                0x0000000000000000       0x7a ../../../os/rt/src/chschd.o
+ .text.chSchRescheduleS
+                0x0000000000000000       0x20 ../../../os/rt/src/chschd.o
+ .text.chSchDoRescheduleAhead
+                0x0000000000000000        0x4 ../../../os/rt/src/chschd.o
+ .text          0x0000000000000000        0x0 ../../../os/rt/src/chthreads.o
+ .data          0x0000000000000000        0x0 ../../../os/rt/src/chthreads.o
+ .bss           0x0000000000000000        0x0 ../../../os/rt/src/chthreads.o
+ .text.chThdCreateSuspended
+                0x0000000000000000        0xa ../../../os/rt/src/chthreads.o
+ .text.chThdCreateI
+                0x0000000000000000        0x8 ../../../os/rt/src/chthreads.o
+ .rodata.str1.1
+                0x0000000000000000        0x7 ../../../os/rt/src/chthreads.o
+ .text.chThdCreateStatic
+                0x0000000000000000       0x90 ../../../os/rt/src/chthreads.o
+ .text.chThdStart
+                0x0000000000000000       0x1a ../../../os/rt/src/chthreads.o
+ .text.chThdAddRef
+                0x0000000000000000        0xe ../../../os/rt/src/chthreads.o
+ .text.chThdRelease
+                0x0000000000000000       0x36 ../../../os/rt/src/chthreads.o
+ .text.chThdWait
+                0x0000000000000000       0x44 ../../../os/rt/src/chthreads.o
+ .text.chThdSetPriority
+                0x0000000000000000       0x28 ../../../os/rt/src/chthreads.o
+ .text.chThdTerminate
+                0x0000000000000000        0xe ../../../os/rt/src/chthreads.o
+ .text.chThdSleepUntil
+                0x0000000000000000       0x1c ../../../os/rt/src/chthreads.o
+ .text.chThdSleepUntilWindowed
+                0x0000000000000000       0x36 ../../../os/rt/src/chthreads.o
+ .text.chThdYield
+                0x0000000000000000       0x24 ../../../os/rt/src/chthreads.o
+ .text.chThdSuspendS
+                0x0000000000000000       0x2a ../../../os/rt/src/chthreads.o
+ .text.chThdSuspendTimeoutS
+                0x0000000000000000       0x24 ../../../os/rt/src/chthreads.o
+ .text.chThdResumeI
+                0x0000000000000000       0x1c ../../../os/rt/src/chthreads.o
+ .text.chThdResumeS
+                0x0000000000000000       0x18 ../../../os/rt/src/chthreads.o
+ .text.chThdResume
+                0x0000000000000000       0x18 ../../../os/rt/src/chthreads.o
+ .text.chThdDequeueAllI
+                0x0000000000000000       0x46 ../../../os/rt/src/chthreads.o
+ .text          0x0000000000000000        0x0 ../../../os/rt/src/chregistry.o
+ .data          0x0000000000000000        0x0 ../../../os/rt/src/chregistry.o
+ .bss           0x0000000000000000        0x0 ../../../os/rt/src/chregistry.o
+ .text.chRegFirstThread
+                0x0000000000000000        0xe ../../../os/rt/src/chregistry.o
+ .text.chRegNextThread
+                0x0000000000000000       0x1a ../../../os/rt/src/chregistry.o
+ .text.chRegFindThreadByName
+                0x0000000000000000       0x5a ../../../os/rt/src/chregistry.o
+ .text.chRegFindThreadByPointer
+                0x0000000000000000       0x42 ../../../os/rt/src/chregistry.o
+ .text          0x0000000000000000        0x0 ../../../os/rt/src/chsem.o
+ .data          0x0000000000000000        0x0 ../../../os/rt/src/chsem.o
+ .bss           0x0000000000000000        0x0 ../../../os/rt/src/chsem.o
+ .text.chSemObjectInit
+                0x0000000000000000        0xe ../../../os/rt/src/chsem.o
+ .text.chSemResetI
+                0x0000000000000000       0x50 ../../../os/rt/src/chsem.o
+ .text.chSemReset
+                0x0000000000000000        0xe ../../../os/rt/src/chsem.o
+ .text.chSemWait
+                0x0000000000000000       0x62 ../../../os/rt/src/chsem.o
+ .text.chSemWaitS
+                0x0000000000000000       0x5c ../../../os/rt/src/chsem.o
+ .text.chSemWaitTimeout
+                0x0000000000000000       0x66 ../../../os/rt/src/chsem.o
+ .text.chSemWaitTimeoutS
+                0x0000000000000000       0x5e ../../../os/rt/src/chsem.o
+ .text.chSemSignal
+                0x0000000000000000       0x40 ../../../os/rt/src/chsem.o
+ .text.chSemSignalI
+                0x0000000000000000       0x38 ../../../os/rt/src/chsem.o
+ .text.chSemAddCounterI
+                0x0000000000000000       0x52 ../../../os/rt/src/chsem.o
+ .text.chSemSignalWait
+                0x0000000000000000       0x9e ../../../os/rt/src/chsem.o
+ .debug_info    0x0000000000000000     0x10b8 ../../../os/rt/src/chsem.o
+ .debug_abbrev  0x0000000000000000      0x3e4 ../../../os/rt/src/chsem.o
+ .debug_loc     0x0000000000000000      0xa3c ../../../os/rt/src/chsem.o
+ .debug_aranges
+                0x0000000000000000       0x70 ../../../os/rt/src/chsem.o
+ .debug_ranges  0x0000000000000000      0x128 ../../../os/rt/src/chsem.o
+ .debug_line    0x0000000000000000      0x520 ../../../os/rt/src/chsem.o
+ .debug_str     0x0000000000000000      0x58b ../../../os/rt/src/chsem.o
+ .comment       0x0000000000000000       0x12 ../../../os/rt/src/chsem.o
+ .debug_frame   0x0000000000000000      0x158 ../../../os/rt/src/chsem.o
+ .text          0x0000000000000000        0x0 ../../../os/rt/src/chmtx.o
+ .data          0x0000000000000000        0x0 ../../../os/rt/src/chmtx.o
+ .bss           0x0000000000000000        0x0 ../../../os/rt/src/chmtx.o
+ .text.chMtxObjectInit
+                0x0000000000000000       0x10 ../../../os/rt/src/chmtx.o
+ .text.chMtxLockS
+                0x0000000000000000      0x190 ../../../os/rt/src/chmtx.o
+ .text.chMtxLock
+                0x0000000000000000        0xa ../../../os/rt/src/chmtx.o
+ .text.chMtxTryLock
+                0x0000000000000000       0x3c ../../../os/rt/src/chmtx.o
+ .text.chMtxTryLockS
+                0x0000000000000000       0x36 ../../../os/rt/src/chmtx.o
+ .text.chMtxUnlock
+                0x0000000000000000       0xa4 ../../../os/rt/src/chmtx.o
+ .text.chMtxUnlockS
+                0x0000000000000000       0x8e ../../../os/rt/src/chmtx.o
+ .text.chMtxUnlockAllS
+                0x0000000000000000       0x8c ../../../os/rt/src/chmtx.o
+ .text.chMtxUnlockAll
+                0x0000000000000000       0x9e ../../../os/rt/src/chmtx.o
+ .debug_info    0x0000000000000000     0x100d ../../../os/rt/src/chmtx.o
+ .debug_abbrev  0x0000000000000000      0x3af ../../../os/rt/src/chmtx.o
+ .debug_loc     0x0000000000000000      0x71f ../../../os/rt/src/chmtx.o
+ .debug_aranges
+                0x0000000000000000       0x60 ../../../os/rt/src/chmtx.o
+ .debug_ranges  0x0000000000000000       0xf8 ../../../os/rt/src/chmtx.o
+ .debug_line    0x0000000000000000      0x5c1 ../../../os/rt/src/chmtx.o
+ .debug_str     0x0000000000000000      0x563 ../../../os/rt/src/chmtx.o
+ .comment       0x0000000000000000       0x12 ../../../os/rt/src/chmtx.o
+ .debug_frame   0x0000000000000000      0x104 ../../../os/rt/src/chmtx.o
+ .text          0x0000000000000000        0x0 ../../../os/rt/src/chcond.o
+ .data          0x0000000000000000        0x0 ../../../os/rt/src/chcond.o
+ .bss           0x0000000000000000        0x0 ../../../os/rt/src/chcond.o
+ .text.chCondObjectInit
+                0x0000000000000000        0xc ../../../os/rt/src/chcond.o
+ .text.chCondSignal
+                0x0000000000000000       0x34 ../../../os/rt/src/chcond.o
+ .text.chCondSignalI
+                0x0000000000000000       0x34 ../../../os/rt/src/chcond.o
+ .text.chCondBroadcast
+                0x0000000000000000       0x4c ../../../os/rt/src/chcond.o
+ .text.chCondBroadcastI
+                0x0000000000000000       0x44 ../../../os/rt/src/chcond.o
+ .text.chCondWaitS
+                0x0000000000000000       0x72 ../../../os/rt/src/chcond.o
+ .text.chCondWait
+                0x0000000000000000        0xa ../../../os/rt/src/chcond.o
+ .text.chCondWaitTimeoutS
+                0x0000000000000000       0x96 ../../../os/rt/src/chcond.o
+ .text.chCondWaitTimeout
+                0x0000000000000000        0xa ../../../os/rt/src/chcond.o
+ .debug_info    0x0000000000000000      0xf70 ../../../os/rt/src/chcond.o
+ .debug_abbrev  0x0000000000000000      0x3ef ../../../os/rt/src/chcond.o
+ .debug_loc     0x0000000000000000      0x61c ../../../os/rt/src/chcond.o
+ .debug_aranges
+                0x0000000000000000       0x60 ../../../os/rt/src/chcond.o
+ .debug_ranges  0x0000000000000000       0x98 ../../../os/rt/src/chcond.o
+ .debug_line    0x0000000000000000      0x417 ../../../os/rt/src/chcond.o
+ .debug_str     0x0000000000000000      0x5d3 ../../../os/rt/src/chcond.o
+ .comment       0x0000000000000000       0x12 ../../../os/rt/src/chcond.o
+ .debug_frame   0x0000000000000000      0x140 ../../../os/rt/src/chcond.o
+ .text          0x0000000000000000        0x0 ../../../os/rt/src/chevents.o
+ .data          0x0000000000000000        0x0 ../../../os/rt/src/chevents.o
+ .bss           0x0000000000000000        0x0 ../../../os/rt/src/chevents.o
+ .text.chEvtRegisterMaskWithFlags
+                0x0000000000000000       0x2a ../../../os/rt/src/chevents.o
+ .text.chEvtUnregister
+                0x0000000000000000       0x2a ../../../os/rt/src/chevents.o
+ .text.chEvtGetAndClearEvents
+                0x0000000000000000       0x1a ../../../os/rt/src/chevents.o
+ .text.chEvtAddEvents
+                0x0000000000000000       0x14 ../../../os/rt/src/chevents.o
+ .text.chEvtGetAndClearFlags
+                0x0000000000000000        0xc ../../../os/rt/src/chevents.o
+ .text.chEvtSignal
+                0x0000000000000000        0xe ../../../os/rt/src/chevents.o
+ .text.chEvtBroadcastFlags
+                0x0000000000000000        0xe ../../../os/rt/src/chevents.o
+ .text.chEvtGetAndClearFlagsI
+                0x0000000000000000        0x8 ../../../os/rt/src/chevents.o
+ .text.chEvtDispatch
+                0x0000000000000000       0x8e ../../../os/rt/src/chevents.o
+ .text.chEvtWaitOne
+                0x0000000000000000       0x40 ../../../os/rt/src/chevents.o
+ .text.chEvtWaitAny
+                0x0000000000000000       0x3c ../../../os/rt/src/chevents.o
+ .text.chEvtWaitAll
+                0x0000000000000000       0x40 ../../../os/rt/src/chevents.o
+ .text.chEvtWaitOneTimeout
+                0x0000000000000000       0x56 ../../../os/rt/src/chevents.o
+ .text.chEvtWaitAnyTimeout
+                0x0000000000000000       0x52 ../../../os/rt/src/chevents.o
+ .text.chEvtWaitAllTimeout
+                0x0000000000000000       0x58 ../../../os/rt/src/chevents.o
+ .text          0x0000000000000000        0x0 ../../../os/rt/src/chmsg.o
+ .data          0x0000000000000000        0x0 ../../../os/rt/src/chmsg.o
+ .bss           0x0000000000000000        0x0 ../../../os/rt/src/chmsg.o
+ .text.chMsgSend
+                0x0000000000000000       0x4a ../../../os/rt/src/chmsg.o
+ .text.chMsgWait
+                0x0000000000000000       0x56 ../../../os/rt/src/chmsg.o
+ .text.chMsgRelease
+                0x0000000000000000        0xa ../../../os/rt/src/chmsg.o
+ .debug_info    0x0000000000000000      0xa77 ../../../os/rt/src/chmsg.o
+ .debug_abbrev  0x0000000000000000      0x298 ../../../os/rt/src/chmsg.o
+ .debug_loc     0x0000000000000000      0x21b ../../../os/rt/src/chmsg.o
+ .debug_aranges
+                0x0000000000000000       0x30 ../../../os/rt/src/chmsg.o
+ .debug_ranges  0x0000000000000000       0x20 ../../../os/rt/src/chmsg.o
+ .debug_line    0x0000000000000000      0x21f ../../../os/rt/src/chmsg.o
+ .debug_str     0x0000000000000000      0x4dd ../../../os/rt/src/chmsg.o
+ .comment       0x0000000000000000       0x12 ../../../os/rt/src/chmsg.o
+ .debug_frame   0x0000000000000000       0x5c ../../../os/rt/src/chmsg.o
+ .text          0x0000000000000000        0x0 ../../../os/common/oslib/src/chmboxes.o
+ .data          0x0000000000000000        0x0 ../../../os/common/oslib/src/chmboxes.o
+ .bss           0x0000000000000000        0x0 ../../../os/common/oslib/src/chmboxes.o
+ .text.chMBObjectInit
+                0x0000000000000000       0x34 ../../../os/common/oslib/src/chmboxes.o
+ .text.chMBResetI
+                0x0000000000000000       0x34 ../../../os/common/oslib/src/chmboxes.o
+ .text.chMBReset
+                0x0000000000000000        0xe ../../../os/common/oslib/src/chmboxes.o
+ .text.chMBPostS
+                0x0000000000000000       0x98 ../../../os/common/oslib/src/chmboxes.o
+ .text.chMBPost
+                0x0000000000000000        0xa ../../../os/common/oslib/src/chmboxes.o
+ .text.chMBPostI
+                0x0000000000000000       0x60 ../../../os/common/oslib/src/chmboxes.o
+ .text.chMBPostAheadS
+                0x0000000000000000       0x96 ../../../os/common/oslib/src/chmboxes.o
+ .text.chMBPostAhead
+                0x0000000000000000        0xa ../../../os/common/oslib/src/chmboxes.o
+ .text.chMBPostAheadI
+                0x0000000000000000       0x5e ../../../os/common/oslib/src/chmboxes.o
+ .text.chMBFetchS
+                0x0000000000000000       0x90 ../../../os/common/oslib/src/chmboxes.o
+ .text.chMBFetch
+                0x0000000000000000        0xa ../../../os/common/oslib/src/chmboxes.o
+ .text.chMBFetchI
+                0x0000000000000000       0x5a ../../../os/common/oslib/src/chmboxes.o
+ .debug_info    0x0000000000000000     0x11bc ../../../os/common/oslib/src/chmboxes.o
+ .debug_abbrev  0x0000000000000000      0x38f ../../../os/common/oslib/src/chmboxes.o
+ .debug_loc     0x0000000000000000      0x94f ../../../os/common/oslib/src/chmboxes.o
+ .debug_aranges
+                0x0000000000000000       0x78 ../../../os/common/oslib/src/chmboxes.o
+ .debug_ranges  0x0000000000000000       0x68 ../../../os/common/oslib/src/chmboxes.o
+ .debug_line    0x0000000000000000      0x4df ../../../os/common/oslib/src/chmboxes.o
+ .debug_str     0x0000000000000000      0x5bc ../../../os/common/oslib/src/chmboxes.o
+ .comment       0x0000000000000000       0x12 ../../../os/common/oslib/src/chmboxes.o
+ .debug_frame   0x0000000000000000      0x170 ../../../os/common/oslib/src/chmboxes.o
+ .text          0x0000000000000000        0x0 ../../../os/common/ports/AVR/chcore.o
+ .data          0x0000000000000000        0x0 ../../../os/common/ports/AVR/chcore.o
+ .bss           0x0000000000000000        0x0 ../../../os/common/ports/AVR/chcore.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/osal/rt/osal.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/osal/rt/osal.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/osal/rt/osal.o
+ .debug_info    0x0000000000000000      0x686 ../../../os/hal/osal/rt/osal.o
+ .debug_abbrev  0x0000000000000000      0x104 ../../../os/hal/osal/rt/osal.o
+ .debug_aranges
+                0x0000000000000000       0x18 ../../../os/hal/osal/rt/osal.o
+ .debug_line    0x0000000000000000       0xe5 ../../../os/hal/osal/rt/osal.o
+ .debug_str     0x0000000000000000      0x427 ../../../os/hal/osal/rt/osal.o
+ .comment       0x0000000000000000       0x12 ../../../os/hal/osal/rt/osal.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/src/hal.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/src/hal.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/src/hal.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/src/hal_st.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/src/hal_st.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/src/hal_st.o
+ .text.stGetAlarm
+                0x0000000000000000        0xa ../../../os/hal/src/hal_st.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/src/hal_buffers.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/src/hal_buffers.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/src/hal_buffers.o
+ .text.ibqObjectInit
+                0x0000000000000000       0x68 ../../../os/hal/src/hal_buffers.o
+ .text.ibqResetI
+                0x0000000000000000       0x24 ../../../os/hal/src/hal_buffers.o
+ .text.ibqGetEmptyBufferI
+                0x0000000000000000       0x24 ../../../os/hal/src/hal_buffers.o
+ .text.ibqPostFullBufferI
+                0x0000000000000000       0x40 ../../../os/hal/src/hal_buffers.o
+ .text.ibqGetFullBufferTimeoutS
+                0x0000000000000000       0x5e ../../../os/hal/src/hal_buffers.o
+ .text.ibqGetFullBufferTimeout
+                0x0000000000000000        0xa ../../../os/hal/src/hal_buffers.o
+ .text.ibqReleaseEmptyBuffer
+                0x0000000000000000       0x6c ../../../os/hal/src/hal_buffers.o
+ .text.ibqReleaseEmptyBufferS
+                0x0000000000000000       0x68 ../../../os/hal/src/hal_buffers.o
+ .text.ibqGetTimeout
+                0x0000000000000000       0x82 ../../../os/hal/src/hal_buffers.o
+ .text.ibqReadTimeout
+                0x0000000000000000      0x162 ../../../os/hal/src/hal_buffers.o
+ .text.obqObjectInit
+                0x0000000000000000       0x68 ../../../os/hal/src/hal_buffers.o
+ .text.obqResetI
+                0x0000000000000000       0x28 ../../../os/hal/src/hal_buffers.o
+ .text.obqGetFullBufferI
+                0x0000000000000000       0x2e ../../../os/hal/src/hal_buffers.o
+ .text.obqReleaseEmptyBufferI
+                0x0000000000000000       0x38 ../../../os/hal/src/hal_buffers.o
+ .text.obqGetEmptyBufferTimeoutS
+                0x0000000000000000       0x5c ../../../os/hal/src/hal_buffers.o
+ .text.obqGetEmptyBufferTimeout
+                0x0000000000000000        0xa ../../../os/hal/src/hal_buffers.o
+ .text.obqPostFullBuffer
+                0x0000000000000000       0x72 ../../../os/hal/src/hal_buffers.o
+ .text.obqPostFullBufferS
+                0x0000000000000000       0x6e ../../../os/hal/src/hal_buffers.o
+ .text.obqPutTimeout
+                0x0000000000000000       0x96 ../../../os/hal/src/hal_buffers.o
+ .text.obqWriteTimeout
+                0x0000000000000000      0x16c ../../../os/hal/src/hal_buffers.o
+ .text.obqTryFlushI
+                0x0000000000000000       0x62 ../../../os/hal/src/hal_buffers.o
+ .text.obqFlush
+                0x0000000000000000       0x84 ../../../os/hal/src/hal_buffers.o
+ .debug_info    0x0000000000000000     0x1e7f ../../../os/hal/src/hal_buffers.o
+ .debug_abbrev  0x0000000000000000      0x4a2 ../../../os/hal/src/hal_buffers.o
+ .debug_loc     0x0000000000000000     0x12e0 ../../../os/hal/src/hal_buffers.o
+ .debug_aranges
+                0x0000000000000000       0xc8 ../../../os/hal/src/hal_buffers.o
+ .debug_ranges  0x0000000000000000      0x118 ../../../os/hal/src/hal_buffers.o
+ .debug_line    0x0000000000000000      0xa72 ../../../os/hal/src/hal_buffers.o
+ .debug_str     0x0000000000000000      0x7f3 ../../../os/hal/src/hal_buffers.o
+ .comment       0x0000000000000000       0x12 ../../../os/hal/src/hal_buffers.o
+ .debug_frame   0x0000000000000000      0x2d8 ../../../os/hal/src/hal_buffers.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/src/hal_queues.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/src/hal_queues.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/src/hal_queues.o
+ .text.iqResetI
+                0x0000000000000000       0x1a ../../../os/hal/src/hal_queues.o
+ .text.oqResetI
+                0x0000000000000000       0x24 ../../../os/hal/src/hal_queues.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/src/hal_mmcsd.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/src/hal_mmcsd.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/src/hal_mmcsd.o
+ .debug_info    0x0000000000000000      0x686 ../../../os/hal/src/hal_mmcsd.o
+ .debug_abbrev  0x0000000000000000      0x104 ../../../os/hal/src/hal_mmcsd.o
+ .debug_aranges
+                0x0000000000000000       0x18 ../../../os/hal/src/hal_mmcsd.o
+ .debug_line    0x0000000000000000       0xe5 ../../../os/hal/src/hal_mmcsd.o
+ .debug_str     0x0000000000000000      0x428 ../../../os/hal/src/hal_mmcsd.o
+ .comment       0x0000000000000000       0x12 ../../../os/hal/src/hal_mmcsd.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/src/hal_ext.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/src/hal_ext.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/src/hal_ext.o
+ .text.extStart
+                0x0000000000000000       0x1c ../../../os/hal/src/hal_ext.o
+ .text.extStop  0x0000000000000000       0x1c ../../../os/hal/src/hal_ext.o
+ .text.extChannelEnable
+                0x0000000000000000        0xa ../../../os/hal/src/hal_ext.o
+ .text.extChannelDisable
+                0x0000000000000000        0xa ../../../os/hal/src/hal_ext.o
+ .text.extSetChannelModeI
+                0x0000000000000000       0x28 ../../../os/hal/src/hal_ext.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/src/hal_pal.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/src/hal_pal.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/src/hal_pal.o
+ .text.palReadBus
+                0x0000000000000000       0x1c ../../../os/hal/src/hal_pal.o
+ .text.palWriteBus
+                0x0000000000000000       0x38 ../../../os/hal/src/hal_pal.o
+ .text.palSetBusMode
+                0x0000000000000000       0x1e ../../../os/hal/src/hal_pal.o
+ .debug_info    0x0000000000000000      0x86c ../../../os/hal/src/hal_pal.o
+ .debug_abbrev  0x0000000000000000      0x1b4 ../../../os/hal/src/hal_pal.o
+ .debug_loc     0x0000000000000000       0xd0 ../../../os/hal/src/hal_pal.o
+ .debug_aranges
+                0x0000000000000000       0x30 ../../../os/hal/src/hal_pal.o
+ .debug_ranges  0x0000000000000000       0x20 ../../../os/hal/src/hal_pal.o
+ .debug_line    0x0000000000000000      0x1ad ../../../os/hal/src/hal_pal.o
+ .debug_str     0x0000000000000000      0x4d0 ../../../os/hal/src/hal_pal.o
+ .comment       0x0000000000000000       0x12 ../../../os/hal/src/hal_pal.o
+ .debug_frame   0x0000000000000000       0x44 ../../../os/hal/src/hal_pal.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/src/hal_serial.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/src/hal_serial.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/src/hal_serial.o
+ .text.sdStop   0x0000000000000000       0x2c ../../../os/hal/src/hal_serial.o
+ .text.sdPutWouldBlock
+                0x0000000000000000       0x14 ../../../os/hal/src/hal_serial.o
+ .text.sdGetWouldBlock
+                0x0000000000000000       0x14 ../../../os/hal/src/hal_serial.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .text.ext_lld_set_intx_edges
+                0x0000000000000000      0x24a ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .text.ext_lld_channel_enable
+                0x0000000000000000       0xe4 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .text.ext_lld_channel_disable
+                0x0000000000000000       0x3a ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .text.ext_lld_start
+                0x0000000000000000       0x34 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .text.ext_lld_stop
+                0x0000000000000000        0xe ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .text.sd_lld_stop
+                0x0000000000000000       0x16 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/boards/ARDUINO_MEGA/board.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/boards/ARDUINO_MEGA/board.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/boards/ARDUINO_MEGA/board.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/lib/streams/chprintf.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/lib/streams/chprintf.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/lib/streams/chprintf.o
+ .text.chsnprintf
+                0x0000000000000000       0x9c ../../../os/hal/lib/streams/chprintf.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/lib/streams/memstreams.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/lib/streams/memstreams.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/lib/streams/memstreams.o
+ .text._put     0x0000000000000000       0x32 ../../../os/hal/lib/streams/memstreams.o
+ .text._get     0x0000000000000000       0x2c ../../../os/hal/lib/streams/memstreams.o
+ .text._reads   0x0000000000000000       0x4c ../../../os/hal/lib/streams/memstreams.o
+ .text._writes  0x0000000000000000       0x4a ../../../os/hal/lib/streams/memstreams.o
+ .text.msObjectInit
+                0x0000000000000000       0x1c ../../../os/hal/lib/streams/memstreams.o
+ .rodata.vmt    0x0000000000000000        0x8 ../../../os/hal/lib/streams/memstreams.o
+ .debug_info    0x0000000000000000      0x9af ../../../os/hal/lib/streams/memstreams.o
+ .debug_abbrev  0x0000000000000000      0x1e0 ../../../os/hal/lib/streams/memstreams.o
+ .debug_loc     0x0000000000000000      0x309 ../../../os/hal/lib/streams/memstreams.o
+ .debug_aranges
+                0x0000000000000000       0x40 ../../../os/hal/lib/streams/memstreams.o
+ .debug_ranges  0x0000000000000000       0x30 ../../../os/hal/lib/streams/memstreams.o
+ .debug_line    0x0000000000000000      0x235 ../../../os/hal/lib/streams/memstreams.o
+ .debug_str     0x0000000000000000      0x49d ../../../os/hal/lib/streams/memstreams.o
+ .comment       0x0000000000000000       0x12 ../../../os/hal/lib/streams/memstreams.o
+ .debug_frame   0x0000000000000000       0x94 ../../../os/hal/lib/streams/memstreams.o
+ .text          0x0000000000000000        0x0 ../../../os/hal/lib/streams/nullstreams.o
+ .data          0x0000000000000000        0x0 ../../../os/hal/lib/streams/nullstreams.o
+ .bss           0x0000000000000000        0x0 ../../../os/hal/lib/streams/nullstreams.o
+ .text.writes   0x0000000000000000        0x4 ../../../os/hal/lib/streams/nullstreams.o
+ .text.reads    0x0000000000000000        0x6 ../../../os/hal/lib/streams/nullstreams.o
+ .text.put      0x0000000000000000        0x6 ../../../os/hal/lib/streams/nullstreams.o
+ .text.get      0x0000000000000000        0x6 ../../../os/hal/lib/streams/nullstreams.o
+ .text.nullObjectInit
+                0x0000000000000000        0xc ../../../os/hal/lib/streams/nullstreams.o
+ .rodata.vmt    0x0000000000000000        0x8 ../../../os/hal/lib/streams/nullstreams.o
+ .debug_info    0x0000000000000000      0x8d2 ../../../os/hal/lib/streams/nullstreams.o
+ .debug_abbrev  0x0000000000000000      0x19d ../../../os/hal/lib/streams/nullstreams.o
+ .debug_loc     0x0000000000000000       0x98 ../../../os/hal/lib/streams/nullstreams.o
+ .debug_aranges
+                0x0000000000000000       0x40 ../../../os/hal/lib/streams/nullstreams.o
+ .debug_ranges  0x0000000000000000       0x30 ../../../os/hal/lib/streams/nullstreams.o
+ .debug_line    0x0000000000000000      0x1be ../../../os/hal/lib/streams/nullstreams.o
+ .debug_str     0x0000000000000000      0x479 ../../../os/hal/lib/streams/nullstreams.o
+ .comment       0x0000000000000000       0x12 ../../../os/hal/lib/streams/nullstreams.o
+ .debug_frame   0x0000000000000000       0x64 ../../../os/hal/lib/streams/nullstreams.o
+ .text          0x0000000000000000        0x0 ../../../os/various/evtimer.o
+ .data          0x0000000000000000        0x0 ../../../os/various/evtimer.o
+ .bss           0x0000000000000000        0x0 ../../../os/various/evtimer.o
+ .text.tmrcb    0x0000000000000000       0x22 ../../../os/various/evtimer.o
+ .text.evtObjectInit
+                0x0000000000000000       0x12 ../../../os/various/evtimer.o
+ .text.evtStart
+                0x0000000000000000       0x38 ../../../os/various/evtimer.o
+ .debug_info    0x0000000000000000      0xb78 ../../../os/various/evtimer.o
+ .debug_abbrev  0x0000000000000000      0x2c9 ../../../os/various/evtimer.o
+ .debug_loc     0x0000000000000000      0x261 ../../../os/various/evtimer.o
+ .debug_aranges
+                0x0000000000000000       0x30 ../../../os/various/evtimer.o
+ .debug_ranges  0x0000000000000000       0x20 ../../../os/various/evtimer.o
+ .debug_line    0x0000000000000000      0x1dd ../../../os/various/evtimer.o
+ .debug_str     0x0000000000000000      0x5e1 ../../../os/various/evtimer.o
+ .comment       0x0000000000000000       0x12 ../../../os/various/evtimer.o
+ .debug_frame   0x0000000000000000       0x68 ../../../os/various/evtimer.o
+ .text          0x0000000000000000        0x0 main.o
+ .data          0x0000000000000000        0x0 main.o
+ .bss           0x0000000000000000        0x0 main.o
+ .text.pcintInit
+                0x0000000000000000       0x16 main.o
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(cmpsf2.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(cmpsf2.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(cmpsf2.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixsfsi.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixsfsi.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixsfsi.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixunssfsi.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixunssfsi.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixunssfsi.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(floatsisf.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(floatsisf.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(floatsisf.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_cmp.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_cmp.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_cmp.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_inf.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_inf.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_inf.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_nan.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_nan.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_nan.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_pscA.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_pscA.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_pscA.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_pscB.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_pscB.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_pscB.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_round.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_round.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_round.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_split3.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_split3.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_split3.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_zero.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_zero.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_zero.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_udivmodsi4.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_udivmodsi4.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.mul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_udivmodsi4.o)
+ .text.libgcc   0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.prologue
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.builtins
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.fmul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.fixed
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_udivmodsi4.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+ .text.libgcc.mul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+ .text.libgcc   0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+ .text.libgcc.prologue
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+ .text.libgcc.builtins
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+ .text.libgcc.fmul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+ .text.libgcc.fixed
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_negsi2.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_negsi2.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_negsi2.o)
+ .text.libgcc.mul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_negsi2.o)
+ .text.libgcc   0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_negsi2.o)
+ .text.libgcc.prologue
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_negsi2.o)
+ .text.libgcc.builtins
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_negsi2.o)
+ .text.libgcc.fmul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_negsi2.o)
+ .text.libgcc.fixed
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_negsi2.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+ .text.libgcc.mul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+ .text.libgcc.div
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+ .text.libgcc   0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+ .text.libgcc.prologue
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+ .text.libgcc.builtins
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+ .text.libgcc.fmul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+ .text.libgcc.fixed
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_tablejump2.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_tablejump2.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_tablejump2.o)
+ .text.libgcc.mul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_tablejump2.o)
+ .text.libgcc.div
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_tablejump2.o)
+ .text.libgcc.prologue
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_tablejump2.o)
+ .text.libgcc.builtins
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_tablejump2.o)
+ .text.libgcc.fmul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_tablejump2.o)
+ .text.libgcc.fixed
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_tablejump2.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+ .text.libgcc.mul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+ .text.libgcc.div
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+ .text.libgcc   0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+ .text.libgcc.prologue
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+ .text.libgcc.builtins
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+ .text.libgcc.fmul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+ .text.libgcc.fixed
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+ .text.libgcc.mul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+ .text.libgcc.div
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+ .text.libgcc.prologue
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+ .text.libgcc.builtins
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+ .text.libgcc.fmul
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+ .text.libgcc.fixed
+                0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(isspace.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(isspace.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(isspace.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(strchr_P.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(strchr_P.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(strchr_P.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(memcpy.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(memcpy.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(memcpy.o)
+ .text.avr-libc
+                0x0000000000000000       0x12 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(memcpy.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(strcmp.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(strcmp.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(strcmp.o)
+ .text.avr-libc
+                0x0000000000000000       0x12 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(strcmp.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fgetc.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fgetc.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fgetc.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fputc.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fputc.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fputc.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ungetc.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ungetc.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ungetc.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ultoa_invert.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ultoa_invert.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ultoa_invert.o)
+ .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(cty_isfalse.o)
+ .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(cty_isfalse.o)
+ .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(cty_isfalse.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x0000000000000000 0x0000000000040000 xr
+data             0x0000000000800200 0x0000000000002000 rw !x
+eeprom           0x0000000000810000 0x0000000000001000 rw !x
+fuse             0x0000000000820000 0x0000000000000003 rw !x
+lock             0x0000000000830000 0x0000000000000400 rw !x
+signature        0x0000000000840000 0x0000000000000400 rw !x
+user_signatures  0x0000000000850000 0x0000000000000400 rw !x
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800200
+LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+LOAD ../../../os/rt/src/chsys.o
+LOAD ../../../os/rt/src/chdebug.o
+LOAD ../../../os/rt/src/chtrace.o
+LOAD ../../../os/rt/src/chvt.o
+LOAD ../../../os/rt/src/chschd.o
+LOAD ../../../os/rt/src/chthreads.o
+LOAD ../../../os/rt/src/chregistry.o
+LOAD ../../../os/rt/src/chsem.o
+LOAD ../../../os/rt/src/chmtx.o
+LOAD ../../../os/rt/src/chcond.o
+LOAD ../../../os/rt/src/chevents.o
+LOAD ../../../os/rt/src/chmsg.o
+LOAD ../../../os/common/oslib/src/chmboxes.o
+LOAD ../../../os/common/ports/AVR/chcore.o
+LOAD ../../../os/hal/osal/rt/osal.o
+LOAD ../../../os/hal/src/hal.o
+LOAD ../../../os/hal/src/hal_st.o
+LOAD ../../../os/hal/src/hal_buffers.o
+LOAD ../../../os/hal/src/hal_queues.o
+LOAD ../../../os/hal/src/hal_mmcsd.o
+LOAD ../../../os/hal/src/hal_ext.o
+LOAD ../../../os/hal/src/hal_pal.o
+LOAD ../../../os/hal/src/hal_serial.o
+LOAD ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+LOAD ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+LOAD ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+LOAD ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+LOAD ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+LOAD ../../../os/hal/boards/ARDUINO_MEGA/board.o
+LOAD ../../../os/hal/lib/streams/chprintf.o
+LOAD ../../../os/hal/lib/streams/memstreams.o
+LOAD ../../../os/hal/lib/streams/nullstreams.o
+LOAD ../../../os/various/evtimer.o
+LOAD main.o
+LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a
+LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a
+LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a
+START GROUP
+LOAD /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a
+LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a
+LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a
+LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libatmega2560.a
+END GROUP
+                0x0000000000000000                __TEXT_REGION_ORIGIN__ = DEFINED (__TEXT_REGION_ORIGIN__)?__TEXT_REGION_ORIGIN__:0x0
+                [0x0000000000800200]                __DATA_REGION_ORIGIN__ = DEFINED (__DATA_REGION_ORIGIN__)?__DATA_REGION_ORIGIN__:0x800200
+                [0x0000000000040000]                __TEXT_REGION_LENGTH__ = DEFINED (__TEXT_REGION_LENGTH__)?__TEXT_REGION_LENGTH__:0x100000
+                [0x0000000000002000]                __DATA_REGION_LENGTH__ = DEFINED (__DATA_REGION_LENGTH__)?__DATA_REGION_LENGTH__:0xfe00
+                [0x0000000000001000]                __EEPROM_REGION_LENGTH__ = DEFINED (__EEPROM_REGION_LENGTH__)?__EEPROM_REGION_LENGTH__:0x10000
+                [0x0000000000000003]                __FUSE_REGION_LENGTH__ = DEFINED (__FUSE_REGION_LENGTH__)?__FUSE_REGION_LENGTH__:0x400
+                0x0000000000000400                __LOCK_REGION_LENGTH__ = DEFINED (__LOCK_REGION_LENGTH__)?__LOCK_REGION_LENGTH__:0x400
+                0x0000000000000400                __SIGNATURE_REGION_LENGTH__ = DEFINED (__SIGNATURE_REGION_LENGTH__)?__SIGNATURE_REGION_LENGTH__:0x400
+                0x0000000000000400                __USER_SIGNATURE_REGION_LENGTH__ = DEFINED (__USER_SIGNATURE_REGION_LENGTH__)?__USER_SIGNATURE_REGION_LENGTH__:0x400
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x0000000000000000     0x2b96
+ *(.vectors)
+ .vectors       0x0000000000000000       0xe4 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+                0x0000000000000000                __vectors
+                0x0000000000000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ .progmem.gcc_sw_table.chvprintf
+                0x00000000000000e4       0xd4 ../../../os/hal/lib/streams/chprintf.o
+                0x00000000000001b8                . = ALIGN (0x2)
+                0x00000000000001b8                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x00000000000001b8        0x0 linker stubs
+ *(.trampolines*)
+                0x00000000000001b8                __trampolines_end = .
+ *libprintf_flt.a:*(.progmem.data)
+ *libc.a:*(.progmem.data)
+ *(.progmem*)
+ .progmem.data  0x00000000000001b8       0x17 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o)
+ .progmem.data  0x00000000000001cf        0xb /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o)
+                0x00000000000001da                . = ALIGN (0x2)
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x00000000000001da                __ctors_start = .
+ *(.ctors)
+                0x00000000000001da                __ctors_end = .
+                0x00000000000001da                __dtors_start = .
+ *(.dtors)
+                0x00000000000001da                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x00000000000001da        0x0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+                0x00000000000001da                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x00000000000001da       0x10 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x00000000000001ea       0x1a /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+                0x00000000000001ea                __do_copy_data
+ .init4         0x0000000000000204       0x10 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+                0x0000000000000204                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x0000000000000214        0x8 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+ *(.init9)
+ *(.text)
+ .text          0x000000000000021c        0x2 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+                0x000000000000021c                __vector_38
+                0x000000000000021c                __vector_22
+                0x000000000000021c                __vector_28
+                0x000000000000021c                __vector_32
+                0x000000000000021c                __vector_34
+                0x000000000000021c                __vector_24
+                0x000000000000021c                __vector_12
+                0x000000000000021c                __vector_55
+                0x000000000000021c                __vector_46
+                0x000000000000021c                __bad_interrupt
+                0x000000000000021c                __vector_31
+                0x000000000000021c                __vector_35
+                0x000000000000021c                __vector_39
+                0x000000000000021c                __vector_23
+                0x000000000000021c                __vector_30
+                0x000000000000021c                __vector_45
+                0x000000000000021c                __vector_11
+                0x000000000000021c                __vector_54
+                0x000000000000021c                __vector_13
+                0x000000000000021c                __vector_19
+                0x000000000000021c                __vector_56
+                0x000000000000021c                __vector_7
+                0x000000000000021c                __vector_49
+                0x000000000000021c                __vector_41
+                0x000000000000021c                __vector_43
+                0x000000000000021c                __vector_27
+                0x000000000000021c                __vector_33
+                0x000000000000021c                __vector_47
+                0x000000000000021c                __vector_52
+                0x000000000000021c                __vector_37
+                0x000000000000021c                __vector_44
+                0x000000000000021c                __vector_51
+                0x000000000000021c                __vector_21
+                0x000000000000021c                __vector_15
+                0x000000000000021c                __vector_36
+                0x000000000000021c                __vector_29
+                0x000000000000021c                __vector_40
+                0x000000000000021c                __vector_8
+                0x000000000000021c                __vector_48
+                0x000000000000021c                __vector_14
+                0x000000000000021c                __vector_53
+                0x000000000000021c                __vector_10
+                0x000000000000021c                __vector_50
+                0x000000000000021c                __vector_16
+                0x000000000000021c                __vector_18
+                0x000000000000021c                __vector_20
+                0x000000000000021c                __vector_42
+                0x000000000000021e                . = ALIGN (0x2)
+ *(.text.*)
+ .text._idle_thread
+                0x000000000000021e        0x2 ../../../os/rt/src/chsys.o
+ .text.chSysInit
+                0x0000000000000220       0x2a ../../../os/rt/src/chsys.o
+                0x0000000000000220                chSysInit
+ .text.chSysTimerHandlerI
+                0x000000000000024a       0xd0 ../../../os/rt/src/chsys.o
+                0x000000000000024a                chSysTimerHandlerI
+ .text._vt_init
+                0x000000000000031a       0x1e ../../../os/rt/src/chvt.o
+                0x000000000000031a                _vt_init
+ .text.chVTDoSetI
+                0x0000000000000338      0x130 ../../../os/rt/src/chvt.o
+                0x0000000000000338                chVTDoSetI
+ .text.chVTDoResetI
+                0x0000000000000468       0xca ../../../os/rt/src/chvt.o
+                0x0000000000000468                chVTDoResetI
+ .text.wakeup   0x0000000000000532       0xa4 ../../../os/rt/src/chschd.o
+ .text._scheduler_init
+                0x00000000000005d6       0x18 ../../../os/rt/src/chschd.o
+                0x00000000000005d6                _scheduler_init
+ .text.chSchReadyI
+                0x00000000000005ee       0x44 ../../../os/rt/src/chschd.o
+                0x00000000000005ee                chSchReadyI
+ .text.chSchGoSleepS
+                0x0000000000000632       0x38 ../../../os/rt/src/chschd.o
+                0x0000000000000632                chSchGoSleepS
+ .text.chSchGoSleepTimeoutS
+                0x000000000000066a       0x6a ../../../os/rt/src/chschd.o
+                0x000000000000066a                chSchGoSleepTimeoutS
+ .text.chSchWakeupS
+                0x00000000000006d4       0x98 ../../../os/rt/src/chschd.o
+                0x00000000000006d4                chSchWakeupS
+ .text.chSchIsPreemptionRequired
+                0x000000000000076c       0x20 ../../../os/rt/src/chschd.o
+                0x000000000000076c                chSchIsPreemptionRequired
+ .text.chSchDoReschedule
+                0x000000000000078c       0x78 ../../../os/rt/src/chschd.o
+                0x000000000000078c                chSchDoReschedule
+ .text._thread_init
+                0x0000000000000804       0x58 ../../../os/rt/src/chthreads.o
+                0x0000000000000804                _thread_init
+ .text.chThdCreateSuspendedI
+                0x000000000000085c       0xb0 ../../../os/rt/src/chthreads.o
+                0x000000000000085c                chThdCreateSuspendedI
+ .text.chThdCreate
+                0x000000000000090c       0x1a ../../../os/rt/src/chthreads.o
+                0x000000000000090c                chThdCreate
+ .text.chThdExitS
+                0x0000000000000926       0x64 ../../../os/rt/src/chthreads.o
+                0x0000000000000926                chThdExitS
+ .text.chThdExit
+                0x000000000000098a        0x4 ../../../os/rt/src/chthreads.o
+                0x000000000000098a                chThdExit
+ .text.chThdSleep
+                0x000000000000098e        0xc ../../../os/rt/src/chthreads.o
+                0x000000000000098e                chThdSleep
+ .text.chThdEnqueueTimeoutS
+                0x000000000000099a       0x3a ../../../os/rt/src/chthreads.o
+                0x000000000000099a                chThdEnqueueTimeoutS
+ .text.chThdDequeueNextI
+                0x00000000000009d4       0x32 ../../../os/rt/src/chthreads.o
+                0x00000000000009d4                chThdDequeueNextI
+ .text.chEvtSignalI
+                0x0000000000000a06       0x2c ../../../os/rt/src/chevents.o
+                0x0000000000000a06                chEvtSignalI
+ .text.chEvtBroadcastFlagsI
+                0x0000000000000a32       0x4a ../../../os/rt/src/chevents.o
+                0x0000000000000a32                chEvtBroadcastFlagsI
+ .text._port_switch
+                0x0000000000000a7c       0x5e ../../../os/common/ports/AVR/chcore.o
+                0x0000000000000a7c                _port_switch
+ .text._port_thread_start
+                0x0000000000000ada        0xa ../../../os/common/ports/AVR/chcore.o
+                0x0000000000000ada                _port_thread_start
+ .text.halInit  0x0000000000000ae4       0x10 ../../../os/hal/src/hal.o
+                0x0000000000000ae4                halInit
+ .text.stInit   0x0000000000000af4        0x2 ../../../os/hal/src/hal_st.o
+                0x0000000000000af4                stInit
+ .text.stStartAlarm
+                0x0000000000000af6       0x12 ../../../os/hal/src/hal_st.o
+                0x0000000000000af6                stStartAlarm
+ .text.stStopAlarm
+                0x0000000000000b08        0x6 ../../../os/hal/src/hal_st.o
+                0x0000000000000b08                stStopAlarm
+ .text.stSetAlarm
+                0x0000000000000b0e        0xa ../../../os/hal/src/hal_st.o
+                0x0000000000000b0e                stSetAlarm
+ .text.iqObjectInit
+                0x0000000000000b18       0x34 ../../../os/hal/src/hal_queues.o
+                0x0000000000000b18                iqObjectInit
+ .text.iqPutI   0x0000000000000b4c       0x56 ../../../os/hal/src/hal_queues.o
+                0x0000000000000b4c                iqPutI
+ .text.iqGetTimeout
+                0x0000000000000ba2       0x74 ../../../os/hal/src/hal_queues.o
+                0x0000000000000ba2                iqGetTimeout
+ .text.iqReadTimeout
+                0x0000000000000c16      0x10c ../../../os/hal/src/hal_queues.o
+                0x0000000000000c16                iqReadTimeout
+ .text.oqObjectInit
+                0x0000000000000d22       0x34 ../../../os/hal/src/hal_queues.o
+                0x0000000000000d22                oqObjectInit
+ .text.oqPutTimeout
+                0x0000000000000d56       0x80 ../../../os/hal/src/hal_queues.o
+                0x0000000000000d56                oqPutTimeout
+ .text.oqGetI   0x0000000000000dd6       0x58 ../../../os/hal/src/hal_queues.o
+                0x0000000000000dd6                oqGetI
+ .text.oqWriteTimeout
+                0x0000000000000e2e      0x10c ../../../os/hal/src/hal_queues.o
+                0x0000000000000e2e                oqWriteTimeout
+ .text.extInit  0x0000000000000f3a        0x2 ../../../os/hal/src/hal_ext.o
+                0x0000000000000f3a                extInit
+ .text.extObjectInit
+                0x0000000000000f3c        0xc ../../../os/hal/src/hal_ext.o
+                0x0000000000000f3c                extObjectInit
+ .text._readt   0x0000000000000f48        0x4 ../../../os/hal/src/hal_serial.o
+ .text._read    0x0000000000000f4c        0x8 ../../../os/hal/src/hal_serial.o
+ .text._writet  0x0000000000000f54        0x4 ../../../os/hal/src/hal_serial.o
+ .text._write   0x0000000000000f58        0x8 ../../../os/hal/src/hal_serial.o
+ .text._gett    0x0000000000000f60        0x4 ../../../os/hal/src/hal_serial.o
+ .text._get     0x0000000000000f64        0x8 ../../../os/hal/src/hal_serial.o
+ .text._putt    0x0000000000000f6c        0x4 ../../../os/hal/src/hal_serial.o
+ .text._put     0x0000000000000f70        0x8 ../../../os/hal/src/hal_serial.o
+ .text.sdInit   0x0000000000000f78        0x2 ../../../os/hal/src/hal_serial.o
+                0x0000000000000f78                sdInit
+ .text.sdObjectInit
+                0x0000000000000f7a       0x56 ../../../os/hal/src/hal_serial.o
+                0x0000000000000f7a                sdObjectInit
+ .text.sdStart  0x0000000000000fd0       0x16 ../../../os/hal/src/hal_serial.o
+                0x0000000000000fd0                sdStart
+ .text.sdIncomingDataI
+                0x0000000000000fe6       0x48 ../../../os/hal/src/hal_serial.o
+                0x0000000000000fe6                sdIncomingDataI
+ .text.sdRequestDataI
+                0x000000000000102e       0x34 ../../../os/hal/src/hal_serial.o
+                0x000000000000102e                sdRequestDataI
+ .text.hal_lld_init
+                0x0000000000001062        0x2 ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+                0x0000000000001062                hal_lld_init
+ .text.__vector_1
+                0x0000000000001064       0x74 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                0x0000000000001064                __vector_1
+ .text.__vector_2
+                0x00000000000010d8       0x74 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                0x00000000000010d8                __vector_2
+ .text.__vector_3
+                0x000000000000114c       0x74 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                0x000000000000114c                __vector_3
+ .text.__vector_4
+                0x00000000000011c0       0x74 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                0x00000000000011c0                __vector_4
+ .text.__vector_5
+                0x0000000000001234       0x74 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                0x0000000000001234                __vector_5
+ .text.__vector_6
+                0x00000000000012a8       0x74 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                0x00000000000012a8                __vector_6
+ .text.ext_lld_init
+                0x000000000000131c        0x6 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                0x000000000000131c                ext_lld_init
+ .text._pal_lld_init
+                0x0000000000001322       0x6c ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+                0x0000000000001322                _pal_lld_init
+ .text._pal_lld_setgroupmode
+                0x000000000000138e       0x48 ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+                0x000000000000138e                _pal_lld_setgroupmode
+ .text.__vector_17
+                0x00000000000013d6       0x60 ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+                0x00000000000013d6                __vector_17
+ .text.st_lld_init
+                0x0000000000001436       0x2e ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+                0x0000000000001436                st_lld_init
+ .text.notify1  0x0000000000001464        0xc ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .text.__vector_25
+                0x0000000000001470       0x8a ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                0x0000000000001470                __vector_25
+ .text.__vector_26
+                0x00000000000014fa       0x76 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                0x00000000000014fa                __vector_26
+ .text.sd_lld_init
+                0x0000000000001570        0xe ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                0x0000000000001570                sd_lld_init
+ .text.sd_lld_start
+                0x000000000000157e       0x62 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                0x000000000000157e                sd_lld_start
+ .text.boardInit
+                0x00000000000015e0        0xc ../../../os/hal/boards/ARDUINO_MEGA/board.o
+                0x00000000000015e0                boardInit
+ .text.chvprintf
+                0x00000000000015ec      0x89e ../../../os/hal/lib/streams/chprintf.o
+                0x00000000000015ec                chvprintf
+ .text.chprintf
+                0x0000000000001e8a       0x1e ../../../os/hal/lib/streams/chprintf.o
+                0x0000000000001e8a                chprintf
+ .text.startup.main
+                0x0000000000001ea8       0xaa main.o
+                0x0000000000001ea8                main
+ .text.__vector_9
+                0x0000000000001f52       0x2e main.o
+                0x0000000000001f52                __vector_9
+ .text.avr-libc
+                0x0000000000001f80      0x25e /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o)
+                0x0000000000001f80                vfprintf
+ .text.avr-libc
+                0x00000000000021de      0x3bc /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o)
+                0x0000000000002384                vfscanf
+ .text.avr-libc.fplib
+                0x000000000000259a        0xa /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3.o)
+                0x000000000000259a                __subsf3
+                0x000000000000259c                __addsf3
+ .text.avr-libc.fplib
+                0x00000000000025a4       0xc0 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o)
+                0x00000000000025be                __addsf3x
+ .text.avr-libc.fplib
+                0x0000000000002664        0x8 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(cmpsf2.o)
+                0x0000000000002664                __lesf2
+                0x0000000000002664                __nesf2
+                0x0000000000002664                __eqsf2
+                0x0000000000002664                __cmpsf2
+                0x0000000000002664                __ltsf2
+ .text.avr-libc.fplib
+                0x000000000000266c        0xa /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixsfsi.o)
+                0x000000000000266c                __fixsfsi
+ .text.avr-libc.fplib
+                0x0000000000002676       0x58 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixunssfsi.o)
+                0x0000000000002676                __fixunssfsi
+ .text.avr-libc.fplib
+                0x00000000000026ce       0x7a /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(floatsisf.o)
+                0x00000000000026ce                __floatunsisf
+                0x00000000000026d2                __floatsisf
+ .text.avr-libc.fplib
+                0x0000000000002748       0x48 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_cmp.o)
+                0x0000000000002748                __fp_cmp
+ .text.avr-libc.fplib
+                0x0000000000002790        0xc /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_inf.o)
+                0x0000000000002790                __fp_inf
+ .text.avr-libc.fplib
+                0x000000000000279c        0x6 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_nan.o)
+                0x000000000000279c                __fp_nan
+ .text.avr-libc.fplib
+                0x00000000000027a2        0xe /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_pscA.o)
+                0x00000000000027a2                __fp_pscA
+ .text.avr-libc.fplib
+                0x00000000000027b0        0xe /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_pscB.o)
+                0x00000000000027b0                __fp_pscB
+ .text.avr-libc.fplib
+                0x00000000000027be       0x22 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_round.o)
+                0x00000000000027be                __fp_round
+ .text.avr-libc.fplib
+                0x00000000000027e0       0x44 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_split3.o)
+                0x00000000000027e0                __fp_split3
+                0x00000000000027f0                __fp_splitA
+ .text.avr-libc.fplib
+                0x0000000000002824        0xe /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_zero.o)
+                0x0000000000002824                __fp_zero
+                0x0000000000002826                __fp_szero
+ .text.avr-libc.fplib
+                0x0000000000002832        0x4 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3.o)
+                0x0000000000002832                __mulsf3
+ .text.avr-libc.fplib
+                0x0000000000002836       0xc2 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+                0x000000000000284a                __mulsf3x
+                0x000000000000284e                __mulsf3_pse
+ .text.libgcc.div
+                0x00000000000028f8       0x44 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_udivmodsi4.o)
+                0x00000000000028f8                __udivmodsi4
+ .text.libgcc.div
+                0x000000000000293c       0x28 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+                0x000000000000293c                __divmodsi4
+ .text.libgcc.div
+                0x0000000000002964       0x10 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_negsi2.o)
+                0x0000000000002964                __negsi2
+ .text.libgcc   0x0000000000002974       0x10 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_tablejump2.o)
+                0x0000000000002974                __tablejump2__
+ .text.avr-libc
+                0x0000000000002984       0x10 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(isspace.o)
+                0x0000000000002984                isspace
+ .text.avr-libc
+                0x0000000000002994       0x16 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(strchr_P.o)
+                0x0000000000002994                strchr_P
+ .text.avr-libc
+                0x00000000000029aa       0x7c /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fgetc.o)
+                0x00000000000029aa                fgetc
+ .text.avr-libc
+                0x0000000000002a26       0x78 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fputc.o)
+                0x0000000000002a26                fputc
+ .text.avr-libc
+                0x0000000000002a9e       0x32 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ungetc.o)
+                0x0000000000002a9e                ungetc
+ .text.avr-libc
+                0x0000000000002ad0       0xbc /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ultoa_invert.o)
+                0x0000000000002ad0                __ultoa_invert
+ .text.avr-libc
+                0x0000000000002b8c        0x6 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(cty_isfalse.o)
+                0x0000000000002b8c                __ctype_isfalse
+                0x0000000000002b90                __ctype_istrue
+                0x0000000000002b92                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x0000000000002b92        0x0 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+                0x0000000000002b92                exit
+                0x0000000000002b92                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x0000000000002b92        0x4 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+ *(.fini0)
+                0x0000000000002b96                _etext = .
+
+.data           0x0000000000800200       0xb8 load address 0x0000000000002b96
+                0x0000000000800200                PROVIDE (__data_start, .)
+ *(.data)
+ *(.data*)
+ .data.chp      0x0000000000800200        0x2 main.o
+                0x0000000000800200                chp
+ *(.gnu.linkonce.d*)
+ *(.rodata)
+ *(.rodata*)
+ .rodata.str1.1
+                0x0000000000800202        0x5 ../../../os/rt/src/chsys.o
+ .rodata.idle_descriptor.2514
+                0x0000000000800207        0xb ../../../os/rt/src/chsys.o
+ .rodata.ch_debug
+                0x0000000000800212       0x16 ../../../os/rt/src/chregistry.o
+                0x0000000000800212                ch_debug
+ .rodata.vmt    0x0000000000800228       0x10 ../../../os/hal/src/hal_serial.o
+ .rodata.default_config
+                0x0000000000800238        0x3 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .rodata.pal_default_config
+                0x000000000080023b       0x16 ../../../os/hal/boards/ARDUINO_MEGA/board.o
+                0x000000000080023b                pal_default_config
+ .rodata.str1.1
+                0x0000000000800251        0x7 ../../../os/hal/lib/streams/chprintf.o
+ .rodata.pow10  0x0000000000800258       0x24 ../../../os/hal/lib/streams/chprintf.o
+ .rodata.str1.1
+                0x000000000080027c       0x3b main.o
+ *(.gnu.linkonce.r*)
+                0x00000000008002b8                . = ALIGN (0x2)
+ *fill*         0x00000000008002b7        0x1 
+                0x00000000008002b8                _edata = .
+                0x00000000008002b8                PROVIDE (__data_end, .)
+
+.bss            0x00000000008002b8       0xef
+                0x00000000008002b8                PROVIDE (__bss_start, .)
+ *(.bss)
+ *(.bss*)
+ .bss.index     0x00000000008002b8        0x2 main.o
+ .bss.isrCpt    0x00000000008002ba        0x2 main.o
+ *(COMMON)
+ COMMON         0x00000000008002bc       0x6b ../../../os/rt/src/chsys.o
+                0x00000000008002bc                ch_idle_thread_wa
+ COMMON         0x0000000000800327       0x33 ../../../os/rt/src/chschd.o
+                0x0000000000800327                ch
+ COMMON         0x000000000080035a        0x1 ../../../os/common/ports/AVR/chcore.o
+                0x000000000080035a                __avr_in_isr
+ COMMON         0x000000000080035b        0x3 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                0x000000000080035b                EXTD1
+ COMMON         0x000000000080035e       0x49 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                0x000000000080035e                SD1
+                0x00000000008003a7                PROVIDE (__bss_end, .)
+                0x0000000000002b96                __data_load_start = LOADADDR (.data)
+                0x0000000000002c4e                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x00000000008003a7        0x0
+                [!provide]                        PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                [!provide]                        PROVIDE (__noinit_end, .)
+                0x00000000008003a7                _end = .
+                [!provide]                        PROVIDE (__heap_start, .)
+
+.eeprom         0x0000000000810000        0x0
+ *(.eeprom*)
+                0x0000000000810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.user_signatures
+ *(.user_signatures*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x0000000000000000       0x11
+ *(.comment)
+ .comment       0x0000000000000000       0x11 ../../../os/rt/src/chsys.o
+                                         0x12 (size before relaxing)
+ .comment       0x0000000000000011       0x12 ../../../os/rt/src/chvt.o
+ .comment       0x0000000000000011       0x12 ../../../os/rt/src/chschd.o
+ .comment       0x0000000000000011       0x12 ../../../os/rt/src/chthreads.o
+ .comment       0x0000000000000011       0x12 ../../../os/rt/src/chregistry.o
+ .comment       0x0000000000000011       0x12 ../../../os/rt/src/chevents.o
+ .comment       0x0000000000000011       0x12 ../../../os/common/ports/AVR/chcore.o
+ .comment       0x0000000000000011       0x12 ../../../os/hal/src/hal.o
+ .comment       0x0000000000000011       0x12 ../../../os/hal/src/hal_st.o
+ .comment       0x0000000000000011       0x12 ../../../os/hal/src/hal_queues.o
+ .comment       0x0000000000000011       0x12 ../../../os/hal/src/hal_ext.o
+ .comment       0x0000000000000011       0x12 ../../../os/hal/src/hal_serial.o
+ .comment       0x0000000000000011       0x12 ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+ .comment       0x0000000000000011       0x12 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .comment       0x0000000000000011       0x12 ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+ .comment       0x0000000000000011       0x12 ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+ .comment       0x0000000000000011       0x12 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .comment       0x0000000000000011       0x12 ../../../os/hal/boards/ARDUINO_MEGA/board.o
+ .comment       0x0000000000000011       0x12 ../../../os/hal/lib/streams/chprintf.o
+ .comment       0x0000000000000011       0x12 main.o
+ .comment       0x0000000000000011       0x12 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o)
+ .comment       0x0000000000000011       0x12 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o)
+ .comment       0x0000000000000011       0x12 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fgetc.o)
+ .comment       0x0000000000000011       0x12 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fputc.o)
+ .comment       0x0000000000000011       0x12 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ungetc.o)
+
+.note.gnu.avr.deviceinfo
+                0x0000000000000000       0x40
+ .note.gnu.avr.deviceinfo
+                0x0000000000000000       0x40 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+
+.note.gnu.build-id
+ *(.note.gnu.build-id)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x0000000000000000      0x638
+ *(.debug_aranges)
+ .debug_aranges
+                0x0000000000000000       0x50 ../../../os/rt/src/chsys.o
+ .debug_aranges
+                0x0000000000000050       0x30 ../../../os/rt/src/chvt.o
+ .debug_aranges
+                0x0000000000000080       0x70 ../../../os/rt/src/chschd.o
+ .debug_aranges
+                0x00000000000000f0       0xe8 ../../../os/rt/src/chthreads.o
+ .debug_aranges
+                0x00000000000001d8       0x38 ../../../os/rt/src/chregistry.o
+ .debug_aranges
+                0x0000000000000210       0xa0 ../../../os/rt/src/chevents.o
+ .debug_aranges
+                0x00000000000002b0       0x28 ../../../os/common/ports/AVR/chcore.o
+ .debug_aranges
+                0x00000000000002d8       0x20 ../../../os/hal/src/hal.o
+ .debug_aranges
+                0x00000000000002f8       0x40 ../../../os/hal/src/hal_st.o
+ .debug_aranges
+                0x0000000000000338       0x68 ../../../os/hal/src/hal_queues.o
+ .debug_aranges
+                0x00000000000003a0       0x50 ../../../os/hal/src/hal_ext.o
+ .debug_aranges
+                0x00000000000003f0       0x98 ../../../os/hal/src/hal_serial.o
+ .debug_aranges
+                0x0000000000000488       0x20 ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+ .debug_aranges
+                0x00000000000004a8       0x78 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .debug_aranges
+                0x0000000000000520       0x28 ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+ .debug_aranges
+                0x0000000000000548       0x28 ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+ .debug_aranges
+                0x0000000000000570       0x48 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .debug_aranges
+                0x00000000000005b8       0x20 ../../../os/hal/boards/ARDUINO_MEGA/board.o
+ .debug_aranges
+                0x00000000000005d8       0x30 ../../../os/hal/lib/streams/chprintf.o
+ .debug_aranges
+                0x0000000000000608       0x30 main.o
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info     0x0000000000000000    0x11033
+ *(.debug_info .gnu.linkonce.wi.*)
+ .debug_info    0x0000000000000000      0xbbc /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+ .debug_info    0x0000000000000bbc      0xdb5 ../../../os/rt/src/chsys.o
+ .debug_info    0x0000000000001971      0x92f ../../../os/rt/src/chvt.o
+ .debug_info    0x00000000000022a0      0xdbc ../../../os/rt/src/chschd.o
+ .debug_info    0x000000000000305c     0x1d21 ../../../os/rt/src/chthreads.o
+ .debug_info    0x0000000000004d7d      0xbfd ../../../os/rt/src/chregistry.o
+ .debug_info    0x000000000000597a     0x132d ../../../os/rt/src/chevents.o
+ .debug_info    0x0000000000006ca7      0x75c ../../../os/common/ports/AVR/chcore.o
+ .debug_info    0x0000000000007403      0x82f ../../../os/hal/src/hal.o
+ .debug_info    0x0000000000007c32      0x83a ../../../os/hal/src/hal_st.o
+ .debug_info    0x000000000000846c     0x1524 ../../../os/hal/src/hal_queues.o
+ .debug_info    0x0000000000009990      0xcde ../../../os/hal/src/hal_ext.o
+ .debug_info    0x000000000000a66e     0x164c ../../../os/hal/src/hal_serial.o
+ .debug_info    0x000000000000bcba      0x6a8 ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+ .debug_info    0x000000000000c362      0xc8c ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .debug_info    0x000000000000cfee      0x859 ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+ .debug_info    0x000000000000d847      0x762 ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+ .debug_info    0x000000000000dfa9      0xe29 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .debug_info    0x000000000000edd2      0x79d ../../../os/hal/boards/ARDUINO_MEGA/board.o
+ .debug_info    0x000000000000f56f      0xf19 ../../../os/hal/lib/streams/chprintf.o
+ .debug_info    0x0000000000010488      0xbab main.o
+
+.debug_abbrev   0x0000000000000000     0x3f87
+ *(.debug_abbrev)
+ .debug_abbrev  0x0000000000000000      0xb1a /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+ .debug_abbrev  0x0000000000000b1a      0x423 ../../../os/rt/src/chsys.o
+ .debug_abbrev  0x0000000000000f3d      0x28a ../../../os/rt/src/chvt.o
+ .debug_abbrev  0x00000000000011c7      0x397 ../../../os/rt/src/chschd.o
+ .debug_abbrev  0x000000000000155e      0x456 ../../../os/rt/src/chthreads.o
+ .debug_abbrev  0x00000000000019b4      0x2d9 ../../../os/rt/src/chregistry.o
+ .debug_abbrev  0x0000000000001c8d      0x373 ../../../os/rt/src/chevents.o
+ .debug_abbrev  0x0000000000002000      0x1a0 ../../../os/common/ports/AVR/chcore.o
+ .debug_abbrev  0x00000000000021a0      0x18e ../../../os/hal/src/hal.o
+ .debug_abbrev  0x000000000000232e      0x200 ../../../os/hal/src/hal_st.o
+ .debug_abbrev  0x000000000000252e      0x414 ../../../os/hal/src/hal_queues.o
+ .debug_abbrev  0x0000000000002942      0x25e ../../../os/hal/src/hal_ext.o
+ .debug_abbrev  0x0000000000002ba0      0x37e ../../../os/hal/src/hal_serial.o
+ .debug_abbrev  0x0000000000002f1e      0x122 ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+ .debug_abbrev  0x0000000000003040      0x2ed ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .debug_abbrev  0x000000000000332d      0x14f ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+ .debug_abbrev  0x000000000000347c      0x179 ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+ .debug_abbrev  0x00000000000035f5      0x364 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .debug_abbrev  0x0000000000003959      0x140 ../../../os/hal/boards/ARDUINO_MEGA/board.o
+ .debug_abbrev  0x0000000000003a99      0x30a ../../../os/hal/lib/streams/chprintf.o
+ .debug_abbrev  0x0000000000003da3      0x1e4 main.o
+
+.debug_line     0x0000000000000000     0x4a1e
+ *(.debug_line .debug_line.* .debug_line_end)
+ .debug_line    0x0000000000000000       0x1a /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+ .debug_line    0x000000000000001a      0x471 ../../../os/rt/src/chsys.o
+ .debug_line    0x000000000000048b      0x336 ../../../os/rt/src/chvt.o
+ .debug_line    0x00000000000007c1      0x4cb ../../../os/rt/src/chschd.o
+ .debug_line    0x0000000000000c8c      0x8cc ../../../os/rt/src/chthreads.o
+ .debug_line    0x0000000000001558      0x2ca ../../../os/rt/src/chregistry.o
+ .debug_line    0x0000000000001822      0x61c ../../../os/rt/src/chevents.o
+ .debug_line    0x0000000000001e3e      0x262 ../../../os/common/ports/AVR/chcore.o
+ .debug_line    0x00000000000020a0      0x22b ../../../os/hal/src/hal.o
+ .debug_line    0x00000000000022cb      0x1c8 ../../../os/hal/src/hal_st.o
+ .debug_line    0x0000000000002493      0x64d ../../../os/hal/src/hal_queues.o
+ .debug_line    0x0000000000002ae0      0x2b8 ../../../os/hal/src/hal_ext.o
+ .debug_line    0x0000000000002d98      0x46d ../../../os/hal/src/hal_serial.o
+ .debug_line    0x0000000000003205      0x121 ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+ .debug_line    0x0000000000003326      0x636 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .debug_line    0x000000000000395c      0x20e ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+ .debug_line    0x0000000000003b6a      0x1c3 ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+ .debug_line    0x0000000000003d2d      0x357 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .debug_line    0x0000000000004084      0x16e ../../../os/hal/boards/ARDUINO_MEGA/board.o
+ .debug_line    0x00000000000041f2      0x5ac ../../../os/hal/lib/streams/chprintf.o
+ .debug_line    0x000000000000479e      0x280 main.o
+
+.debug_frame    0x0000000000000000     0x127c
+ *(.debug_frame)
+ .debug_frame   0x0000000000000000       0xa8 ../../../os/rt/src/chsys.o
+ .debug_frame   0x00000000000000a8       0x74 ../../../os/rt/src/chvt.o
+ .debug_frame   0x000000000000011c      0x140 ../../../os/rt/src/chschd.o
+ .debug_frame   0x000000000000025c      0x27c ../../../os/rt/src/chthreads.o
+ .debug_frame   0x00000000000004d8       0x6c ../../../os/rt/src/chregistry.o
+ .debug_frame   0x0000000000000544      0x1f4 ../../../os/rt/src/chevents.o
+ .debug_frame   0x0000000000000738       0x34 ../../../os/common/ports/AVR/chcore.o
+ .debug_frame   0x000000000000076c       0x24 ../../../os/hal/src/hal.o
+ .debug_frame   0x0000000000000790       0x64 ../../../os/hal/src/hal_st.o
+ .debug_frame   0x00000000000007f4      0x1e4 ../../../os/hal/src/hal_queues.o
+ .debug_frame   0x00000000000009d8       0x9c ../../../os/hal/src/hal_ext.o
+ .debug_frame   0x0000000000000a74      0x17c ../../../os/hal/src/hal_serial.o
+ .debug_frame   0x0000000000000bf0       0x24 ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+ .debug_frame   0x0000000000000c14      0x2fc ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .debug_frame   0x0000000000000f10       0x34 ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+ .debug_frame   0x0000000000000f44       0x88 ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+ .debug_frame   0x0000000000000fcc      0x11c ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .debug_frame   0x00000000000010e8       0x24 ../../../os/hal/boards/ARDUINO_MEGA/board.o
+ .debug_frame   0x000000000000110c       0xe8 ../../../os/hal/lib/streams/chprintf.o
+ .debug_frame   0x00000000000011f4       0x88 main.o
+
+.debug_str      0x0000000000000000     0x1b72
+ *(.debug_str)
+ .debug_str     0x0000000000000000      0x3e6 /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+ .debug_str     0x00000000000003e6      0x6e9 ../../../os/rt/src/chsys.o
+                                        0x791 (size before relaxing)
+ .debug_str     0x0000000000000acf       0x6c ../../../os/rt/src/chvt.o
+                                        0x507 (size before relaxing)
+ .debug_str     0x0000000000000b3b      0x134 ../../../os/rt/src/chschd.o
+                                        0x5cf (size before relaxing)
+ .debug_str     0x0000000000000c6f      0x244 ../../../os/rt/src/chthreads.o
+                                        0x7ad (size before relaxing)
+ .debug_str     0x0000000000000eb3       0x8b ../../../os/rt/src/chregistry.o
+                                        0x588 (size before relaxing)
+ .debug_str     0x0000000000000f3e      0x1c5 ../../../os/rt/src/chevents.o
+                                        0x658 (size before relaxing)
+ .debug_str     0x0000000000001103       0x39 ../../../os/common/ports/AVR/chcore.o
+                                        0x46f (size before relaxing)
+ .debug_str     0x000000000000113c       0xd6 ../../../os/hal/src/hal.o
+                                        0x4de (size before relaxing)
+ .debug_str     0x0000000000001212       0x83 ../../../os/hal/src/hal_st.o
+                                        0x4c4 (size before relaxing)
+ .debug_str     0x0000000000001295      0x1d5 ../../../os/hal/src/hal_queues.o
+                                        0x6ad (size before relaxing)
+ .debug_str     0x000000000000146a      0x15f ../../../os/hal/src/hal_ext.o
+                                        0x5ca (size before relaxing)
+ .debug_str     0x00000000000015c9      0x1ad ../../../os/hal/src/hal_serial.o
+                                        0x7b8 (size before relaxing)
+ .debug_str     0x0000000000001776       0x29 ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+                                        0x43e (size before relaxing)
+ .debug_str     0x000000000000179f       0x97 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                        0x619 (size before relaxing)
+ .debug_str     0x0000000000001836       0x85 ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+                                        0x509 (size before relaxing)
+ .debug_str     0x00000000000018bb       0x7a ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+                                        0x519 (size before relaxing)
+ .debug_str     0x0000000000001935       0x83 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                        0x742 (size before relaxing)
+ .debug_str     0x00000000000019b8       0x2c ../../../os/hal/boards/ARDUINO_MEGA/board.o
+                                        0x4ae (size before relaxing)
+ .debug_str     0x00000000000019e4      0x160 ../../../os/hal/lib/streams/chprintf.o
+                                        0x59d (size before relaxing)
+ .debug_str     0x0000000000001b44       0x2e main.o
+                                        0x5eb (size before relaxing)
+
+.debug_loc      0x0000000000000000     0x60ba
+ *(.debug_loc)
+ .debug_loc     0x0000000000000000      0x253 ../../../os/rt/src/chsys.o
+ .debug_loc     0x0000000000000253      0x3fe ../../../os/rt/src/chvt.o
+ .debug_loc     0x0000000000000651      0x538 ../../../os/rt/src/chschd.o
+ .debug_loc     0x0000000000000b89      0xeb9 ../../../os/rt/src/chthreads.o
+ .debug_loc     0x0000000000001a42      0x24f ../../../os/rt/src/chregistry.o
+ .debug_loc     0x0000000000001c91      0x93b ../../../os/rt/src/chevents.o
+ .debug_loc     0x00000000000025cc       0x7c ../../../os/hal/src/hal_st.o
+ .debug_loc     0x0000000000002648      0xc7c ../../../os/hal/src/hal_queues.o
+ .debug_loc     0x00000000000032c4      0x216 ../../../os/hal/src/hal_ext.o
+ .debug_loc     0x00000000000034da      0x883 ../../../os/hal/src/hal_serial.o
+ .debug_loc     0x0000000000003d5d      0x8cc ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .debug_loc     0x0000000000004629       0xf1 ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+ .debug_loc     0x000000000000471a       0xcb ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+ .debug_loc     0x00000000000047e5      0x36a ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .debug_loc     0x0000000000004b4f     0x1457 ../../../os/hal/lib/streams/chprintf.o
+ .debug_loc     0x0000000000005fa6      0x114 main.o
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+.debug_pubtypes
+ *(.debug_pubtypes)
+
+.debug_ranges   0x0000000000000000      0x750
+ *(.debug_ranges)
+ .debug_ranges  0x0000000000000000       0xd0 ../../../os/rt/src/chsys.o
+ .debug_ranges  0x00000000000000d0       0x78 ../../../os/rt/src/chvt.o
+ .debug_ranges  0x0000000000000148       0x60 ../../../os/rt/src/chschd.o
+ .debug_ranges  0x00000000000001a8      0x120 ../../../os/rt/src/chthreads.o
+ .debug_ranges  0x00000000000002c8       0x70 ../../../os/rt/src/chregistry.o
+ .debug_ranges  0x0000000000000338       0xa8 ../../../os/rt/src/chevents.o
+ .debug_ranges  0x00000000000003e0       0x18 ../../../os/common/ports/AVR/chcore.o
+ .debug_ranges  0x00000000000003f8       0x10 ../../../os/hal/src/hal.o
+ .debug_ranges  0x0000000000000408       0x30 ../../../os/hal/src/hal_st.o
+ .debug_ranges  0x0000000000000438       0xc0 ../../../os/hal/src/hal_queues.o
+ .debug_ranges  0x00000000000004f8       0x40 ../../../os/hal/src/hal_ext.o
+ .debug_ranges  0x0000000000000538       0xa0 ../../../os/hal/src/hal_serial.o
+ .debug_ranges  0x00000000000005d8       0x10 ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+ .debug_ranges  0x00000000000005e8       0x68 ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ .debug_ranges  0x0000000000000650       0x18 ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+ .debug_ranges  0x0000000000000668       0x18 ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+ .debug_ranges  0x0000000000000680       0x50 ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+ .debug_ranges  0x00000000000006d0       0x10 ../../../os/hal/boards/ARDUINO_MEGA/board.o
+ .debug_ranges  0x00000000000006e0       0x50 ../../../os/hal/lib/streams/chprintf.o
+ .debug_ranges  0x0000000000000730       0x20 main.o
+
+.debug_macro
+ *(.debug_macro)
+OUTPUT(ch.elf elf32-avr)
+LOAD linker stubs
+
+Cross Reference Table
+
+Symbol                                            File
+EXTD1                                             ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+SD1                                               ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                                  main.o
+__DATA_REGION_LENGTH__                            /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__DATA_REGION_ORIGIN__                            /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__EEPROM_REGION_LENGTH__                          /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__FUSE_REGION_LENGTH__                            /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__TEXT_REGION_LENGTH__                            /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__addsf3                                          /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3.o)
+__addsf3x                                         /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3.o)
+__avr_in_isr                                      ../../../os/common/ports/AVR/chcore.o
+                                                  ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                                  ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+                                                  ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  ../../../os/rt/src/chsys.o
+__bad_interrupt                                   /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__bss_end                                         /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+__bss_start                                       /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+__cmpsf2                                          /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(cmpsf2.o)
+__ctype_isfalse                                   /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(cty_isfalse.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(isspace.o)
+__ctype_istrue                                    /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(cty_isfalse.o)
+__data_end                                        /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+__data_load_start                                 /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+__data_start                                      /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+__divmodsi4                                       /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+                                                  ../../../os/hal/lib/streams/chprintf.o
+__do_clear_bss                                    /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_clear_bss.o)
+                                                  main.o
+                                                  ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                                  ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  ../../../os/common/ports/AVR/chcore.o
+                                                  ../../../os/rt/src/chschd.o
+                                                  ../../../os/rt/src/chsys.o
+__do_copy_data                                    /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_copy_data.o)
+                                                  main.o
+                                                  ../../../os/hal/lib/streams/nullstreams.o
+                                                  ../../../os/hal/lib/streams/memstreams.o
+                                                  ../../../os/hal/lib/streams/chprintf.o
+                                                  ../../../os/hal/boards/ARDUINO_MEGA/board.o
+                                                  ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                                  ../../../os/hal/src/hal_serial.o
+                                                  ../../../os/rt/src/chregistry.o
+                                                  ../../../os/rt/src/chthreads.o
+                                                  ../../../os/rt/src/chsys.o
+__eqsf2                                           /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(cmpsf2.o)
+__fixsfsi                                         /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixsfsi.o)
+                                                  ../../../os/hal/lib/streams/chprintf.o
+__fixunssfsi                                      /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixunssfsi.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixsfsi.o)
+__floatsisf                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(floatsisf.o)
+                                                  ../../../os/hal/lib/streams/chprintf.o
+__floatunsisf                                     /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(floatsisf.o)
+                                                  ../../../os/hal/lib/streams/chprintf.o
+__fp_cmp                                          /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_cmp.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(cmpsf2.o)
+__fp_inf                                          /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_inf.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o)
+__fp_nan                                          /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_nan.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o)
+__fp_pscA                                         /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_pscA.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o)
+__fp_pscB                                         /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_pscB.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o)
+__fp_round                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_round.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3.o)
+__fp_split3                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_split3.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o)
+__fp_splitA                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_split3.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixunssfsi.o)
+__fp_szero                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_zero.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixsfsi.o)
+__fp_zero                                         /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fp_zero.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(fixunssfsi.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3x.o)
+__heap_end                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__init                                            /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__lesf2                                           /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(cmpsf2.o)
+__ltsf2                                           /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(cmpsf2.o)
+                                                  ../../../os/hal/lib/streams/chprintf.o
+__mulsf3                                          /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3.o)
+                                                  ../../../os/hal/lib/streams/chprintf.o
+__mulsf3_pse                                      /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+__mulsf3x                                         /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3x.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(mulsf3.o)
+__negsi2                                          /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_negsi2.o)
+                                                  /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+__nesf2                                           /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(cmpsf2.o)
+__stack                                           /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__subsf3                                          /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libm.a(addsf3.o)
+                                                  ../../../os/hal/lib/streams/chprintf.o
+__tablejump2__                                    /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_tablejump2.o)
+                                                  ../../../os/hal/lib/streams/chprintf.o
+__udivmodsi4                                      /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_udivmodsi4.o)
+                                                  /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_divmodsi4.o)
+                                                  ../../../os/hal/lib/streams/chprintf.o
+__ultoa_invert                                    /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ultoa_invert.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o)
+__vector_1                                        ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_10                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_11                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_12                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_13                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_14                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_15                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_16                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_17                                       ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_18                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_19                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_2                                        ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_20                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_21                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_22                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_23                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_24                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_25                                       ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_26                                       ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_27                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_28                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_29                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_3                                        ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_30                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_31                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_32                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_33                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_34                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_35                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_36                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_37                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_38                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_39                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_4                                        ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_40                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_41                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_42                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_43                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_44                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_45                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_46                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_47                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_48                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_49                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_5                                        ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_50                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_51                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_52                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_53                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_54                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_55                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_56                                       /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_6                                        ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_7                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_8                                        /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_9                                        main.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vector_default                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+__vectors                                         /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+_exit                                             /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+_pal_lld_init                                     ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+                                                  ../../../os/hal/src/hal.o
+_pal_lld_setgroupmode                             ../../../os/hal/ports/AVR/MEGA/GPIOv1/hal_pal_lld.o
+                                                  main.o
+                                                  ../../../os/hal/src/hal_pal.o
+_port_switch                                      ../../../os/common/ports/AVR/chcore.o
+                                                  ../../../os/rt/src/chschd.o
+_port_thread_start                                ../../../os/common/ports/AVR/chcore.o
+                                                  ../../../os/rt/src/chthreads.o
+_scheduler_init                                   ../../../os/rt/src/chschd.o
+                                                  ../../../os/rt/src/chsys.o
+_thread_init                                      ../../../os/rt/src/chthreads.o
+                                                  ../../../os/rt/src/chsys.o
+_vt_init                                          ../../../os/rt/src/chvt.o
+                                                  ../../../os/rt/src/chsys.o
+boardInit                                         ../../../os/hal/boards/ARDUINO_MEGA/board.o
+                                                  ../../../os/hal/src/hal.o
+ch                                                ../../../os/rt/src/chschd.o
+                                                  ../../../os/rt/src/chmsg.o
+                                                  ../../../os/rt/src/chevents.o
+                                                  ../../../os/rt/src/chcond.o
+                                                  ../../../os/rt/src/chmtx.o
+                                                  ../../../os/rt/src/chsem.o
+                                                  ../../../os/rt/src/chregistry.o
+                                                  ../../../os/rt/src/chthreads.o
+                                                  ../../../os/rt/src/chvt.o
+                                                  ../../../os/rt/src/chsys.o
+chCondBroadcast                                   ../../../os/rt/src/chcond.o
+chCondBroadcastI                                  ../../../os/rt/src/chcond.o
+chCondObjectInit                                  ../../../os/rt/src/chcond.o
+chCondSignal                                      ../../../os/rt/src/chcond.o
+chCondSignalI                                     ../../../os/rt/src/chcond.o
+chCondWait                                        ../../../os/rt/src/chcond.o
+chCondWaitS                                       ../../../os/rt/src/chcond.o
+chCondWaitTimeout                                 ../../../os/rt/src/chcond.o
+chCondWaitTimeoutS                                ../../../os/rt/src/chcond.o
+chEvtAddEvents                                    ../../../os/rt/src/chevents.o
+chEvtBroadcastFlags                               ../../../os/rt/src/chevents.o
+chEvtBroadcastFlagsI                              ../../../os/rt/src/chevents.o
+                                                  ../../../os/various/evtimer.o
+                                                  ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                                  ../../../os/hal/src/hal_serial.o
+chEvtDispatch                                     ../../../os/rt/src/chevents.o
+chEvtGetAndClearEvents                            ../../../os/rt/src/chevents.o
+chEvtGetAndClearFlags                             ../../../os/rt/src/chevents.o
+chEvtGetAndClearFlagsI                            ../../../os/rt/src/chevents.o
+chEvtRegisterMaskWithFlags                        ../../../os/rt/src/chevents.o
+chEvtSignal                                       ../../../os/rt/src/chevents.o
+chEvtSignalI                                      ../../../os/rt/src/chevents.o
+chEvtUnregister                                   ../../../os/rt/src/chevents.o
+chEvtWaitAll                                      ../../../os/rt/src/chevents.o
+chEvtWaitAllTimeout                               ../../../os/rt/src/chevents.o
+chEvtWaitAny                                      ../../../os/rt/src/chevents.o
+chEvtWaitAnyTimeout                               ../../../os/rt/src/chevents.o
+chEvtWaitOne                                      ../../../os/rt/src/chevents.o
+chEvtWaitOneTimeout                               ../../../os/rt/src/chevents.o
+chMBFetch                                         ../../../os/common/oslib/src/chmboxes.o
+chMBFetchI                                        ../../../os/common/oslib/src/chmboxes.o
+chMBFetchS                                        ../../../os/common/oslib/src/chmboxes.o
+chMBObjectInit                                    ../../../os/common/oslib/src/chmboxes.o
+chMBPost                                          ../../../os/common/oslib/src/chmboxes.o
+chMBPostAhead                                     ../../../os/common/oslib/src/chmboxes.o
+chMBPostAheadI                                    ../../../os/common/oslib/src/chmboxes.o
+chMBPostAheadS                                    ../../../os/common/oslib/src/chmboxes.o
+chMBPostI                                         ../../../os/common/oslib/src/chmboxes.o
+chMBPostS                                         ../../../os/common/oslib/src/chmboxes.o
+chMBReset                                         ../../../os/common/oslib/src/chmboxes.o
+chMBResetI                                        ../../../os/common/oslib/src/chmboxes.o
+chMsgRelease                                      ../../../os/rt/src/chmsg.o
+chMsgSend                                         ../../../os/rt/src/chmsg.o
+chMsgWait                                         ../../../os/rt/src/chmsg.o
+chMtxLock                                         ../../../os/rt/src/chmtx.o
+chMtxLockS                                        ../../../os/rt/src/chmtx.o
+                                                  ../../../os/rt/src/chcond.o
+chMtxObjectInit                                   ../../../os/rt/src/chmtx.o
+chMtxTryLock                                      ../../../os/rt/src/chmtx.o
+chMtxTryLockS                                     ../../../os/rt/src/chmtx.o
+chMtxUnlock                                       ../../../os/rt/src/chmtx.o
+chMtxUnlockAll                                    ../../../os/rt/src/chmtx.o
+chMtxUnlockAllS                                   ../../../os/rt/src/chmtx.o
+chMtxUnlockS                                      ../../../os/rt/src/chmtx.o
+                                                  ../../../os/rt/src/chcond.o
+chRegFindThreadByName                             ../../../os/rt/src/chregistry.o
+chRegFindThreadByPointer                          ../../../os/rt/src/chregistry.o
+chRegFirstThread                                  ../../../os/rt/src/chregistry.o
+chRegNextThread                                   ../../../os/rt/src/chregistry.o
+chSchDoReschedule                                 ../../../os/rt/src/chschd.o
+                                                  ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                                  ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+                                                  ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+chSchDoRescheduleAhead                            ../../../os/rt/src/chschd.o
+chSchDoRescheduleBehind                           ../../../os/rt/src/chschd.o
+                                                  ../../../os/rt/src/chthreads.o
+chSchGoSleepS                                     ../../../os/rt/src/chschd.o
+                                                  ../../../os/rt/src/chmsg.o
+                                                  ../../../os/rt/src/chevents.o
+                                                  ../../../os/rt/src/chcond.o
+                                                  ../../../os/rt/src/chmtx.o
+                                                  ../../../os/rt/src/chsem.o
+                                                  ../../../os/rt/src/chthreads.o
+chSchGoSleepTimeoutS                              ../../../os/rt/src/chschd.o
+                                                  ../../../os/rt/src/chevents.o
+                                                  ../../../os/rt/src/chcond.o
+                                                  ../../../os/rt/src/chsem.o
+                                                  ../../../os/rt/src/chthreads.o
+chSchIsPreemptionRequired                         ../../../os/rt/src/chschd.o
+                                                  ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                                  ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+                                                  ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+chSchReadyAheadI                                  ../../../os/rt/src/chschd.o
+chSchReadyI                                       ../../../os/rt/src/chschd.o
+                                                  ../../../os/rt/src/chmsg.o
+                                                  ../../../os/rt/src/chevents.o
+                                                  ../../../os/rt/src/chcond.o
+                                                  ../../../os/rt/src/chmtx.o
+                                                  ../../../os/rt/src/chsem.o
+                                                  ../../../os/rt/src/chthreads.o
+chSchRescheduleS                                  ../../../os/rt/src/chschd.o
+                                                  ../../../os/hal/src/hal_serial.o
+                                                  ../../../os/common/oslib/src/chmboxes.o
+                                                  ../../../os/rt/src/chevents.o
+                                                  ../../../os/rt/src/chcond.o
+                                                  ../../../os/rt/src/chmtx.o
+                                                  ../../../os/rt/src/chsem.o
+                                                  ../../../os/rt/src/chthreads.o
+                                                  ../../../os/rt/src/chsys.o
+chSchWakeupS                                      ../../../os/rt/src/chschd.o
+                                                  ../../../os/rt/src/chmsg.o
+                                                  ../../../os/rt/src/chcond.o
+                                                  ../../../os/rt/src/chsem.o
+                                                  ../../../os/rt/src/chthreads.o
+chSemAddCounterI                                  ../../../os/rt/src/chsem.o
+chSemObjectInit                                   ../../../os/rt/src/chsem.o
+chSemReset                                        ../../../os/rt/src/chsem.o
+chSemResetI                                       ../../../os/rt/src/chsem.o
+chSemSignal                                       ../../../os/rt/src/chsem.o
+chSemSignalI                                      ../../../os/rt/src/chsem.o
+chSemSignalWait                                   ../../../os/rt/src/chsem.o
+chSemWait                                         ../../../os/rt/src/chsem.o
+chSemWaitS                                        ../../../os/rt/src/chsem.o
+chSemWaitTimeout                                  ../../../os/rt/src/chsem.o
+chSemWaitTimeoutS                                 ../../../os/rt/src/chsem.o
+chSysGetStatusAndLockX                            ../../../os/rt/src/chsys.o
+chSysHalt                                         ../../../os/rt/src/chsys.o
+chSysInit                                         ../../../os/rt/src/chsys.o
+                                                  main.o
+chSysIntegrityCheckI                              ../../../os/rt/src/chsys.o
+chSysRestoreStatusX                               ../../../os/rt/src/chsys.o
+chSysTimerHandlerI                                ../../../os/rt/src/chsys.o
+                                                  ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+chThdAddRef                                       ../../../os/rt/src/chthreads.o
+chThdCreate                                       ../../../os/rt/src/chthreads.o
+                                                  ../../../os/rt/src/chsys.o
+chThdCreateI                                      ../../../os/rt/src/chthreads.o
+chThdCreateStatic                                 ../../../os/rt/src/chthreads.o
+chThdCreateSuspended                              ../../../os/rt/src/chthreads.o
+chThdCreateSuspendedI                             ../../../os/rt/src/chthreads.o
+chThdDequeueAllI                                  ../../../os/rt/src/chthreads.o
+                                                  ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_buffers.o
+                                                  ../../../os/common/oslib/src/chmboxes.o
+chThdDequeueNextI                                 ../../../os/rt/src/chthreads.o
+                                                  ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_buffers.o
+                                                  ../../../os/common/oslib/src/chmboxes.o
+chThdEnqueueTimeoutS                              ../../../os/rt/src/chthreads.o
+                                                  ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_buffers.o
+                                                  ../../../os/common/oslib/src/chmboxes.o
+chThdExit                                         ../../../os/rt/src/chthreads.o
+                                                  ../../../os/common/ports/AVR/chcore.o
+chThdExitS                                        ../../../os/rt/src/chthreads.o
+chThdRelease                                      ../../../os/rt/src/chthreads.o
+chThdResume                                       ../../../os/rt/src/chthreads.o
+chThdResumeI                                      ../../../os/rt/src/chthreads.o
+chThdResumeS                                      ../../../os/rt/src/chthreads.o
+chThdSetPriority                                  ../../../os/rt/src/chthreads.o
+chThdSleep                                        ../../../os/rt/src/chthreads.o
+                                                  main.o
+chThdSleepUntil                                   ../../../os/rt/src/chthreads.o
+chThdSleepUntilWindowed                           ../../../os/rt/src/chthreads.o
+chThdStart                                        ../../../os/rt/src/chthreads.o
+chThdSuspendS                                     ../../../os/rt/src/chthreads.o
+chThdSuspendTimeoutS                              ../../../os/rt/src/chthreads.o
+chThdTerminate                                    ../../../os/rt/src/chthreads.o
+chThdWait                                         ../../../os/rt/src/chthreads.o
+chThdYield                                        ../../../os/rt/src/chthreads.o
+chVTDoResetI                                      ../../../os/rt/src/chvt.o
+                                                  ../../../os/various/evtimer.o
+                                                  ../../../os/rt/src/chschd.o
+chVTDoSetI                                        ../../../os/rt/src/chvt.o
+                                                  ../../../os/various/evtimer.o
+                                                  ../../../os/rt/src/chschd.o
+ch_debug                                          ../../../os/rt/src/chregistry.o
+                                                  ../../../os/rt/src/chsys.o
+ch_idle_thread_wa                                 ../../../os/rt/src/chsys.o
+chp                                               main.o
+chprintf                                          ../../../os/hal/lib/streams/chprintf.o
+                                                  main.o
+chsnprintf                                        ../../../os/hal/lib/streams/chprintf.o
+chvprintf                                         ../../../os/hal/lib/streams/chprintf.o
+evtObjectInit                                     ../../../os/various/evtimer.o
+evtStart                                          ../../../os/various/evtimer.o
+exit                                              /usr/lib/gcc/avr/5.4.0/avr6/libgcc.a(_exit.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+extChannelDisable                                 ../../../os/hal/src/hal_ext.o
+extChannelEnable                                  ../../../os/hal/src/hal_ext.o
+extInit                                           ../../../os/hal/src/hal_ext.o
+                                                  ../../../os/hal/src/hal.o
+extObjectInit                                     ../../../os/hal/src/hal_ext.o
+                                                  ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+extSetChannelModeI                                ../../../os/hal/src/hal_ext.o
+extStart                                          ../../../os/hal/src/hal_ext.o
+extStop                                           ../../../os/hal/src/hal_ext.o
+ext_lld_channel_disable                           ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  ../../../os/hal/src/hal_ext.o
+ext_lld_channel_enable                            ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  ../../../os/hal/src/hal_ext.o
+ext_lld_init                                      ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  ../../../os/hal/src/hal_ext.o
+ext_lld_set_intx_edges                            ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+ext_lld_start                                     ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  ../../../os/hal/src/hal_ext.o
+ext_lld_stop                                      ../../../os/hal/ports/AVR/MEGA/EXTv1/hal_ext_lld.o
+                                                  ../../../os/hal/src/hal_ext.o
+fgetc                                             /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fgetc.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o)
+fputc                                             /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(fputc.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o)
+halInit                                           ../../../os/hal/src/hal.o
+                                                  main.o
+hal_lld_init                                      ../../../os/hal/ports/AVR/MEGA/hal_lld.o
+                                                  ../../../os/hal/src/hal.o
+ibqGetEmptyBufferI                                ../../../os/hal/src/hal_buffers.o
+ibqGetFullBufferTimeout                           ../../../os/hal/src/hal_buffers.o
+ibqGetFullBufferTimeoutS                          ../../../os/hal/src/hal_buffers.o
+ibqGetTimeout                                     ../../../os/hal/src/hal_buffers.o
+ibqObjectInit                                     ../../../os/hal/src/hal_buffers.o
+ibqPostFullBufferI                                ../../../os/hal/src/hal_buffers.o
+ibqReadTimeout                                    ../../../os/hal/src/hal_buffers.o
+ibqReleaseEmptyBuffer                             ../../../os/hal/src/hal_buffers.o
+ibqReleaseEmptyBufferS                            ../../../os/hal/src/hal_buffers.o
+ibqResetI                                         ../../../os/hal/src/hal_buffers.o
+iqGetTimeout                                      ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_serial.o
+iqObjectInit                                      ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_serial.o
+iqPutI                                            ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_serial.o
+iqReadTimeout                                     ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_serial.o
+iqResetI                                          ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_serial.o
+isspace                                           /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(isspace.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o)
+main                                              main.o
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/crtatmega2560.o
+memcpy                                            /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(memcpy.o)
+                                                  ../../../os/hal/lib/streams/memstreams.o
+                                                  ../../../os/hal/src/hal_buffers.o
+msObjectInit                                      ../../../os/hal/lib/streams/memstreams.o
+                                                  ../../../os/hal/lib/streams/chprintf.o
+nullObjectInit                                    ../../../os/hal/lib/streams/nullstreams.o
+obqFlush                                          ../../../os/hal/src/hal_buffers.o
+obqGetEmptyBufferTimeout                          ../../../os/hal/src/hal_buffers.o
+obqGetEmptyBufferTimeoutS                         ../../../os/hal/src/hal_buffers.o
+obqGetFullBufferI                                 ../../../os/hal/src/hal_buffers.o
+obqObjectInit                                     ../../../os/hal/src/hal_buffers.o
+obqPostFullBuffer                                 ../../../os/hal/src/hal_buffers.o
+obqPostFullBufferS                                ../../../os/hal/src/hal_buffers.o
+obqPutTimeout                                     ../../../os/hal/src/hal_buffers.o
+obqReleaseEmptyBufferI                            ../../../os/hal/src/hal_buffers.o
+obqResetI                                         ../../../os/hal/src/hal_buffers.o
+obqTryFlushI                                      ../../../os/hal/src/hal_buffers.o
+obqWriteTimeout                                   ../../../os/hal/src/hal_buffers.o
+oqGetI                                            ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_serial.o
+oqObjectInit                                      ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_serial.o
+oqPutTimeout                                      ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_serial.o
+oqResetI                                          ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_serial.o
+oqWriteTimeout                                    ../../../os/hal/src/hal_queues.o
+                                                  ../../../os/hal/src/hal_serial.o
+palReadBus                                        ../../../os/hal/src/hal_pal.o
+palSetBusMode                                     ../../../os/hal/src/hal_pal.o
+palWriteBus                                       ../../../os/hal/src/hal_pal.o
+pal_default_config                                ../../../os/hal/boards/ARDUINO_MEGA/board.o
+                                                  ../../../os/hal/src/hal.o
+pcintInit                                         main.o
+sdGetWouldBlock                                   ../../../os/hal/src/hal_serial.o
+sdIncomingDataI                                   ../../../os/hal/src/hal_serial.o
+                                                  ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+sdInit                                            ../../../os/hal/src/hal_serial.o
+                                                  ../../../os/hal/src/hal.o
+sdObjectInit                                      ../../../os/hal/src/hal_serial.o
+                                                  ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+sdPutWouldBlock                                   ../../../os/hal/src/hal_serial.o
+sdRequestDataI                                    ../../../os/hal/src/hal_serial.o
+                                                  ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+sdStart                                           ../../../os/hal/src/hal_serial.o
+                                                  main.o
+sdStop                                            ../../../os/hal/src/hal_serial.o
+sd_lld_init                                       ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                                  ../../../os/hal/src/hal_serial.o
+sd_lld_start                                      ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                                  ../../../os/hal/src/hal_serial.o
+sd_lld_stop                                       ../../../os/hal/ports/AVR/MEGA/USARTv1/hal_serial_lld.o
+                                                  ../../../os/hal/src/hal_serial.o
+stGetAlarm                                        ../../../os/hal/src/hal_st.o
+stInit                                            ../../../os/hal/src/hal_st.o
+                                                  ../../../os/hal/src/hal.o
+stSetAlarm                                        ../../../os/hal/src/hal_st.o
+                                                  ../../../os/rt/src/chvt.o
+                                                  ../../../os/rt/src/chsys.o
+stStartAlarm                                      ../../../os/hal/src/hal_st.o
+                                                  ../../../os/rt/src/chvt.o
+stStopAlarm                                       ../../../os/hal/src/hal_st.o
+                                                  ../../../os/rt/src/chvt.o
+                                                  ../../../os/rt/src/chsys.o
+st_lld_init                                       ../../../os/hal/ports/AVR/MEGA/TIMv1/hal_st_lld.o
+                                                  ../../../os/hal/src/hal_st.o
+strchr_P                                          /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(strchr_P.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o)
+strcmp                                            /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(strcmp.o)
+                                                  ../../../os/rt/src/chregistry.o
+ungetc                                            /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libc.a(ungetc.o)
+                                                  /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o)
+vfprintf                                          /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libprintf_min.a(vfprintf_min.o)
+vfscanf                                           /usr/lib/gcc/avr/5.4.0/../../../avr/lib/avr6/libscanf_min.a(vfscanf_min.o)

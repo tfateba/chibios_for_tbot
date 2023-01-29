@@ -1,0 +1,221 @@
+   1               		.file	"nullstreams.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__RAMPZ__ = 0x3b
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.text
+   9               	.Ltext0:
+  10               		.cfi_sections	.debug_frame
+  11               		.section	.text.writes,"ax",@progbits
+  13               	writes:
+  14               	.LFB143:
+  15               		.file 1 "../../../os/hal/lib/streams/nullstreams.c"
+   1:../../../os/hal/lib/streams/nullstreams.c **** /*
+   2:../../../os/hal/lib/streams/nullstreams.c ****     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
+   3:../../../os/hal/lib/streams/nullstreams.c **** 
+   4:../../../os/hal/lib/streams/nullstreams.c ****     Licensed under the Apache License, Version 2.0 (the "License");
+   5:../../../os/hal/lib/streams/nullstreams.c ****     you may not use this file except in compliance with the License.
+   6:../../../os/hal/lib/streams/nullstreams.c ****     You may obtain a copy of the License at
+   7:../../../os/hal/lib/streams/nullstreams.c **** 
+   8:../../../os/hal/lib/streams/nullstreams.c ****         http://www.apache.org/licenses/LICENSE-2.0
+   9:../../../os/hal/lib/streams/nullstreams.c **** 
+  10:../../../os/hal/lib/streams/nullstreams.c ****     Unless required by applicable law or agreed to in writing, software
+  11:../../../os/hal/lib/streams/nullstreams.c ****     distributed under the License is distributed on an "AS IS" BASIS,
+  12:../../../os/hal/lib/streams/nullstreams.c ****     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  13:../../../os/hal/lib/streams/nullstreams.c ****     See the License for the specific language governing permissions and
+  14:../../../os/hal/lib/streams/nullstreams.c ****     limitations under the License.
+  15:../../../os/hal/lib/streams/nullstreams.c **** */
+  16:../../../os/hal/lib/streams/nullstreams.c **** 
+  17:../../../os/hal/lib/streams/nullstreams.c **** /**
+  18:../../../os/hal/lib/streams/nullstreams.c ****  * @file    nullstreams.c
+  19:../../../os/hal/lib/streams/nullstreams.c ****  * @brief   Null streams code.
+  20:../../../os/hal/lib/streams/nullstreams.c ****  *
+  21:../../../os/hal/lib/streams/nullstreams.c ****  * @addtogroup null_streams
+  22:../../../os/hal/lib/streams/nullstreams.c ****  * @{
+  23:../../../os/hal/lib/streams/nullstreams.c ****  */
+  24:../../../os/hal/lib/streams/nullstreams.c **** 
+  25:../../../os/hal/lib/streams/nullstreams.c **** #include "hal.h"
+  26:../../../os/hal/lib/streams/nullstreams.c **** #include "nullstreams.h"
+  27:../../../os/hal/lib/streams/nullstreams.c **** 
+  28:../../../os/hal/lib/streams/nullstreams.c **** /*===========================================================================*/
+  29:../../../os/hal/lib/streams/nullstreams.c **** /* Driver local definitions.                                                 */
+  30:../../../os/hal/lib/streams/nullstreams.c **** /*===========================================================================*/
+  31:../../../os/hal/lib/streams/nullstreams.c **** 
+  32:../../../os/hal/lib/streams/nullstreams.c **** /*===========================================================================*/
+  33:../../../os/hal/lib/streams/nullstreams.c **** /* Driver exported variables.                                                */
+  34:../../../os/hal/lib/streams/nullstreams.c **** /*===========================================================================*/
+  35:../../../os/hal/lib/streams/nullstreams.c **** 
+  36:../../../os/hal/lib/streams/nullstreams.c **** /*===========================================================================*/
+  37:../../../os/hal/lib/streams/nullstreams.c **** /* Driver local variables.                                                   */
+  38:../../../os/hal/lib/streams/nullstreams.c **** /*===========================================================================*/
+  39:../../../os/hal/lib/streams/nullstreams.c **** 
+  40:../../../os/hal/lib/streams/nullstreams.c **** /*===========================================================================*/
+  41:../../../os/hal/lib/streams/nullstreams.c **** /* Driver local functions.                                                   */
+  42:../../../os/hal/lib/streams/nullstreams.c **** /*===========================================================================*/
+  43:../../../os/hal/lib/streams/nullstreams.c **** 
+  44:../../../os/hal/lib/streams/nullstreams.c **** static size_t writes(void *ip, const uint8_t *bp, size_t n) {
+  16               		.loc 1 44 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+  23 0000 CA01      		movw r24,r20
+  24               	.LVL1:
+  45:../../../os/hal/lib/streams/nullstreams.c **** 
+  46:../../../os/hal/lib/streams/nullstreams.c ****   (void)ip;
+  47:../../../os/hal/lib/streams/nullstreams.c ****   (void)bp;
+  48:../../../os/hal/lib/streams/nullstreams.c **** 
+  49:../../../os/hal/lib/streams/nullstreams.c ****   return n;
+  50:../../../os/hal/lib/streams/nullstreams.c **** }
+  25               		.loc 1 50 0
+  26 0002 0895      		ret
+  27               		.cfi_endproc
+  28               	.LFE143:
+  30               		.section	.text.reads,"ax",@progbits
+  32               	reads:
+  33               	.LFB144:
+  51:../../../os/hal/lib/streams/nullstreams.c **** 
+  52:../../../os/hal/lib/streams/nullstreams.c **** static size_t reads(void *ip, uint8_t *bp, size_t n) {
+  34               		.loc 1 52 0
+  35               		.cfi_startproc
+  36               	.LVL2:
+  37               	/* prologue: function */
+  38               	/* frame size = 0 */
+  39               	/* stack size = 0 */
+  40               	.L__stack_usage = 0
+  53:../../../os/hal/lib/streams/nullstreams.c **** 
+  54:../../../os/hal/lib/streams/nullstreams.c ****   (void)ip;
+  55:../../../os/hal/lib/streams/nullstreams.c ****   (void)bp;
+  56:../../../os/hal/lib/streams/nullstreams.c ****   (void)n;
+  57:../../../os/hal/lib/streams/nullstreams.c **** 
+  58:../../../os/hal/lib/streams/nullstreams.c ****   return 0;
+  59:../../../os/hal/lib/streams/nullstreams.c **** }
+  41               		.loc 1 59 0
+  42 0000 80E0      		ldi r24,0
+  43 0002 90E0      		ldi r25,0
+  44               	.LVL3:
+  45 0004 0895      		ret
+  46               		.cfi_endproc
+  47               	.LFE144:
+  49               		.section	.text.put,"ax",@progbits
+  51               	put:
+  52               	.LFB145:
+  60:../../../os/hal/lib/streams/nullstreams.c **** 
+  61:../../../os/hal/lib/streams/nullstreams.c **** static msg_t put(void *ip, uint8_t b) {
+  53               		.loc 1 61 0
+  54               		.cfi_startproc
+  55               	.LVL4:
+  56               	/* prologue: function */
+  57               	/* frame size = 0 */
+  58               	/* stack size = 0 */
+  59               	.L__stack_usage = 0
+  62:../../../os/hal/lib/streams/nullstreams.c **** 
+  63:../../../os/hal/lib/streams/nullstreams.c ****   (void)ip;
+  64:../../../os/hal/lib/streams/nullstreams.c ****   (void)b;
+  65:../../../os/hal/lib/streams/nullstreams.c **** 
+  66:../../../os/hal/lib/streams/nullstreams.c ****   return MSG_OK;
+  67:../../../os/hal/lib/streams/nullstreams.c **** }
+  60               		.loc 1 67 0
+  61 0000 80E0      		ldi r24,0
+  62 0002 90E0      		ldi r25,0
+  63               	.LVL5:
+  64 0004 0895      		ret
+  65               		.cfi_endproc
+  66               	.LFE145:
+  68               		.section	.text.get,"ax",@progbits
+  70               	get:
+  71               	.LFB146:
+  68:../../../os/hal/lib/streams/nullstreams.c **** 
+  69:../../../os/hal/lib/streams/nullstreams.c **** static msg_t get(void *ip) {
+  72               		.loc 1 69 0
+  73               		.cfi_startproc
+  74               	.LVL6:
+  75               	/* prologue: function */
+  76               	/* frame size = 0 */
+  77               	/* stack size = 0 */
+  78               	.L__stack_usage = 0
+  70:../../../os/hal/lib/streams/nullstreams.c **** 
+  71:../../../os/hal/lib/streams/nullstreams.c ****   (void)ip;
+  72:../../../os/hal/lib/streams/nullstreams.c **** 
+  73:../../../os/hal/lib/streams/nullstreams.c ****   return 4;
+  74:../../../os/hal/lib/streams/nullstreams.c **** }
+  79               		.loc 1 74 0
+  80 0000 84E0      		ldi r24,lo8(4)
+  81 0002 90E0      		ldi r25,0
+  82               	.LVL7:
+  83 0004 0895      		ret
+  84               		.cfi_endproc
+  85               	.LFE146:
+  87               		.section	.text.nullObjectInit,"ax",@progbits
+  88               	.global	nullObjectInit
+  90               	nullObjectInit:
+  91               	.LFB147:
+  75:../../../os/hal/lib/streams/nullstreams.c **** 
+  76:../../../os/hal/lib/streams/nullstreams.c **** static const struct NullStreamVMT vmt = {writes, reads, put, get};
+  77:../../../os/hal/lib/streams/nullstreams.c **** 
+  78:../../../os/hal/lib/streams/nullstreams.c **** /*===========================================================================*/
+  79:../../../os/hal/lib/streams/nullstreams.c **** /* Driver exported functions.                                                */
+  80:../../../os/hal/lib/streams/nullstreams.c **** /*===========================================================================*/
+  81:../../../os/hal/lib/streams/nullstreams.c **** 
+  82:../../../os/hal/lib/streams/nullstreams.c **** /**
+  83:../../../os/hal/lib/streams/nullstreams.c ****  * @brief   Null stream object initialization.
+  84:../../../os/hal/lib/streams/nullstreams.c ****  *
+  85:../../../os/hal/lib/streams/nullstreams.c ****  * @param[out] nsp      pointer to the @p NullStream object to be initialized
+  86:../../../os/hal/lib/streams/nullstreams.c ****  */
+  87:../../../os/hal/lib/streams/nullstreams.c **** void nullObjectInit(NullStream *nsp) {
+  92               		.loc 1 87 0
+  93               		.cfi_startproc
+  94               	.LVL8:
+  95               	/* prologue: function */
+  96               	/* frame size = 0 */
+  97               	/* stack size = 0 */
+  98               	.L__stack_usage = 0
+  88:../../../os/hal/lib/streams/nullstreams.c **** 
+  89:../../../os/hal/lib/streams/nullstreams.c ****   nsp->vmt = &vmt;
+  99               		.loc 1 89 0
+ 100 0000 20E0      		ldi r18,lo8(vmt)
+ 101 0002 30E0      		ldi r19,hi8(vmt)
+ 102 0004 FC01      		movw r30,r24
+ 103 0006 3183      		std Z+1,r19
+ 104 0008 2083      		st Z,r18
+ 105 000a 0895      		ret
+ 106               		.cfi_endproc
+ 107               	.LFE147:
+ 109               		.section	.rodata.vmt,"a",@progbits
+ 112               	vmt:
+ 113 0000 0000      		.word	gs(writes)
+ 114 0002 0000      		.word	gs(reads)
+ 115 0004 0000      		.word	gs(put)
+ 116 0006 0000      		.word	gs(get)
+ 117               		.text
+ 118               	.Letext0:
+ 119               		.file 2 "/usr/lib/gcc/avr/5.4.0/include/stddef.h"
+ 120               		.file 3 "/usr/lib/avr/include/stdint.h"
+ 121               		.file 4 "../../../os/common/ports/AVR/compilers/GCC/chtypes.h"
+ 122               		.file 5 "../../../os/rt/include/chsystypes.h"
+ 123               		.file 6 "../../../os/rt/include/chschd.h"
+ 124               		.file 7 "../../../os/common/ports/AVR/chcore.h"
+ 125               		.file 8 "../../../os/rt/include/chsem.h"
+ 126               		.file 9 "../../../os/rt/include/chmtx.h"
+ 127               		.file 10 "../../../os/hal/lib/streams/nullstreams.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 nullstreams.c
+     /tmp/cc0h2OMm.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc0h2OMm.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc0h2OMm.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc0h2OMm.s:5      *ABS*:000000000000003b __RAMPZ__
+     /tmp/cc0h2OMm.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc0h2OMm.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc0h2OMm.s:13     .text.writes:0000000000000000 writes
+     /tmp/cc0h2OMm.s:32     .text.reads:0000000000000000 reads
+     /tmp/cc0h2OMm.s:51     .text.put:0000000000000000 put
+     /tmp/cc0h2OMm.s:70     .text.get:0000000000000000 get
+     /tmp/cc0h2OMm.s:90     .text.nullObjectInit:0000000000000000 nullObjectInit
+     /tmp/cc0h2OMm.s:112    .rodata.vmt:0000000000000000 vmt
+
+UNDEFINED SYMBOLS
+__do_copy_data
